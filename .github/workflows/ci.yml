@@ -14,10 +14,10 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Installer Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: '3.12'
 
@@ -27,4 +27,4 @@ jobs:
       - name: Compilation avec un autre accent
         # Un accent différent du défaut doit produire un CSS sans jeton non
         # résolu ; c'est le cas le plus probable d'oubli dans le gabarit.
-        run: python3 scripts/build.py --accent mauve --no-zip
+        run: python3 scripts/build.py --accent mauve --no-zip --strict-contrast

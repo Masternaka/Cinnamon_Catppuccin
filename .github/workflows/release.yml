@@ -28,13 +28,13 @@ jobs:
       RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           persist-credentials: false
           fetch-depth: 0
 
       - name: Installer Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: '3.12'
 
@@ -47,13 +47,17 @@ jobs:
         run: |
           set -euo pipefail
           tag_commit="$(git rev-parse "${RELEASE_TAG}^{commit}")" || {
-            echo "Le tag ${RELEASE_TAG} n'existe pas sur ce commit ; le créer d'abord." >&2
+            echo "Le tag ${RELEASE_TAG} n'existe pas ; le créer d'abord." >&2
             exit 1
           }
-          if [ "$tag_commit" != "${GITHUB_SHA}" ]; then
-            echo "Le tag ${RELEASE_TAG} pointe sur ${tag_commit}, pas sur ${GITHUB_SHA}. Il ne sera pas déplacé." >&2
+          # Sur un tag annoté, GITHUB_SHA désigne l'objet tag, pas le commit :
+          # ^{commit} ramène les deux cas au commit pointé.
+          event_commit="$(git rev-parse "${GITHUB_SHA}^{commit}")"
+          if [ "$tag_commit" != "$event_commit" ]; then
+            echo "Le tag ${RELEASE_TAG} pointe sur ${tag_commit}, pas sur ${event_commit}. Il ne sera pas déplacé." >&2
             exit 1
           fi
+          echo "Tag ${RELEASE_TAG} vérifié sur le commit ${tag_commit}."
 
       - name: Vérifier les archives à publier
         run: |
@@ -76,16 +80,13 @@ jobs:
           GH_REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          options=()
-          if [ "$GITHUB_EVENT_NAME" = "push" ]; then
-            options+=(--verify-tag)
-          fi
+          # --verify-tag : le tag existe déjà, la release s'y rattache et rien
+          # n'est créé ni déplacé côté Git.
           gh release create "$RELEASE_TAG" \
             dist/Catppuccin-Latte.zip \
             dist/Catppuccin-Frappe.zip \
             dist/Catppuccin-Macchiato.zip \
             dist/Catppuccin-Mocha.zip \
             dist/Catppuccin-Cinnamon-all-flavors.zip \
-            --target "$GITHUB_SHA" "${options[@]}" \
-            --draft --generate-notes \
+            --verify-tag --draft --generate-notes \
             --title "Catppuccin pour Cinnamon ${RELEASE_TAG}"

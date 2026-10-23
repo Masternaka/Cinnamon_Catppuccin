@@ -158,6 +158,7 @@ src/overview.html.in      gabarit de la galerie HTML
 scripts/build.py          génération des thèmes, assets, PNG et archives
 scripts/test_build.py     tests unitaires des helpers de build (contrastes, jetons)
 scripts/check.sh          contrôles statiques, compilation temporaire et comparaison de dist/ et previews/
+scripts/verify-cinnamon.sh vérification d'une installation dans une session Cinnamon (lecture seule)
 scripts/install.sh        installation dans ~/.themes
 dist/                     thèmes prêts à installer et archives zip
 previews/                 aperçus SVG et galerie HTML des quatre variantes
@@ -212,6 +213,7 @@ sur les flavors clairs, ils descendent sous le ratio WCAG de 4,5:1. Le build
 dérive donc des jetons de premier plan dédiés, en ne modifiant que la
 luminosité (teinte et saturation officielles conservées) :
 
+- `@text_secondary@` pour le texte secondaire ;
 - `@text_success@`, `@text_warning@`, `@text_error@`, `@text_info@` pour le
   texte sémantique ;
 - `@link@` et `@link_hover@` pour les liens.
@@ -230,12 +232,14 @@ sombres. Si l'accent choisi est trop clair ou trop moyen — `yellow`, `peach`,
 `Base`/`Text` et n'en ajuste que la luminosité, donc un texte foncé sur un fond
 ambré.
 
-Le build affiche en fin d'exécution les couples encore sous 4,5:1. Un seul
-subsiste sur Latte et vient directement de la palette officielle : `Subtext 0`
-sur `Base` (4,37:1). Pour rendre cet écart bloquant :
+Tous les couples contrôlés atteignent désormais 4,5:1 sur les quatre flavors,
+avec l'accent bleu comme avec les treize autres accents. `make check` et la CI
+compilent en mode `--strict-contrast` : un écart introduit dans le gabarit fait
+échouer le contrôle au lieu de passer inaperçu. Pour un diagnostic local :
 
 ```bash
-python3 scripts/build.py --strict-contrast
+python3 scripts/build.py --strict-contrast   # échoue si un couple est sous 4,5:1
+python3 scripts/build.py                     # affiche seulement les écarts
 ```
 
 ## Compatibilité et limites
@@ -249,8 +253,9 @@ python3 scripts/build.py --strict-contrast
   et éventuellement un thème de curseurs.
 - La compilation valide le CSS, les SVG et les PNG, mais le rendu final doit
   être vérifié dans une session Cinnamon réelle (le développement de ce dépôt
-  peut se faire sur macOS). En cas de problème, consulter
-  `~/.cinnamon/glass.log` et `~/.xsession-errors`.
+  peut se faire sur macOS). Sur Linux Mint, `./scripts/verify-cinnamon.sh`
+  contrôle la session, les fichiers installés, les assets et les erreurs de
+  thème dans `~/.cinnamon/glass.log` et `~/.xsession-errors`.
 
 ## Désinstallation
 

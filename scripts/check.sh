@@ -9,9 +9,9 @@ WORK_DIR="$(mktemp -d)"
 trap 'rm -rf -- "$WORK_DIR"' EXIT
 
 cd "$ROOT"
-bash -n scripts/check.sh scripts/install.sh
+bash -n scripts/check.sh scripts/install.sh scripts/verify-cinnamon.sh
 mkdir -p "$WORK_DIR/scripts"
-cp scripts/build.py scripts/test_build.py scripts/install.sh "$WORK_DIR/scripts/"
+cp scripts/build.py scripts/test_build.py scripts/install.sh scripts/verify-cinnamon.sh "$WORK_DIR/scripts/"
 cp palette.json LICENSE "$WORK_DIR/"
 cp -R src "$WORK_DIR/src"
 PYTHONPYCACHEPREFIX="$WORK_DIR/pycache" python3 -m py_compile \
@@ -20,7 +20,8 @@ PYTHONPYCACHEPREFIX="$WORK_DIR/pycache" python3 -m py_compile \
 echo "Tests unitaires de build.py :"
 PYTHONPYCACHEPREFIX="$WORK_DIR/pycache" python3 "$WORK_DIR/scripts/test_build.py"
 
-python3 "$WORK_DIR/scripts/build.py"
+# --strict-contrast : un couple de couleurs sous 4,5:1 fait échouer le contrôle.
+python3 "$WORK_DIR/scripts/build.py" --strict-contrast
 
 compare_tree() {
   local name="$1"
@@ -61,7 +62,16 @@ check_installer() {
     echo "error: --backup n'a conservé aucune sauvegarde." >&2
     return 1
   fi
-  echo "  dry-run, installation et sauvegarde fonctionnent."
+
+  # HOME factice : le contrôle ne lit pas les journaux de la machine.
+  mkdir -p "$WORK_DIR/fakehome"
+  if ! HOME="$WORK_DIR/fakehome" bash "$WORK_DIR/scripts/verify-cinnamon.sh" \
+      --dest "$install_dir" >"$WORK_DIR/verify.log" 2>&1; then
+    echo "error: verify-cinnamon.sh a signalé un échec sur l'installation temporaire." >&2
+    sed 's/^/  /' "$WORK_DIR/verify.log" >&2
+    return 1
+  fi
+  echo "  dry-run, installation, sauvegarde et vérification fonctionnent."
 }
 
 echo "Comparaison des livrables suivis :"

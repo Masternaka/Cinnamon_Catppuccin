@@ -274,7 +274,7 @@ StEntry .capslock-warning {
 
 StEntry StIcon.peek-password {
   icon-size: 16px;
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 #appmenu-search-entry,
@@ -746,7 +746,7 @@ StEntry StIcon.peek-password {
 }
 
 .device-box .device-labels .status-label {
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 /* Sound applet */
@@ -1231,7 +1231,7 @@ StEntry StIcon.peek-password {
 .appmenu-application-button-description {
   font-weight: 400;
   font-size: 9pt;
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 .appmenu-application-button:highlighted {
@@ -1254,7 +1254,7 @@ StEntry StIcon.peek-password {
   padding: 6px;
   spacing: 4px;
   border-radius: 8px;
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 .appmenu-category-button-label {
@@ -1288,7 +1288,7 @@ StEntry StIcon.peek-password {
 
 .appmenu-search-entry-icon {
   icon-size: 1.1em;
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 /* ---------------------------------------------------------------------------
@@ -1358,7 +1358,7 @@ StEntry StIcon.peek-password {
   padding: 6px;
   spacing: 4px;
   border-radius: 8px;
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 .menu-category-button-label {
@@ -1403,7 +1403,7 @@ StEntry StIcon.peek-password {
 }
 
 .menu-selected-app-description {
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 .menu-search-box {
@@ -1412,7 +1412,7 @@ StEntry StIcon.peek-password {
 
 .menu-search-entry-icon {
   icon-size: 1.1em;
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 /* ---------------------------------------------------------------------------
@@ -1432,7 +1432,7 @@ StEntry StIcon.peek-password {
   padding: 0 6px;
   margin: 2px;
   border-radius: 6px;
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 .grouped-window-list-item-box.top,
@@ -1589,7 +1589,7 @@ StEntry StIcon.peek-password {
 .grouped-window-list-scrollbox-button {
   transition-duration: 100ms;
   border-radius: 6px;
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 .grouped-window-list-scrollbox-button-icon {
@@ -1646,7 +1646,7 @@ StEntry StIcon.peek-password {
   padding: 0 6px;
   margin: 2px;
   border-radius: 6px;
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 .window-list-item-box.top,
@@ -2057,7 +2057,7 @@ StEntry StIcon.peek-password {
   width: 2.4em;
   height: 2.4em;
   border-radius: 99px;
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 .calendar-day-base:hover {
@@ -2113,7 +2113,7 @@ StEntry StIcon.peek-password {
   margin: 6px 0;
   padding: 6px;
   border-radius: 8px;
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 .calendar-events-no-events-button:hover {
@@ -2129,7 +2129,7 @@ StEntry StIcon.peek-password {
   font-weight: 700;
   font-size: 15pt;
   text-align: center;
-  color: #6c6f85;
+  color: #5f6275;
   margin-top: 16px;
 }
 
@@ -2183,7 +2183,7 @@ StEntry StIcon.peek-password {
 .calendar-event-countdown {
   font-weight: 400;
   font-size: 9pt;
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 .calendar-event-countdown:soon {
@@ -2205,7 +2205,7 @@ StEntry StIcon.peek-password {
 }
 
 .calendar-event-summary {
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 /* ---------------------------------------------------------------------------
@@ -2284,7 +2284,7 @@ StEntry StIcon.peek-password {
 
 .dialog-list .dialog-list-box .dialog-list-item .dialog-list-item-description {
   font-size: 9pt;
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 .dialog-list .dialog-list-box .dialog-list-item:selected .dialog-list-item-description {
@@ -2335,7 +2335,7 @@ StEntry StIcon.peek-password {
 .message-dialog-content .message-dialog-caption {
   font-size: 9pt;
   text-align: center;
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 .run-dialog .dialog-content-box {
@@ -2345,7 +2345,7 @@ StEntry StIcon.peek-password {
 .run-dialog-description {
   font-size: 9pt;
   text-align: center;
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 .run-dialog-description.error {
@@ -2383,7 +2383,7 @@ StEntry StIcon.peek-password {
 
 .prompt-dialog-info-label,
 .prompt-dialog-null-label {
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 .polkit-dialog-user-layout {
@@ -2467,7 +2467,7 @@ StEntry StIcon.peek-password {
   font-weight: 700;
   font-size: 13pt;
   text-align: center;
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 .popup-dialog {
@@ -2920,7 +2920,7 @@ StEntry StIcon.peek-password {
 
 .screen-shield .clock-widget .clock-message-label {
   font-size: 14pt;
-  color: #6c6f85;
+  color: #5f6275;
   margin-top: 4px;
 }
 
@@ -2959,7 +2959,7 @@ StEntry StIcon.peek-password {
 .screen-shield .albumart-widget .albumart-track-info-box .albumart-album {
   font-weight: 700;
   font-size: 11pt;
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 .screen-shield .albumart-widget .albumart-track-info-box .albumart-controls {
@@ -3043,7 +3043,7 @@ StEntry StIcon.peek-password {
 
 .candidate-index {
   padding: 0 0.5em 0 0;
-  color: #6c6f85;
+  color: #5f6275;
 }
 
 .candidate-box {

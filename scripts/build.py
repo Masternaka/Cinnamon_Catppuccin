@@ -293,6 +293,7 @@ def flavor_tokens(flavor: dict, accent_name: str) -> dict[str, str]:
     # tokens darken (or lighten, on dark flavors) toward `text` just enough.
     # Fills, borders and indicators keep the untouched palette colors above.
     surfaces = [colors["base"], colors["crust"]]
+    tokens["text_secondary"] = ensure_contrast(colors["subtext0"], surfaces, colors["text"])
     tokens["text_success"] = ensure_contrast(colors["green"], surfaces, colors["text"])
     tokens["text_warning"] = ensure_contrast(colors["yellow"], surfaces, colors["text"])
     tokens["text_error"] = ensure_contrast(colors["red"], surfaces, colors["text"])
@@ -337,7 +338,7 @@ def contrast_issues(flavor: dict, tokens: dict[str, str]) -> list[str]:
     pairs = [
         ("Texte", "text", "base"),
         ("Texte sur panneau", "text", "crust"),
-        ("Texte secondaire", "subtext0", "base"),
+        ("Texte secondaire", "text_secondary", "base"),
         ("Accent lisible", "text_info", "base"),
         ("Succès", "text_success", "base"),
         ("Avertissement", "text_warning", "base"),

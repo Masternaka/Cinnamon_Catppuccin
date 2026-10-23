@@ -70,12 +70,29 @@ class TokenTests(unittest.TestCase):
         self.assertEqual(tokens["text_a80"], "rgba(205, 214, 244, 0.8)")
         self.assertEqual(tokens["accent_a25"], "rgba(137, 180, 250, 0.25)")
 
+    def test_text_secondary_is_readable(self) -> None:
+        for slug, flavor in palette()["flavors"].items():
+            colors = flavor["colors"]
+            tokens = build.flavor_tokens(flavor, "blue")
+            for surface in ("base", "crust"):
+                self.assertGreaterEqual(
+                    build.contrast_ratio(tokens["text_secondary"], colors[surface]),
+                    WCAG - 1e-9,
+                    f"{slug} sur {surface}",
+                )
+
+    def test_contrast_report_is_empty_for_default_accent(self) -> None:
+        for flavor in palette()["flavors"].values():
+            tokens = build.flavor_tokens(flavor, "blue")
+            self.assertEqual(build.contrast_issues(flavor, tokens), [])
+
     def test_dark_flavors_keep_palette_colors(self) -> None:
         flavors = palette()["flavors"]
         for slug in ("frappe", "macchiato", "mocha"):
             colors = flavors[slug]["colors"]
             tokens = build.flavor_tokens(flavors[slug], "blue")
             expected = {
+                "text_secondary": colors["subtext0"],
                 "text_success": colors["green"],
                 "text_warning": colors["yellow"],
                 "text_error": colors["red"],

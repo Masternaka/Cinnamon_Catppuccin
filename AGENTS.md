@@ -65,6 +65,7 @@ suite de tests ou une validation Cinnamon qui n’existe pas.
 | `LICENSE` | Licence MIT du code du thème. |
 | `scripts/check.sh` | Contrôles statiques, tests unitaires, compilation temporaire, comparaison de `dist/`/`previews/` et test de l’installateur ; utilisé par la CI. |
 | `scripts/test_build.py` | Tests unitaires des helpers de `build.py` (contrastes, couleurs, jetons, validation CSS). |
+| `scripts/verify-cinnamon.sh` | Vérification en lecture seule d’une installation dans une session Cinnamon. |
 | `.github/workflows/` | `ci.yml` (contrôles + compilation avec un second accent) et `release.yml` (release en brouillon, voir ci-dessous). |
 | `.github/dependabot.yml` | Mises à jour mensuelles des actions GitHub. |
 | `.gitattributes` | Fins de ligne LF, archives ZIP et PNG traités comme binaires. |
@@ -158,9 +159,9 @@ sans reconstruction le fait échouer, avec la consigne de relancer
 répertoire temporaire (`--dry-run`, installation des quatre thèmes, `--backup`).
 Il ne valide pas Cinnamon.
 
-Le build affiche en fin d’exécution les couples de couleurs sous 4,5:1 ;
-`python3 scripts/build.py --strict-contrast` transforme ces avertissements en
-échec.
+`scripts/check.sh` compile avec `--strict-contrast` : un couple de couleurs
+sous 4,5:1 fait échouer le contrôle. Pour un diagnostic local,
+`python3 scripts/build.py` affiche la liste des couples concernés sans échouer.
 
 Les archives zip sont générées avec une date d’entrée fixe : deux compilations
 identiques produisent des fichiers identiques octet pour octet, ce qui évite de
@@ -186,7 +187,10 @@ Pour une livraison, tester sur Cinnamon/X11 :
 
 1. Installer dans un répertoire temporaire avec
    `./scripts/install.sh --dest "$(mktemp -d)"`, puis copier les thèmes dans un
-   environnement Cinnamon de test.
+   environnement Cinnamon de test. Une fois installés, lancer
+   `./scripts/verify-cinnamon.sh --dest <répertoire>` : le script vérifie la
+   session, la présence des fichiers et des assets, et les erreurs de thème dans
+   `~/.cinnamon/glass.log` et `~/.xsession-errors`.
 2. Choisir chaque flavor dans **Paramètres → Thèmes** et redémarrer Cinnamon si
    nécessaire avec **Ctrl+Alt+Échap**.
 3. Vérifier le panneau sur les quatre orientations, les menus classique et 6.6+
@@ -231,11 +235,12 @@ ne sont pas nécessaires au fonctionnement du thème.
   `Base` sert de texte sur accent. Le panneau utilise `Crust`, les menus
   `Base`, les barres latérales et sous-menus `Mantle`.
 - Le texte coloré doit passer par les jetons de contraste dérivés
-  (`@text_success@`, `@text_warning@`, `@text_error@`, `@text_info@`, `@link@`,
-  `@link_hover@`) et non par `@green@`, `@yellow@`, `@red@` ou `@blue@` : ces
-  derniers restent réservés aux remplissages, bordures et indicateurs. Le build
-  ajuste uniquement la luminosité pour atteindre 4,5:1 et signale les couples
-  restants ; ne pas « corriger » un écart en modifiant `palette.json`.
+  (`@text_secondary@`, `@text_success@`, `@text_warning@`, `@text_error@`,
+  `@text_info@`, `@link@`, `@link_hover@`) et non par `@subtext0@`, `@green@`,
+  `@yellow@`, `@red@` ou `@blue@` : ces derniers restent réservés aux
+  remplissages, bordures et indicateurs. Le build ajuste uniquement la
+  luminosité pour atteindre 4,5:1 ; ne pas « corriger » un écart en modifiant
+  `palette.json`.
 - `@on_accent@` vaut `Base` tant que le couple atteint 4,5:1 (cas des flavors
   sombres). Sinon le build retient la meilleure des deux couleurs `Base`/`Text`
   et n’en ajuste que la luminosité : un accent clair (jaune, pêche) reçoit donc
@@ -276,8 +281,8 @@ changement. Demander confirmation avant toute autre écriture GitHub.
 
 Le workflow `ci.yml` exécute `bash scripts/check.sh` avec Python 3.12 sous
 Ubuntu 24.04 pour les push sur `main` et les pull requests, puis compile une
-seconde fois avec `--accent mauve` pour détecter un jeton propre à l’accent par
-défaut.
+seconde fois avec `--accent mauve --strict-contrast` pour détecter un jeton
+propre à l’accent par défaut et tout écart de contraste.
 
 Le workflow `release.yml` est adapté au thème :
 - il se déclenche sur un tag `v*` ou manuellement avec un tag en paramètre ;
