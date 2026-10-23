@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Catppuccin pour Cinnamon</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: transparent; }
+  body { font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif); color: var(--foreground, #1e1e2e); padding: 0; }
+  .intro { margin: 0 0 16px; }
+  .intro h1 { margin: 0 0 6px; font-size: 24px; line-height: 1.2; letter-spacing: -0.02em; }
+  .intro p { margin: 0; color: var(--muted-foreground, #6c6f85); font-size: 13px; line-height: 1.5; max-width: 72ch; }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: var(--cc-base); color: var(--cc-text); border: 1px solid var(--cc-surface1); border-radius: var(--radius, 8px); padding: 16px; min-width: 0; }
+  .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+  .card h2 { margin: 0; font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+  .kind { display: inline-block; margin-top: 5px; padding: 2px 7px; border-radius: 99px; border: 1px solid var(--cc-surface1); color: var(--cc-subtext0); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+  .swatches { display: flex; flex-wrap: wrap; gap: 5px; justify-content: flex-end; max-width: 142px; }
+  .swatch { width: 14px; height: 14px; border-radius: 50%; display: block; box-shadow: 0 0 0 1px rgba(0,0,0,.15); }
+  .preview { border-radius: calc(var(--radius, 8px) - 2px); overflow: hidden; border: 1px solid var(--cc-surface0); background: var(--cc-base); }
+  .preview svg { display: block; width: 100%; height: auto; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px 12px; margin-top: 12px; color: var(--cc-subtext0); font-size: 10.5px; }
+  .meta b { color: var(--cc-text); font-weight: 600; }
+  .meta code { font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace); font-size: 10px; color: var(--cc-subtext0); }
+  .install { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 16px; padding: 12px 14px; border: 1px solid var(--border, #ccd0da); border-radius: var(--radius, 8px); background: var(--secondary, #e6e9ef); color: var(--secondary-foreground, #4c4f69); font-size: 12px; }
+  .install code { font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace); color: var(--foreground, #1e1e2e); background: var(--card, #eff1f5); border: 1px solid var(--border, #ccd0da); border-radius: calc(var(--radius, 8px) - 4px); padding: 3px 7px; }
+  .install span { color: var(--muted-foreground, #6c6f85); }
+</style>
+</head>
+<body>
+  <div class="intro">
+    <h1>Catppuccin pour Cinnamon</h1>
+    <p>Quatre thèmes complets pour l'interface Cinnamon de Linux Mint — panneau, menu, applets, listes de fenêtres, notifications, dialogues et écran de verrouillage. Palette officielle Catppuccin, accent bleu par défaut.</p>
+  </div>
+  <div class="grid">
+    <section class="card" style="--cc-base:#eff1f5; --cc-mantle:#e6e9ef; --cc-crust:#dce0e8; --cc-surface0:#ccd0da; --cc-surface1:#bcc0cc; --cc-text:#4c4f69; --cc-subtext0:#6c6f85; --cc-accent:#1e66f5;">
+      <div class="card-head">
+        <div>
+          <h2>Catppuccin Latte</h2>
+          <span class="kind">clair</span>
+        </div>
+        <div class="swatches"><span class="swatch" style="background:#dc8a78" title="rosewater #dc8a78"></span><span class="swatch" style="background:#8839ef" title="mauve #8839ef"></span><span class="swatch" style="background:#d20f39" title="red #d20f39"></span><span class="swatch" style="background:#fe640b" title="peach #fe640b"></span><span class="swatch" style="background:#df8e1d" title="yellow #df8e1d"></span><span class="swatch" style="background:#40a02b" title="green #40a02b"></span><span class="swatch" style="background:#179299" title="teal #179299"></span><span class="swatch" style="background:#1e66f5" title="blue #1e66f5"></span><span class="swatch" style="background:#7287fd" title="lavender #7287fd"></span></div>
+      </div>
+      <div class="preview"><svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <defs>
+    <filter id="shadow-latte" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+    <clipPath id="menuClip-latte"><rect x="32" y="70" width="340" height="380" rx="16"/></clipPath>
+  </defs>
+  <rect x="0" y="0" width="800" height="500" rx="0" fill="#eff1f5" stroke="none" stroke-width="0" opacity="1.0"/>
+  <circle cx="710" cy="420" r="220" fill="#ccd0da" opacity="0.55"/>
+  <circle cx="90" cy="470" r="150" fill="#1e66f5" opacity="0.10"/>
+  <circle cx="780" cy="80" r="110" fill="#1e66f5" opacity="0.08"/>
+
+  <!-- Desktop window behind the menu -->
+  <g transform="translate(-20 0)">
+  <g filter="url(#shadow-latte)">
+    <rect x="430" y="150" width="330" height="250" rx="12" fill="#e6e9ef" stroke="none" stroke-width="0" opacity="1.0"/>
+    <rect x="461" y="181" width="268" height="188" rx="8" fill="#eff1f5" stroke="none" stroke-width="0" opacity="1.0"/>
+  </g>
+  <rect x="430" y="150" width="330" height="38" rx="12" fill="#ccd0da" stroke="none" stroke-width="0" opacity="1.0"/>
+  <rect x="430" y="176" width="330" height="12" rx="0" fill="#ccd0da" stroke="none" stroke-width="0" opacity="1.0"/>
+  <circle cx="452" cy="169" r="6" fill="#d20f39"/>
+  <circle cx="472" cy="169" r="6" fill="#df8e1d"/>
+  <circle cx="492" cy="169" r="6" fill="#40a02b"/>
+  <text x="570" y="174" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="bold" fill="#5c5f77" text-anchor="middle">catppuccin.css</text>
+  <text x="470" y="220" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#9ca0b0" text-anchor="start">/* Catppuccin Latte */</text>
+  <text x="470" y="246" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#8839ef" text-anchor="start">panel {</text>
+  <text x="490" y="268" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#1e66f5" text-anchor="start">background-color:</text>
+  <text x="630" y="268" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#fe640b" text-anchor="start">{crust};</text>
+  <text x="490" y="290" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#1e66f5" text-anchor="start">color:</text>
+  <text x="545" y="290" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#fe640b" text-anchor="start">{text};</text>
+  <text x="470" y="312" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#8839ef" text-anchor="start">}</text>
+  <text x="470" y="338" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#6c6f85" text-anchor="start">/* pastel • cozy • consistent */</text>
+  </g>
+
+  <!-- Panel -->
+  <rect x="0" y="0" width="800" height="40" rx="0" fill="#dce0e8" stroke="none" stroke-width="0" opacity="1.0"/>
+  <rect x="0" y="40" width="800" height="1" rx="0" fill="#ccd0da" stroke="none" stroke-width="0" opacity="1.0"/>
+  <circle cx="24" cy="20" r="11" fill="#1e66f5"/>
+  <text x="20" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="bold" fill="#eff1f5" text-anchor="start">C</text>
+  <text x="44" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="14" font-weight="bold" fill="#4c4f69" text-anchor="start">Catppuccin Latte</text>
+  <rect x="192" y="9" width="90" height="22" rx="6" fill="#ccd0da" stroke="none" stroke-width="0" opacity="1.0"/><rect x="192" y="29" width="90" height="2" fill="#1e66f5"/><text x="200" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#4c4f69" text-anchor="start">Fichiers</text><text x="310" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#4c4f69" text-anchor="start">Terminal</text><text x="420" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#4c4f69" text-anchor="start">Navigateur</text>
+  <circle cx="646" cy="20" r="4" fill="#6c6f85"/>
+  <circle cx="662" cy="20" r="4" fill="#6c6f85"/>
+  <circle cx="678" cy="20" r="4" fill="#6c6f85"/>
+  <text x="738" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="bold" fill="#4c4f69" text-anchor="middle">12:30</text>
+
+  <!-- Application menu -->
+  <g filter="url(#shadow-latte)">
+    <rect x="32" y="70" width="340" height="380" rx="16" fill="#eff1f5" stroke="#bcc0cc" stroke-width="1" opacity="1.0"/>
+    <rect x="32" y="70" width="118" height="380" rx="16" fill="#e6e9ef" stroke="none" stroke-width="0" opacity="1.0"/>
+    <rect x="126" y="70" width="24" height="380" rx="0" fill="#e6e9ef" stroke="none" stroke-width="0" opacity="1.0"/>
+    <rect x="149" y="70" width="1" height="380" rx="0" fill="#ccd0da" stroke="none" stroke-width="0" opacity="1.0"/>
+    <g clip-path="url(#menuClip-latte)">
+      <rect x="32" y="70" width="340" height="48" rx="0" fill="#bcc0cc" stroke="none" stroke-width="0" opacity="0.35"/>
+      <rect x="32" y="118" width="340" height="1" rx="0" fill="#ccd0da" stroke="none" stroke-width="0" opacity="1.0"/>
+    </g>
+    <circle cx="82" cy="116" r="24" fill="#1e66f5"/>
+    <text x="75" y="125" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="24" font-weight="bold" fill="#eff1f5" text-anchor="middle">M</text>
+    <text x="82" y="158" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="14" font-weight="bold" fill="#4c4f69" text-anchor="middle">Mint</text>
+    <text x="82" y="176" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#6c6f85" text-anchor="middle">Session Cinnamon</text>
+    <rect x="48" y="188" width="88" height="28" rx="7" fill="#ccd0da" stroke="none" stroke-width="0" opacity="1.0"/><circle cx="60" cy="202" r="5" fill="#1e66f5"/><text x="72" y="206" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#4c4f69" text-anchor="start">Favoris</text><circle cx="60" cy="234" r="5" fill="#40a02b"/><text x="72" y="238" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#4c4f69" text-anchor="start">Bureaux</text><circle cx="60" cy="266" r="5" fill="#df8e1d"/><text x="72" y="270" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#4c4f69" text-anchor="start">Documents</text><circle cx="60" cy="298" r="5" fill="#d20f39"/><text x="72" y="302" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#4c4f69" text-anchor="start">Système</text>
+    <rect x="48" y="334" width="88" height="30" rx="7" fill="#ccd0da" stroke="none" stroke-width="0" opacity="1.0"/>
+    <text x="70" y="354" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11.5" font-weight="bold" fill="#4c4f69" text-anchor="start">Éteindre</text>
+    <rect x="48" y="374" width="88" height="30" rx="7" fill="#ccd0da" stroke="none" stroke-width="0" opacity="1.0"/>
+    <text x="73" y="394" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11.5" font-weight="normal" fill="#4c4f69" text-anchor="start">Verrouiller</text>
+    <rect x="48" y="414" width="88" height="22" rx="7" fill="#d20f39" stroke="none" stroke-width="0" opacity="1.0"/>
+    <text x="72" y="430" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11" font-weight="bold" fill="#eff1f5" text-anchor="start">Redémarrer</text>
+
+    <rect x="164" y="90" width="188" height="34" rx="8" fill="#ccd0da" stroke="#bcc0cc" stroke-width="1" opacity="1.0"/>
+    <circle cx="180" cy="107" r="5" fill="none" stroke="#1e66f5" stroke-width="2"/>
+    <path d="M184 111 L190 117" stroke="#1e66f5" stroke-width="2" stroke-linecap="round"/>
+    <text x="200" y="112" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11.5" font-weight="normal" fill="#6c6f85" text-anchor="start">Rechercher une application…</text>
+    <rect x="150" y="129" width="208" height="38" rx="8" fill="#ccd0da" stroke="none" stroke-width="0" opacity="1.0"/><rect x="158" y="132" width="26" height="26" rx="7" fill="#8839ef" stroke="none" stroke-width="0" opacity="1.0"/><rect x="161" y="135" width="20" height="20" rx="6" fill="#eff1f5" stroke="none" stroke-width="0" opacity="0.16"/><text x="194" y="146" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12.5" font-weight="bold" fill="#4c4f69" text-anchor="start">Fichiers</text><text x="194" y="161" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#6c6f85" text-anchor="start">Gérer vos documents</text><rect x="158" y="177" width="26" height="26" rx="7" fill="#40a02b" stroke="none" stroke-width="0" opacity="1.0"/><rect x="161" y="180" width="20" height="20" rx="6" fill="#eff1f5" stroke="none" stroke-width="0" opacity="0.16"/><text x="194" y="191" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12.5" font-weight="bold" fill="#4c4f69" text-anchor="start">Éditeur de texte</text><text x="194" y="206" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#6c6f85" text-anchor="start">Écrire et modifier du code</text><rect x="158" y="222" width="26" height="26" rx="7" fill="#fe640b" stroke="none" stroke-width="0" opacity="1.0"/><rect x="161" y="225" width="20" height="20" rx="6" fill="#eff1f5" stroke="none" stroke-width="0" opacity="0.16"/><text x="194" y="236" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12.5" font-weight="bold" fill="#4c4f69" text-anchor="start">Terminal</text><text x="194" y="251" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#6c6f85" text-anchor="start">Ligne de commande</text><rect x="158" y="267" width="26" height="26" rx="7" fill="#1e66f5" stroke="none" stroke-width="0" opacity="1.0"/><rect x="161" y="270" width="20" height="20" rx="6" fill="#eff1f5" stroke="none" stroke-width="0" opacity="0.16"/><text x="194" y="281" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12.5" font-weight="bold" fill="#4c4f69" text-anchor="start">Navigateur web</text><text x="194" y="296" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#6c6f85" text-anchor="start">Explorer internet</text><rect x="158" y="312" width="26" height="26" rx="7" fill="#179299" stroke="none" stroke-width="0" opacity="1.0"/><rect x="161" y="315" width="20" height="20" rx="6" fill="#eff1f5" stroke="none" stroke-width="0" opacity="0.16"/><text x="194" y="326" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12.5" font-weight="bold" fill="#4c4f69" text-anchor="start">Paramètres</text><text x="194" y="341" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#6c6f85" text-anchor="start">Configurer le système</text>
+    <text x="356" y="436" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#9ca0b0" text-anchor="end">4 variantes</text>
+  </g>
+  <text x="748" y="484" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="bold" fill="#6c6f85" text-anchor="end">Catppuccin Latte</text>
+</svg>
+</div>
+      <div class="meta">
+        <span><b>Base</b> <code>#eff1f5</code></span>
+        <span><b>Panneau</b> <code>#dce0e8</code></span>
+        <span><b>Texte</b> <code>#4c4f69</code></span>
+        <span><b>Accent</b> <code>#1e66f5</code></span>
+      </div>
+    </section>
+    <section class="card" style="--cc-base:#303446; --cc-mantle:#292c3c; --cc-crust:#232634; --cc-surface0:#414559; --cc-surface1:#51576d; --cc-text:#c6d0f5; --cc-subtext0:#a5adce; --cc-accent:#8caaee;">
+      <div class="card-head">
+        <div>
+          <h2>Catppuccin Frappé</h2>
+          <span class="kind">sombre</span>
+        </div>
+        <div class="swatches"><span class="swatch" style="background:#f2d5cf" title="rosewater #f2d5cf"></span><span class="swatch" style="background:#ca9ee6" title="mauve #ca9ee6"></span><span class="swatch" style="background:#e78284" title="red #e78284"></span><span class="swatch" style="background:#ef9f76" title="peach #ef9f76"></span><span class="swatch" style="background:#e5c890" title="yellow #e5c890"></span><span class="swatch" style="background:#a6d189" title="green #a6d189"></span><span class="swatch" style="background:#81c8be" title="teal #81c8be"></span><span class="swatch" style="background:#8caaee" title="blue #8caaee"></span><span class="swatch" style="background:#babbf1" title="lavender #babbf1"></span></div>
+      </div>
+      <div class="preview"><svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <defs>
+    <filter id="shadow-frappe" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+    <clipPath id="menuClip-frappe"><rect x="32" y="70" width="340" height="380" rx="16"/></clipPath>
+  </defs>
+  <rect x="0" y="0" width="800" height="500" rx="0" fill="#303446" stroke="none" stroke-width="0" opacity="1.0"/>
+  <circle cx="710" cy="420" r="220" fill="#414559" opacity="0.55"/>
+  <circle cx="90" cy="470" r="150" fill="#8caaee" opacity="0.10"/>
+  <circle cx="780" cy="80" r="110" fill="#8caaee" opacity="0.08"/>
+
+  <!-- Desktop window behind the menu -->
+  <g transform="translate(-20 0)">
+  <g filter="url(#shadow-frappe)">
+    <rect x="430" y="150" width="330" height="250" rx="12" fill="#292c3c" stroke="none" stroke-width="0" opacity="1.0"/>
+    <rect x="461" y="181" width="268" height="188" rx="8" fill="#303446" stroke="none" stroke-width="0" opacity="1.0"/>
+  </g>
+  <rect x="430" y="150" width="330" height="38" rx="12" fill="#414559" stroke="none" stroke-width="0" opacity="1.0"/>
+  <rect x="430" y="176" width="330" height="12" rx="0" fill="#414559" stroke="none" stroke-width="0" opacity="1.0"/>
+  <circle cx="452" cy="169" r="6" fill="#e78284"/>
+  <circle cx="472" cy="169" r="6" fill="#e5c890"/>
+  <circle cx="492" cy="169" r="6" fill="#a6d189"/>
+  <text x="570" y="174" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="bold" fill="#b5bfe2" text-anchor="middle">catppuccin.css</text>
+  <text x="470" y="220" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#737994" text-anchor="start">/* Catppuccin Frappé */</text>
+  <text x="470" y="246" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#ca9ee6" text-anchor="start">panel {</text>
+  <text x="490" y="268" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#8caaee" text-anchor="start">background-color:</text>
+  <text x="630" y="268" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#ef9f76" text-anchor="start">{crust};</text>
+  <text x="490" y="290" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#8caaee" text-anchor="start">color:</text>
+  <text x="545" y="290" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#ef9f76" text-anchor="start">{text};</text>
+  <text x="470" y="312" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#ca9ee6" text-anchor="start">}</text>
+  <text x="470" y="338" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#a5adce" text-anchor="start">/* pastel • cozy • consistent */</text>
+  </g>
+
+  <!-- Panel -->
+  <rect x="0" y="0" width="800" height="40" rx="0" fill="#232634" stroke="none" stroke-width="0" opacity="1.0"/>
+  <rect x="0" y="40" width="800" height="1" rx="0" fill="#414559" stroke="none" stroke-width="0" opacity="1.0"/>
+  <circle cx="24" cy="20" r="11" fill="#8caaee"/>
+  <text x="20" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="bold" fill="#303446" text-anchor="start">C</text>
+  <text x="44" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="14" font-weight="bold" fill="#c6d0f5" text-anchor="start">Catppuccin Frappé</text>
+  <rect x="192" y="9" width="90" height="22" rx="6" fill="#414559" stroke="none" stroke-width="0" opacity="1.0"/><rect x="192" y="29" width="90" height="2" fill="#8caaee"/><text x="200" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#c6d0f5" text-anchor="start">Fichiers</text><text x="310" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#c6d0f5" text-anchor="start">Terminal</text><text x="420" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#c6d0f5" text-anchor="start">Navigateur</text>
+  <circle cx="646" cy="20" r="4" fill="#a5adce"/>
+  <circle cx="662" cy="20" r="4" fill="#a5adce"/>
+  <circle cx="678" cy="20" r="4" fill="#a5adce"/>
+  <text x="738" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="bold" fill="#c6d0f5" text-anchor="middle">12:30</text>
+
+  <!-- Application menu -->
+  <g filter="url(#shadow-frappe)">
+    <rect x="32" y="70" width="340" height="380" rx="16" fill="#303446" stroke="#51576d" stroke-width="1" opacity="1.0"/>
+    <rect x="32" y="70" width="118" height="380" rx="16" fill="#292c3c" stroke="none" stroke-width="0" opacity="1.0"/>
+    <rect x="126" y="70" width="24" height="380" rx="0" fill="#292c3c" stroke="none" stroke-width="0" opacity="1.0"/>
+    <rect x="149" y="70" width="1" height="380" rx="0" fill="#414559" stroke="none" stroke-width="0" opacity="1.0"/>
+    <g clip-path="url(#menuClip-frappe)">
+      <rect x="32" y="70" width="340" height="48" rx="0" fill="#51576d" stroke="none" stroke-width="0" opacity="0.35"/>
+      <rect x="32" y="118" width="340" height="1" rx="0" fill="#414559" stroke="none" stroke-width="0" opacity="1.0"/>
+    </g>
+    <circle cx="82" cy="116" r="24" fill="#8caaee"/>
+    <text x="75" y="125" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="24" font-weight="bold" fill="#303446" text-anchor="middle">M</text>
+    <text x="82" y="158" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="14" font-weight="bold" fill="#c6d0f5" text-anchor="middle">Mint</text>
+    <text x="82" y="176" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#a5adce" text-anchor="middle">Session Cinnamon</text>
+    <rect x="48" y="188" width="88" height="28" rx="7" fill="#414559" stroke="none" stroke-width="0" opacity="1.0"/><circle cx="60" cy="202" r="5" fill="#8caaee"/><text x="72" y="206" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#c6d0f5" text-anchor="start">Favoris</text><circle cx="60" cy="234" r="5" fill="#a6d189"/><text x="72" y="238" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#c6d0f5" text-anchor="start">Bureaux</text><circle cx="60" cy="266" r="5" fill="#e5c890"/><text x="72" y="270" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#c6d0f5" text-anchor="start">Documents</text><circle cx="60" cy="298" r="5" fill="#e78284"/><text x="72" y="302" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#c6d0f5" text-anchor="start">Système</text>
+    <rect x="48" y="334" width="88" height="30" rx="7" fill="#414559" stroke="none" stroke-width="0" opacity="1.0"/>
+    <text x="70" y="354" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11.5" font-weight="bold" fill="#c6d0f5" text-anchor="start">Éteindre</text>
+    <rect x="48" y="374" width="88" height="30" rx="7" fill="#414559" stroke="none" stroke-width="0" opacity="1.0"/>
+    <text x="73" y="394" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11.5" font-weight="normal" fill="#c6d0f5" text-anchor="start">Verrouiller</text>
+    <rect x="48" y="414" width="88" height="22" rx="7" fill="#e78284" stroke="none" stroke-width="0" opacity="1.0"/>
+    <text x="72" y="430" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11" font-weight="bold" fill="#303446" text-anchor="start">Redémarrer</text>
+
+    <rect x="164" y="90" width="188" height="34" rx="8" fill="#414559" stroke="#51576d" stroke-width="1" opacity="1.0"/>
+    <circle cx="180" cy="107" r="5" fill="none" stroke="#8caaee" stroke-width="2"/>
+    <path d="M184 111 L190 117" stroke="#8caaee" stroke-width="2" stroke-linecap="round"/>
+    <text x="200" y="112" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11.5" font-weight="normal" fill="#a5adce" text-anchor="start">Rechercher une application…</text>
+    <rect x="150" y="129" width="208" height="38" rx="8" fill="#414559" stroke="none" stroke-width="0" opacity="1.0"/><rect x="158" y="132" width="26" height="26" rx="7" fill="#ca9ee6" stroke="none" stroke-width="0" opacity="1.0"/><rect x="161" y="135" width="20" height="20" rx="6" fill="#303446" stroke="none" stroke-width="0" opacity="0.16"/><text x="194" y="146" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12.5" font-weight="bold" fill="#c6d0f5" text-anchor="start">Fichiers</text><text x="194" y="161" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#a5adce" text-anchor="start">Gérer vos documents</text><rect x="158" y="177" width="26" height="26" rx="7" fill="#a6d189" stroke="none" stroke-width="0" opacity="1.0"/><rect x="161" y="180" width="20" height="20" rx="6" fill="#303446" stroke="none" stroke-width="0" opacity="0.16"/><text x="194" y="191" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12.5" font-weight="bold" fill="#c6d0f5" text-anchor="start">Éditeur de texte</text><text x="194" y="206" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#a5adce" text-anchor="start">Écrire et modifier du code</text><rect x="158" y="222" width="26" height="26" rx="7" fill="#ef9f76" stroke="none" stroke-width="0" opacity="1.0"/><rect x="161" y="225" width="20" height="20" rx="6" fill="#303446" stroke="none" stroke-width="0" opacity="0.16"/><text x="194" y="236" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12.5" font-weight="bold" fill="#c6d0f5" text-anchor="start">Terminal</text><text x="194" y="251" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#a5adce" text-anchor="start">Ligne de commande</text><rect x="158" y="267" width="26" height="26" rx="7" fill="#8caaee" stroke="none" stroke-width="0" opacity="1.0"/><rect x="161" y="270" width="20" height="20" rx="6" fill="#303446" stroke="none" stroke-width="0" opacity="0.16"/><text x="194" y="281" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12.5" font-weight="bold" fill="#c6d0f5" text-anchor="start">Navigateur web</text><text x="194" y="296" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#a5adce" text-anchor="start">Explorer internet</text><rect x="158" y="312" width="26" height="26" rx="7" fill="#81c8be" stroke="none" stroke-width="0" opacity="1.0"/><rect x="161" y="315" width="20" height="20" rx="6" fill="#303446" stroke="none" stroke-width="0" opacity="0.16"/><text x="194" y="326" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12.5" font-weight="bold" fill="#c6d0f5" text-anchor="start">Paramètres</text><text x="194" y="341" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#a5adce" text-anchor="start">Configurer le système</text>
+    <text x="356" y="436" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#737994" text-anchor="end">4 variantes</text>
+  </g>
+  <text x="748" y="484" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="bold" fill="#a5adce" text-anchor="end">Catppuccin Frappé</text>
+</svg>
+</div>
+      <div class="meta">
+        <span><b>Base</b> <code>#303446</code></span>
+        <span><b>Panneau</b> <code>#232634</code></span>
+        <span><b>Texte</b> <code>#c6d0f5</code></span>
+        <span><b>Accent</b> <code>#8caaee</code></span>
+      </div>
+    </section>
+    <section class="card" style="--cc-base:#24273a; --cc-mantle:#1e2030; --cc-crust:#181926; --cc-surface0:#363a4f; --cc-surface1:#494d64; --cc-text:#cad3f5; --cc-subtext0:#a5adcb; --cc-accent:#8aadf4;">
+      <div class="card-head">
+        <div>
+          <h2>Catppuccin Macchiato</h2>
+          <span class="kind">sombre</span>
+        </div>
+        <div class="swatches"><span class="swatch" style="background:#f4dbd6" title="rosewater #f4dbd6"></span><span class="swatch" style="background:#c6a0f6" title="mauve #c6a0f6"></span><span class="swatch" style="background:#ed8796" title="red #ed8796"></span><span class="swatch" style="background:#f5a97f" title="peach #f5a97f"></span><span class="swatch" style="background:#eed49f" title="yellow #eed49f"></span><span class="swatch" style="background:#a6da95" title="green #a6da95"></span><span class="swatch" style="background:#8bd5ca" title="teal #8bd5ca"></span><span class="swatch" style="background:#8aadf4" title="blue #8aadf4"></span><span class="swatch" style="background:#b7bdf8" title="lavender #b7bdf8"></span></div>
+      </div>
+      <div class="preview"><svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <defs>
+    <filter id="shadow-macchiato" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+    <clipPath id="menuClip-macchiato"><rect x="32" y="70" width="340" height="380" rx="16"/></clipPath>
+  </defs>
+  <rect x="0" y="0" width="800" height="500" rx="0" fill="#24273a" stroke="none" stroke-width="0" opacity="1.0"/>
+  <circle cx="710" cy="420" r="220" fill="#363a4f" opacity="0.55"/>
+  <circle cx="90" cy="470" r="150" fill="#8aadf4" opacity="0.10"/>
+  <circle cx="780" cy="80" r="110" fill="#8aadf4" opacity="0.08"/>
+
+  <!-- Desktop window behind the menu -->
+  <g transform="translate(-20 0)">
+  <g filter="url(#shadow-macchiato)">
+    <rect x="430" y="150" width="330" height="250" rx="12" fill="#1e2030" stroke="none" stroke-width="0" opacity="1.0"/>
+    <rect x="461" y="181" width="268" height="188" rx="8" fill="#24273a" stroke="none" stroke-width="0" opacity="1.0"/>
+  </g>
+  <rect x="430" y="150" width="330" height="38" rx="12" fill="#363a4f" stroke="none" stroke-width="0" opacity="1.0"/>
+  <rect x="430" y="176" width="330" height="12" rx="0" fill="#363a4f" stroke="none" stroke-width="0" opacity="1.0"/>
+  <circle cx="452" cy="169" r="6" fill="#ed8796"/>
+  <circle cx="472" cy="169" r="6" fill="#eed49f"/>
+  <circle cx="492" cy="169" r="6" fill="#a6da95"/>
+  <text x="570" y="174" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="bold" fill="#b8c0e0" text-anchor="middle">catppuccin.css</text>
+  <text x="470" y="220" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#6e738d" text-anchor="start">/* Catppuccin Macchiato */</text>
+  <text x="470" y="246" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#c6a0f6" text-anchor="start">panel {</text>
+  <text x="490" y="268" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#8aadf4" text-anchor="start">background-color:</text>
+  <text x="630" y="268" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#f5a97f" text-anchor="start">{crust};</text>
+  <text x="490" y="290" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#8aadf4" text-anchor="start">color:</text>
+  <text x="545" y="290" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#f5a97f" text-anchor="start">{text};</text>
+  <text x="470" y="312" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#c6a0f6" text-anchor="start">}</text>
+  <text x="470" y="338" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#a5adcb" text-anchor="start">/* pastel • cozy • consistent */</text>
+  </g>
+
+  <!-- Panel -->
+  <rect x="0" y="0" width="800" height="40" rx="0" fill="#181926" stroke="none" stroke-width="0" opacity="1.0"/>
+  <rect x="0" y="40" width="800" height="1" rx="0" fill="#363a4f" stroke="none" stroke-width="0" opacity="1.0"/>
+  <circle cx="24" cy="20" r="11" fill="#8aadf4"/>
+  <text x="20" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="bold" fill="#24273a" text-anchor="start">C</text>
+  <text x="44" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="14" font-weight="bold" fill="#cad3f5" text-anchor="start">Catppuccin Macchiato</text>
+  <rect x="192" y="9" width="90" height="22" rx="6" fill="#363a4f" stroke="none" stroke-width="0" opacity="1.0"/><rect x="192" y="29" width="90" height="2" fill="#8aadf4"/><text x="200" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#cad3f5" text-anchor="start">Fichiers</text><text x="310" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#cad3f5" text-anchor="start">Terminal</text><text x="420" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#cad3f5" text-anchor="start">Navigateur</text>
+  <circle cx="646" cy="20" r="4" fill="#a5adcb"/>
+  <circle cx="662" cy="20" r="4" fill="#a5adcb"/>
+  <circle cx="678" cy="20" r="4" fill="#a5adcb"/>
+  <text x="738" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="bold" fill="#cad3f5" text-anchor="middle">12:30</text>
+
+  <!-- Application menu -->
+  <g filter="url(#shadow-macchiato)">
+    <rect x="32" y="70" width="340" height="380" rx="16" fill="#24273a" stroke="#494d64" stroke-width="1" opacity="1.0"/>
+    <rect x="32" y="70" width="118" height="380" rx="16" fill="#1e2030" stroke="none" stroke-width="0" opacity="1.0"/>
+    <rect x="126" y="70" width="24" height="380" rx="0" fill="#1e2030" stroke="none" stroke-width="0" opacity="1.0"/>
+    <rect x="149" y="70" width="1" height="380" rx="0" fill="#363a4f" stroke="none" stroke-width="0" opacity="1.0"/>
+    <g clip-path="url(#menuClip-macchiato)">
+      <rect x="32" y="70" width="340" height="48" rx="0" fill="#494d64" stroke="none" stroke-width="0" opacity="0.35"/>
+      <rect x="32" y="118" width="340" height="1" rx="0" fill="#363a4f" stroke="none" stroke-width="0" opacity="1.0"/>
+    </g>
+    <circle cx="82" cy="116" r="24" fill="#8aadf4"/>
+    <text x="75" y="125" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="24" font-weight="bold" fill="#24273a" text-anchor="middle">M</text>
+    <text x="82" y="158" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="14" font-weight="bold" fill="#cad3f5" text-anchor="middle">Mint</text>
+    <text x="82" y="176" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#a5adcb" text-anchor="middle">Session Cinnamon</text>
+    <rect x="48" y="188" width="88" height="28" rx="7" fill="#363a4f" stroke="none" stroke-width="0" opacity="1.0"/><circle cx="60" cy="202" r="5" fill="#8aadf4"/><text x="72" y="206" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#cad3f5" text-anchor="start">Favoris</text><circle cx="60" cy="234" r="5" fill="#a6da95"/><text x="72" y="238" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#cad3f5" text-anchor="start">Bureaux</text><circle cx="60" cy="266" r="5" fill="#eed49f"/><text x="72" y="270" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#cad3f5" text-anchor="start">Documents</text><circle cx="60" cy="298" r="5" fill="#ed8796"/><text x="72" y="302" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#cad3f5" text-anchor="start">Système</text>
+    <rect x="48" y="334" width="88" height="30" rx="7" fill="#363a4f" stroke="none" stroke-width="0" opacity="1.0"/>
+    <text x="70" y="354" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11.5" font-weight="bold" fill="#cad3f5" text-anchor="start">Éteindre</text>
+    <rect x="48" y="374" width="88" height="30" rx="7" fill="#363a4f" stroke="none" stroke-width="0" opacity="1.0"/>
+    <text x="73" y="394" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11.5" font-weight="normal" fill="#cad3f5" text-anchor="start">Verrouiller</text>
+    <rect x="48" y="414" width="88" height="22" rx="7" fill="#ed8796" stroke="none" stroke-width="0" opacity="1.0"/>
+    <text x="72" y="430" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11" font-weight="bold" fill="#24273a" text-anchor="start">Redémarrer</text>
+
+    <rect x="164" y="90" width="188" height="34" rx="8" fill="#363a4f" stroke="#494d64" stroke-width="1" opacity="1.0"/>
+    <circle cx="180" cy="107" r="5" fill="none" stroke="#8aadf4" stroke-width="2"/>
+    <path d="M184 111 L190 117" stroke="#8aadf4" stroke-width="2" stroke-linecap="round"/>
+    <text x="200" y="112" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11.5" font-weight="normal" fill="#a5adcb" text-anchor="start">Rechercher une application…</text>
+    <rect x="150" y="129" width="208" height="38" rx="8" fill="#363a4f" stroke="none" stroke-width="0" opacity="1.0"/><rect x="158" y="132" width="26" height="26" rx="7" fill="#c6a0f6" stroke="none" stroke-width="0" opacity="1.0"/><rect x="161" y="135" width="20" height="20" rx="6" fill="#24273a" stroke="none" stroke-width="0" opacity="0.16"/><text x="194" y="146" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12.5" font-weight="bold" fill="#cad3f5" text-anchor="start">Fichiers</text><text x="194" y="161" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#a5adcb" text-anchor="start">Gérer vos documents</text><rect x="158" y="177" width="26" height="26" rx="7" fill="#a6da95" stroke="none" stroke-width="0" opacity="1.0"/><rect x="161" y="180" width="20" height="20" rx="6" fill="#24273a" stroke="none" stroke-width="0" opacity="0.16"/><text x="194" y="191" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12.5" font-weight="bold" fill="#cad3f5" text-anchor="start">Éditeur de texte</text><text x="194" y="206" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#a5adcb" text-anchor="start">Écrire et modifier du code</text><rect x="158" y="222" width="26" height="26" rx="7" fill="#f5a97f" stroke="none" stroke-width="0" opacity="1.0"/><rect x="161" y="225" width="20" height="20" rx="6" fill="#24273a" stroke="none" stroke-width="0" opacity="0.16"/><text x="194" y="236" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12.5" font-weight="bold" fill="#cad3f5" text-anchor="start">Terminal</text><text x="194" y="251" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#a5adcb" text-anchor="start">Ligne de commande</text><rect x="158" y="267" width="26" height="26" rx="7" fill="#8aadf4" stroke="none" stroke-width="0" opacity="1.0"/><rect x="161" y="270" width="20" height="20" rx="6" fill="#24273a" stroke="none" stroke-width="0" opacity="0.16"/><text x="194" y="281" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12.5" font-weight="bold" fill="#cad3f5" text-anchor="start">Navigateur web</text><text x="194" y="296" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#a5adcb" text-anchor="start">Explorer internet</text><rect x="158" y="312" width="26" height="26" rx="7" fill="#8bd5ca" stroke="none" stroke-width="0" opacity="1.0"/><rect x="161" y="315" width="20" height="20" rx="6" fill="#24273a" stroke="none" stroke-width="0" opacity="0.16"/><text x="194" y="326" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12.5" font-weight="bold" fill="#cad3f5" text-anchor="start">Paramètres</text><text x="194" y="341" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#a5adcb" text-anchor="start">Configurer le système</text>
+    <text x="356" y="436" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#6e738d" text-anchor="end">4 variantes</text>
+  </g>
+  <text x="748" y="484" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="bold" fill="#a5adcb" text-anchor="end">Catppuccin Macchiato</text>
+</svg>
+</div>
+      <div class="meta">
+        <span><b>Base</b> <code>#24273a</code></span>
+        <span><b>Panneau</b> <code>#181926</code></span>
+        <span><b>Texte</b> <code>#cad3f5</code></span>
+        <span><b>Accent</b> <code>#8aadf4</code></span>
+      </div>
+    </section>
+    <section class="card" style="--cc-base:#1e1e2e; --cc-mantle:#181825; --cc-crust:#11111b; --cc-surface0:#313244; --cc-surface1:#45475a; --cc-text:#cdd6f4; --cc-subtext0:#a6adc8; --cc-accent:#89b4fa;">
+      <div class="card-head">
+        <div>
+          <h2>Catppuccin Mocha</h2>
+          <span class="kind">sombre</span>
+        </div>
+        <div class="swatches"><span class="swatch" style="background:#f5e0dc" title="rosewater #f5e0dc"></span><span class="swatch" style="background:#cba6f7" title="mauve #cba6f7"></span><span class="swatch" style="background:#f38ba8" title="red #f38ba8"></span><span class="swatch" style="background:#fab387" title="peach #fab387"></span><span class="swatch" style="background:#f9e2af" title="yellow #f9e2af"></span><span class="swatch" style="background:#a6e3a1" title="green #a6e3a1"></span><span class="swatch" style="background:#94e2d5" title="teal #94e2d5"></span><span class="swatch" style="background:#89b4fa" title="blue #89b4fa"></span><span class="swatch" style="background:#b4befe" title="lavender #b4befe"></span></div>
+      </div>
+      <div class="preview"><svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <defs>
+    <filter id="shadow-mocha" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+    <clipPath id="menuClip-mocha"><rect x="32" y="70" width="340" height="380" rx="16"/></clipPath>
+  </defs>
+  <rect x="0" y="0" width="800" height="500" rx="0" fill="#1e1e2e" stroke="none" stroke-width="0" opacity="1.0"/>
+  <circle cx="710" cy="420" r="220" fill="#313244" opacity="0.55"/>
+  <circle cx="90" cy="470" r="150" fill="#89b4fa" opacity="0.10"/>
+  <circle cx="780" cy="80" r="110" fill="#89b4fa" opacity="0.08"/>
+
+  <!-- Desktop window behind the menu -->
+  <g transform="translate(-20 0)">
+  <g filter="url(#shadow-mocha)">
+    <rect x="430" y="150" width="330" height="250" rx="12" fill="#181825" stroke="none" stroke-width="0" opacity="1.0"/>
+    <rect x="461" y="181" width="268" height="188" rx="8" fill="#1e1e2e" stroke="none" stroke-width="0" opacity="1.0"/>
+  </g>
+  <rect x="430" y="150" width="330" height="38" rx="12" fill="#313244" stroke="none" stroke-width="0" opacity="1.0"/>
+  <rect x="430" y="176" width="330" height="12" rx="0" fill="#313244" stroke="none" stroke-width="0" opacity="1.0"/>
+  <circle cx="452" cy="169" r="6" fill="#f38ba8"/>
+  <circle cx="472" cy="169" r="6" fill="#f9e2af"/>
+  <circle cx="492" cy="169" r="6" fill="#a6e3a1"/>
+  <text x="570" y="174" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="bold" fill="#bac2de" text-anchor="middle">catppuccin.css</text>
+  <text x="470" y="220" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#6c7086" text-anchor="start">/* Catppuccin Mocha */</text>
+  <text x="470" y="246" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#cba6f7" text-anchor="start">panel {</text>
+  <text x="490" y="268" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#89b4fa" text-anchor="start">background-color:</text>
+  <text x="630" y="268" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#fab387" text-anchor="start">{crust};</text>
+  <text x="490" y="290" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#89b4fa" text-anchor="start">color:</text>
+  <text x="545" y="290" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#fab387" text-anchor="start">{text};</text>
+  <text x="470" y="312" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="normal" fill="#cba6f7" text-anchor="start">}</text>
+  <text x="470" y="338" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#a6adc8" text-anchor="start">/* pastel • cozy • consistent */</text>
+  </g>
+
+  <!-- Panel -->
+  <rect x="0" y="0" width="800" height="40" rx="0" fill="#11111b" stroke="none" stroke-width="0" opacity="1.0"/>
+  <rect x="0" y="40" width="800" height="1" rx="0" fill="#313244" stroke="none" stroke-width="0" opacity="1.0"/>
+  <circle cx="24" cy="20" r="11" fill="#89b4fa"/>
+  <text x="20" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="bold" fill="#1e1e2e" text-anchor="start">C</text>
+  <text x="44" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="14" font-weight="bold" fill="#cdd6f4" text-anchor="start">Catppuccin Mocha</text>
+  <rect x="192" y="9" width="90" height="22" rx="6" fill="#313244" stroke="none" stroke-width="0" opacity="1.0"/><rect x="192" y="29" width="90" height="2" fill="#89b4fa"/><text x="200" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#cdd6f4" text-anchor="start">Fichiers</text><text x="310" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#cdd6f4" text-anchor="start">Terminal</text><text x="420" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#cdd6f4" text-anchor="start">Navigateur</text>
+  <circle cx="646" cy="20" r="4" fill="#a6adc8"/>
+  <circle cx="662" cy="20" r="4" fill="#a6adc8"/>
+  <circle cx="678" cy="20" r="4" fill="#a6adc8"/>
+  <text x="738" y="25" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="13" font-weight="bold" fill="#cdd6f4" text-anchor="middle">12:30</text>
+
+  <!-- Application menu -->
+  <g filter="url(#shadow-mocha)">
+    <rect x="32" y="70" width="340" height="380" rx="16" fill="#1e1e2e" stroke="#45475a" stroke-width="1" opacity="1.0"/>
+    <rect x="32" y="70" width="118" height="380" rx="16" fill="#181825" stroke="none" stroke-width="0" opacity="1.0"/>
+    <rect x="126" y="70" width="24" height="380" rx="0" fill="#181825" stroke="none" stroke-width="0" opacity="1.0"/>
+    <rect x="149" y="70" width="1" height="380" rx="0" fill="#313244" stroke="none" stroke-width="0" opacity="1.0"/>
+    <g clip-path="url(#menuClip-mocha)">
+      <rect x="32" y="70" width="340" height="48" rx="0" fill="#45475a" stroke="none" stroke-width="0" opacity="0.35"/>
+      <rect x="32" y="118" width="340" height="1" rx="0" fill="#313244" stroke="none" stroke-width="0" opacity="1.0"/>
+    </g>
+    <circle cx="82" cy="116" r="24" fill="#89b4fa"/>
+    <text x="75" y="125" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="24" font-weight="bold" fill="#1e1e2e" text-anchor="middle">M</text>
+    <text x="82" y="158" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="14" font-weight="bold" fill="#cdd6f4" text-anchor="middle">Mint</text>
+    <text x="82" y="176" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#a6adc8" text-anchor="middle">Session Cinnamon</text>
+    <rect x="48" y="188" width="88" height="28" rx="7" fill="#313244" stroke="none" stroke-width="0" opacity="1.0"/><circle cx="60" cy="202" r="5" fill="#89b4fa"/><text x="72" y="206" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#cdd6f4" text-anchor="start">Favoris</text><circle cx="60" cy="234" r="5" fill="#a6e3a1"/><text x="72" y="238" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#cdd6f4" text-anchor="start">Bureaux</text><circle cx="60" cy="266" r="5" fill="#f9e2af"/><text x="72" y="270" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#cdd6f4" text-anchor="start">Documents</text><circle cx="60" cy="298" r="5" fill="#f38ba8"/><text x="72" y="302" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="normal" fill="#cdd6f4" text-anchor="start">Système</text>
+    <rect x="48" y="334" width="88" height="30" rx="7" fill="#313244" stroke="none" stroke-width="0" opacity="1.0"/>
+    <text x="70" y="354" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11.5" font-weight="bold" fill="#cdd6f4" text-anchor="start">Éteindre</text>
+    <rect x="48" y="374" width="88" height="30" rx="7" fill="#313244" stroke="none" stroke-width="0" opacity="1.0"/>
+    <text x="73" y="394" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11.5" font-weight="normal" fill="#cdd6f4" text-anchor="start">Verrouiller</text>
+    <rect x="48" y="414" width="88" height="22" rx="7" fill="#f38ba8" stroke="none" stroke-width="0" opacity="1.0"/>
+    <text x="72" y="430" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11" font-weight="bold" fill="#1e1e2e" text-anchor="start">Redémarrer</text>
+
+    <rect x="164" y="90" width="188" height="34" rx="8" fill="#313244" stroke="#45475a" stroke-width="1" opacity="1.0"/>
+    <circle cx="180" cy="107" r="5" fill="none" stroke="#89b4fa" stroke-width="2"/>
+    <path d="M184 111 L190 117" stroke="#89b4fa" stroke-width="2" stroke-linecap="round"/>
+    <text x="200" y="112" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="11.5" font-weight="normal" fill="#a6adc8" text-anchor="start">Rechercher une application…</text>
+    <rect x="150" y="129" width="208" height="38" rx="8" fill="#313244" stroke="none" stroke-width="0" opacity="1.0"/><rect x="158" y="132" width="26" height="26" rx="7" fill="#cba6f7" stroke="none" stroke-width="0" opacity="1.0"/><rect x="161" y="135" width="20" height="20" rx="6" fill="#1e1e2e" stroke="none" stroke-width="0" opacity="0.16"/><text x="194" y="146" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12.5" font-weight="bold" fill="#cdd6f4" text-anchor="start">Fichiers</text><text x="194" y="161" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#a6adc8" text-anchor="start">Gérer vos documents</text><rect x="158" y="177" width="26" height="26" rx="7" fill="#a6e3a1" stroke="none" stroke-width="0" opacity="1.0"/><rect x="161" y="180" width="20" height="20" rx="6" fill="#1e1e2e" stroke="none" stroke-width="0" opacity="0.16"/><text x="194" y="191" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12.5" font-weight="bold" fill="#cdd6f4" text-anchor="start">Éditeur de texte</text><text x="194" y="206" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#a6adc8" text-anchor="start">Écrire et modifier du code</text><rect x="158" y="222" width="26" height="26" rx="7" fill="#fab387" stroke="none" stroke-width="0" opacity="1.0"/><rect x="161" y="225" width="20" height="20" rx="6" fill="#1e1e2e" stroke="none" stroke-width="0" opacity="0.16"/><text x="194" y="236" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12.5" font-weight="bold" fill="#cdd6f4" text-anchor="start">Terminal</text><text x="194" y="251" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#a6adc8" text-anchor="start">Ligne de commande</text><rect x="158" y="267" width="26" height="26" rx="7" fill="#89b4fa" stroke="none" stroke-width="0" opacity="1.0"/><rect x="161" y="270" width="20" height="20" rx="6" fill="#1e1e2e" stroke="none" stroke-width="0" opacity="0.16"/><text x="194" y="281" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12.5" font-weight="bold" fill="#cdd6f4" text-anchor="start">Navigateur web</text><text x="194" y="296" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#a6adc8" text-anchor="start">Explorer internet</text><rect x="158" y="312" width="26" height="26" rx="7" fill="#94e2d5" stroke="none" stroke-width="0" opacity="1.0"/><rect x="161" y="315" width="20" height="20" rx="6" fill="#1e1e2e" stroke="none" stroke-width="0" opacity="0.16"/><text x="194" y="326" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12.5" font-weight="bold" fill="#cdd6f4" text-anchor="start">Paramètres</text><text x="194" y="341" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#a6adc8" text-anchor="start">Configurer le système</text>
+    <text x="356" y="436" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="10.5" font-weight="normal" fill="#6c7086" text-anchor="end">4 variantes</text>
+  </g>
+  <text x="748" y="484" font-family="DejaVu Sans, Segoe UI, sans-serif" font-size="12" font-weight="bold" fill="#a6adc8" text-anchor="end">Catppuccin Mocha</text>
+</svg>
+</div>
+      <div class="meta">
+        <span><b>Base</b> <code>#1e1e2e</code></span>
+        <span><b>Panneau</b> <code>#11111b</code></span>
+        <span><b>Texte</b> <code>#cdd6f4</code></span>
+        <span><b>Accent</b> <code>#89b4fa</code></span>
+      </div>
+    </section>
+  </div>
+  <div class="install">
+    <code>./scripts/install.sh</code>
+    <span>Installe les quatre variantes dans <code>~/.themes</code>. Choisissez ensuite le thème dans Paramètres → Thèmes, puis Ctrl+Alt+Échap si nécessaire.</span>
+  </div>
+</body>
+</html>
