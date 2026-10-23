@@ -63,7 +63,8 @@ suite de tests ou une validation Cinnamon qui n’existe pas.
 | `README.md` | Documentation utilisateur en français. |
 | `AGENTS.md` | Consignes opérationnelles. |
 | `LICENSE` | Licence MIT du code du thème. |
-| `.github/workflows/` | Workflows CI/Release présents mais **non adaptés** à ce dépôt (voir ci-dessous). |
+| `scripts/check.sh` | Contrôles statiques et compilation temporaire utilisés par la CI. |
+| `.github/workflows/` | CI adaptée au thème ; Release encore héritée de CinnaFlow (voir ci-dessous). |
 
 Chaque thème généré a cette forme :
 
@@ -134,6 +135,16 @@ Le script vérifie les accolades et les jetons CSS, l’absence de jetons non
 résolus, la validité XML des SVG, la taille 256 × 256 des vignettes et la
 présence des fichiers générés. Vérifier aussi les références `url(...)` du CSS,
 l’intégrité des archives et les liens du README après toute modification.
+
+Contrôle commun à la CI et au développement local :
+
+```sh
+bash scripts/check.sh
+```
+
+Ce script compile dans une copie temporaire sans modifier `dist/` ni
+`previews/`, vérifie les syntaxes Bash/Python, les assets référencés par le CSS
+et le contenu et l’intégrité des cinq archives. Il ne valide pas Cinnamon.
 
 Contrôles statiques complémentaires :
 
@@ -230,12 +241,11 @@ disponible ; signaler son absence. Écrire les messages de commit en français,
 avec un titre court et une description concise expliquant la raison du
 changement. Demander confirmation avant toute autre écriture GitHub.
 
-Les workflows actuels de `.github/workflows/` ne sont **pas fonctionnels pour ce
-dépôt** et semblent hérités de CinnaFlow :
-
-- `ci.yml` appelle `bash scripts/check.sh`, mais ce script n’existe pas.
-- `release.yml` appelle `scripts/check.sh` et `scripts/package-release.py`, qui
-  n’existent pas, et attend `metadata.json` ainsi qu’un ZIP
+Le workflow `ci.yml` exécute `bash scripts/check.sh` avec Python 3.12 sous
+Ubuntu 24.04 pour les push sur `main` et les pull requests.
+Le workflow de Release reste **non adapté** au thème, hérité de CinnaFlow :
+- `release.yml` appelle `scripts/check.sh` puis `scripts/package-release.py`
+  (ce dernier n’existe pas), et attend `metadata.json` ainsi qu’un ZIP
   `dist/CinnaFlow-${TAG}.zip`. Ce dépôt est un thème, sans `metadata.json` ni
   version déclarée à ce jour.
 

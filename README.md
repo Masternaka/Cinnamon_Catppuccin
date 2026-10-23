@@ -104,6 +104,21 @@ Accents disponibles : `rosewater`, `flamingo`, `pink`, `mauve`, `red`,
 > éditez `src/cinnamon.css.in`, `src/index.theme.in`, `palette.json` ou
 > `scripts/build.py`, puis relancez la compilation.
 
+## Vérifications locales et CI
+
+```bash
+bash scripts/check.sh
+```
+
+La CI GitHub exécute cette commande sur les push vers `main` et les pull
+requests, avec Python 3.12. Elle vérifie la syntaxe Bash et Python, reconstruit
+les quatre thèmes dans un répertoire temporaire, puis contrôle les assets CSS
+et le contenu et l'intégrité des cinq archives. Les livrables locaux restent
+inchangés. Ces contrôles ne valident pas le rendu dans Cinnamon/X11.
+
+Le workflow de Release est encore hérité de CinnaFlow et doit être adapté avant
+toute création de tag ou de Release.
+
 ## Structure du dépôt
 
 ```text
@@ -112,6 +127,7 @@ src/cinnamon.css.in       feuille de style Cinnamon (gabarit)
 src/index.theme.in        métadonnées du thème
 src/overview.html.in      gabarit de la galerie HTML
 scripts/build.py          génération des thèmes, assets, PNG et archives
+scripts/check.sh          contrôles statiques et compilation temporaire pour la CI
 scripts/install.sh        installation dans ~/.themes
 dist/                     thèmes prêts à installer et archives zip
 previews/                 aperçus SVG et galerie HTML des quatre variantes

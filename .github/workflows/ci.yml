@@ -16,8 +16,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Outils disponibles
-        run: node --version && jq --version
+      - name: Installer Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
 
       - name: Vérifications
         run: bash scripts/check.sh
