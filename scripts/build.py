@@ -17,11 +17,15 @@ Only the Python standard library is required. The script produces:
 from __future__ import annotations
 
 import argparse
+import json
 import math
+import os
 import re
 import shutil
 import struct
 import sys
+import time
+import zipfile
 import zlib
 from pathlib import Path
 from xml.etree import ElementTree
@@ -35,9 +39,22 @@ DIST_DIR = ROOT / "dist"
 PREVIEW_DIR = ROOT / "previews"
 
 TOKEN_RE = re.compile(r"@([a-z0-9_]+)@")
+STRAY_TOKEN_RE = re.compile(r"@[A-Za-z0-9_-]+@")
 HEX_RE = re.compile(r"^#[0-9a-fA-F]{6}$")
 
+# Archives must be byte-identical between runs so that the tracked dist/*.zip
+# files only change when the theme itself changes. ZipInfo date_time is limited
+# to 1980-2107; SOURCE_DATE_EPOCH is honoured when set.
+DEFAULT_ZIP_DATE_TIME = (1980, 1, 1, 0, 0, 0)
+
 ALPHAS = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 85, 90, 95]
+
+# WCAG 2.1: 4.5:1 for normal text, 3:1 for large text and UI boundaries.
+WCAG_TEXT = 4.5
+
+# Cinnamon displays cinnamon/thumbnail.png at 125 px wide; the Mint themes use a
+# 247x60 strip, so the generated vignette follows the same format.
+THUMBNAIL_SIZE = (247, 60)
 
 ACCENT_NAMES = [
     "rosewater",
@@ -128,6 +145,110 @@ def mix(first: str, second: str, weight: float) -> str:
     )
 
 
+def relative_luminance(value: str) -> float:
+    def channel(component: int) -> float:
+        component = component / 255
+        if component <= 0.04045:
+            return component / 12.92
+        return ((component + 0.055) / 1.055) ** 2.4
+
+    red, green, blue = hex_to_rgb(value)
+    return 0.2126 * channel(red) + 0.7152 * channel(green) + 0.0722 * channel(blue)
+
+
+def contrast_ratio(first: str, second: str) -> float:
+    """WCAG 2.1 contrast ratio between two opaque colors."""
+    lighter = max(relative_luminance(first), relative_luminance(second))
+    darker = min(relative_luminance(first), relative_luminance(second))
+    return (lighter + 0.05) / (darker + 0.05)
+
+
+def rgb_to_hsl(value: str) -> tuple[float, float, float]:
+    red, green, blue = (component / 255 for component in hex_to_rgb(value))
+    highest, lowest = max(red, green, blue), min(red, green, blue)
+    lightness = (highest + lowest) / 2
+    if highest == lowest:
+        return 0.0, 0.0, lightness
+    delta = highest - lowest
+    saturation = delta / (2 - highest - lowest if lightness > 0.5 else highest + lowest)
+    if highest == red:
+        hue = ((green - blue) / delta) % 6
+    elif highest == green:
+        hue = (blue - red) / delta + 2
+    else:
+        hue = (red - green) / delta + 4
+    return hue * 60, saturation, lightness
+
+
+def hsl_to_hex(hue: float, saturation: float, lightness: float) -> str:
+    chroma = (1 - abs(2 * lightness - 1)) * saturation
+    secondary = chroma * (1 - abs((hue / 60) % 2 - 1))
+    match = lightness - chroma / 2
+    sextant = int(hue // 60) % 6
+    red, green, blue = [
+        (chroma, secondary, 0.0),
+        (secondary, chroma, 0.0),
+        (0.0, chroma, secondary),
+        (0.0, secondary, chroma),
+        (secondary, 0.0, chroma),
+        (chroma, 0.0, secondary),
+    ][sextant]
+    return rgb_to_hex(
+        tuple(
+            round(min(max(component + match, 0.0), 1.0) * 255)
+            for component in (red, green, blue)
+        )
+    )
+
+
+def ensure_contrast(
+    color: str, backgrounds: list[str], fallback: str, target: float = WCAG_TEXT
+) -> str:
+    """Return `color` with its lightness adjusted until it reaches `target`.
+
+    The Catppuccin accents are pastel, so drawing text with them on the light
+    flavors falls below the WCAG ratio. Only the lightness changes: the hue and
+    the saturation of the official palette color are kept, so a warning stays
+    amber instead of turning grey. Fills, borders and indicators keep using the
+    untouched palette color; only foreground tokens go through here.
+    """
+    if all(contrast_ratio(color, background) >= target for background in backgrounds):
+        return color
+
+    hue, saturation, lightness = rgb_to_hsl(color)
+    darken = relative_luminance(backgrounds[0]) > relative_luminance(color)
+    for step in range(1, 101):
+        factor = step / 100
+        if darken:
+            candidate_lightness = lightness * (1 - factor)
+        else:
+            candidate_lightness = lightness + (1 - lightness) * factor
+        candidate = hsl_to_hex(hue, saturation, candidate_lightness)
+        if all(contrast_ratio(candidate, background) >= target for background in backgrounds):
+            return candidate
+    return fallback
+
+
+def on_accent_color(accent: str, base: str, text: str, target: float = WCAG_TEXT) -> str:
+    """Return the most readable text color for a background filled with `accent`.
+
+    The Catppuccin style guide recommends Base on the accent. That holds for the
+    dark flavors and for most accents, but a mid-tone or pale accent on the light
+    flavors needs the better of Base/Text, with its lightness pushed until the
+    pair is readable. Base is only left untouched when it already qualifies.
+    """
+    if contrast_ratio(base, accent) >= target:
+        return base
+    adjusted = [
+        ensure_contrast(candidate, [accent], fallback=candidate, target=target)
+        for candidate in (base, text)
+    ]
+    best = max(adjusted, key=lambda candidate: contrast_ratio(candidate, accent))
+    if contrast_ratio(best, accent) >= target:
+        return best
+    return max(("#ffffff", "#000000"), key=lambda candidate: contrast_ratio(candidate, accent))
+
+
 def flavor_tokens(flavor: dict, accent_name: str) -> dict[str, str]:
     colors = flavor["colors"]
     dark = bool(flavor["dark"])
@@ -139,7 +260,7 @@ def flavor_tokens(flavor: dict, accent_name: str) -> dict[str, str]:
     tokens["accent"] = accent
     tokens["accent_hover"] = mix(accent, colors["text"] if dark else colors["base"], 0.15)
     tokens["accent_active"] = mix(accent, colors["crust"] if dark else colors["text"], 0.15)
-    tokens["on_accent"] = colors["base"]
+    tokens["on_accent"] = on_accent_color(accent, colors["base"], colors["text"])
 
     # Structural colors.
     tokens["panel"] = colors["crust"]
@@ -162,12 +283,22 @@ def flavor_tokens(flavor: dict, accent_name: str) -> dict[str, str]:
     tokens["selection_bg"] = rgba(colors["overlay2"], 0.3)
 
     # Semantic colors.
-    tokens["link"] = colors["blue"]
-    tokens["link_hover"] = colors["sky"]
     tokens["success"] = colors["green"]
     tokens["warning"] = colors["yellow"]
     tokens["error"] = colors["red"]
     tokens["info"] = colors["teal"]
+
+    # Readable foreground variants. The official accents are pastel, so drawing
+    # text with them on the light flavors falls below the WCAG ratio; these
+    # tokens darken (or lighten, on dark flavors) toward `text` just enough.
+    # Fills, borders and indicators keep the untouched palette colors above.
+    surfaces = [colors["base"], colors["crust"]]
+    tokens["text_success"] = ensure_contrast(colors["green"], surfaces, colors["text"])
+    tokens["text_warning"] = ensure_contrast(colors["yellow"], surfaces, colors["text"])
+    tokens["text_error"] = ensure_contrast(colors["red"], surfaces, colors["text"])
+    tokens["text_info"] = ensure_contrast(colors["teal"], surfaces, colors["text"])
+    tokens["link"] = ensure_contrast(colors["blue"], surfaces, colors["text"])
+    tokens["link_hover"] = ensure_contrast(colors["sky"], surfaces, colors["text"])
 
     # Shadows and scrims.
     tokens["shadow"] = rgba("#000000", 0.45 if dark else 0.15)
@@ -199,6 +330,35 @@ def substitute(text: str, tokens: dict[str, str], label: str) -> str:
         names = ", ".join("@" + name + "@" for name in sorted(missing))
         raise ValueError(f"{label}: unresolved tokens: {names}")
     return result
+
+
+def contrast_issues(flavor: dict, tokens: dict[str, str]) -> list[str]:
+    """List foreground/background pairs below the WCAG normal-text ratio."""
+    pairs = [
+        ("Texte", "text", "base"),
+        ("Texte sur panneau", "text", "crust"),
+        ("Texte secondaire", "subtext0", "base"),
+        ("Accent lisible", "text_info", "base"),
+        ("Succès", "text_success", "base"),
+        ("Avertissement", "text_warning", "base"),
+        ("Erreur", "text_error", "base"),
+        ("Succès sur panneau", "text_success", "crust"),
+        ("Avertissement sur panneau", "text_warning", "crust"),
+        ("Erreur sur panneau", "text_error", "crust"),
+        ("Lien", "link", "base"),
+        ("Lien survolé", "link_hover", "base"),
+        ("Lien sur panneau", "link", "crust"),
+        ("Texte sur accent", "on_accent", "accent"),
+    ]
+    issues: list[str] = []
+    for label, foreground, background in pairs:
+        ratio = contrast_ratio(tokens[foreground], tokens[background])
+        if ratio < WCAG_TEXT:
+            issues.append(
+                f"{flavor['name']}: {label} ({foreground} sur {background}) "
+                f"= {ratio:.2f}:1 < {WCAG_TEXT:g}:1"
+            )
+    return issues
 
 
 # ---------------------------------------------------------------------------
@@ -467,6 +627,12 @@ def write_assets(asset_dir: Path, tokens: dict[str, str]) -> None:
 
 
 def make_thumbnail(path: Path, tokens: dict[str, str], flavor: dict) -> None:
+    """Draw the 247x60 strip shown by the Cinnamon theme chooser.
+
+    The chooser scales the thumbnail to 125 px wide, like the Mint themes, so the
+    strip stays a readable overview of the panel and the application menu.
+    """
+    width, height = THUMBNAIL_SIZE
     base = tokens["base"]
     mantle = tokens["mantle"]
     crust = tokens["crust"]
@@ -479,71 +645,52 @@ def make_thumbnail(path: Path, tokens: dict[str, str], flavor: dict) -> None:
     accent = tokens["accent"]
     on_accent = tokens["on_accent"]
 
-    canvas = Canvas(256, 256, base)
-    canvas.fill_circle(222, 214, 78, surface0, 0.55)
-    canvas.fill_circle(35, 222, 54, accent, 0.12)
-    canvas.fill_circle(238, 62, 34, accent, 0.10)
+    canvas = Canvas(width, height, base)
 
-    # Menu shadow and popup.
-    canvas.fill_rounded_rect(15, 45, 168, 204, 12, "#000000", 0.22)
-    canvas.fill_rounded_rect(12, 40, 168, 204, 12, surface1)
-    canvas.fill_rounded_rect(13, 41, 166, 202, 11, base)
+    # Panel: launcher, name, flavor and clock.
+    canvas.fill_rect(0, 0, width, 16, crust)
+    canvas.fill_rect(0, 16, width, 1, surface0)
+    canvas.fill_circle(9, 8, 5, accent)
+    canvas.draw_text(7, 5, "C", 1, on_accent)
+    canvas.draw_text(18, 5, "CATPPUCCIN", 1, text)
+    name = flavor["name"].upper().replace("É", "E")
+    canvas.draw_text(78, 5, name, 1, accent)
+    canvas.fill_circle(140, 8, 3, surface2)
+    canvas.fill_circle(152, 8, 3, surface2)
+    canvas.fill_circle(164, 8, 3, surface2)
+    canvas.draw_text(208, 5, "12:30", 1, subtext0)
 
-    # Sidebar.
-    canvas.fill_rounded_rect(12, 40, 58, 204, 12, mantle)
-    canvas.fill_rect(58, 40, 12, 204, mantle)
-    canvas.fill_rect(67, 40, 1, 204, surface0)
-    canvas.fill_circle(40, 67, 11, accent)
-    canvas.draw_text(37, 63, "M", 1, on_accent)
-    canvas.draw_text(25, 85, "USER", 1, text)
-    canvas.draw_text(25, 95, "ONLINE", 1, subtext0)
+    # Application menu.
+    canvas.fill_rounded_rect(6, 22, 235, 34, 7, "#000000", 0.22)
+    canvas.fill_rounded_rect(5, 20, 235, 34, 7, surface1)
+    canvas.fill_rounded_rect(6, 21, 233, 32, 6, base)
 
-    for index, color in enumerate((accent, tokens["green"], tokens["yellow"], tokens["red"])):
-        y = 110 + index * 26
-        canvas.fill_rounded_rect(20, y, 42, 19, 5, surface0)
-        canvas.fill_circle(27, y + 9, 3.2, color)
-        canvas.fill_rect(33, y + 7, 22, 2, subtext0)
-        canvas.fill_rect(33, y + 12, 15, 2, overlay0)
+    canvas.fill_rounded_rect(6, 21, 56, 32, 6, mantle)
+    canvas.fill_rect(56, 21, 8, 32, mantle)
+    canvas.fill_rect(63, 21, 1, 32, surface0)
+    canvas.fill_circle(17, 29, 6, accent)
+    canvas.draw_text(15, 26, "M", 1, on_accent)
+    canvas.draw_text(27, 26, "MINT", 1, text)
+    canvas.fill_rounded_rect(11, 38, 44, 6, 3, surface0)
+    canvas.fill_circle(15, 41, 1.8, accent)
+    canvas.fill_rect(20, 40, 26, 2, subtext0)
+    canvas.fill_rounded_rect(11, 46, 44, 6, 3, surface0)
+    canvas.fill_circle(15, 49, 1.8, tokens["green"])
+    canvas.fill_rect(20, 48, 20, 2, subtext0)
 
-    # Search entry.
-    canvas.fill_rounded_rect(80, 52, 90, 20, 6, surface0)
-    canvas.fill_rect(80, 71, 90, 1, surface1)
-    canvas.fill_circle(89, 62, 3.2, accent)
-    canvas.fill_circle(89, 62, 1.4, base)
-    canvas.fill_rect(90, 64, 4, 1.5, accent)
-    canvas.fill_rect(99, 60, 45, 2, subtext0)
-    canvas.fill_rect(99, 65, 28, 1.5, overlay0)
-
-    # Application list.
     app_rows = [
-        (tokens["mauve"], "FILES", 78, 92),
-        (tokens["green"], "CODE", 40, 61),
-        (tokens["peach"], "TERM", 58, 42),
-        (tokens["blue"], "WEB", 34, 52),
+        (tokens["mauve"], 40, 26),
+        (tokens["green"], 34, 20),
+        (tokens["peach"], 44, 30),
+        (tokens["blue"], 28, 18),
     ]
-    for index, (color, label, label_width, sub_width) in enumerate(app_rows):
-        y = 84 + index * 31
+    for index, (color, label_width, sub_width) in enumerate(app_rows):
+        y = 23 + index * 8
         if index == 0:
-            canvas.fill_rounded_rect(76, y - 4, 98, 27, 6, surface0)
-        canvas.fill_rounded_rect(82, y, 18, 18, 5, color)
-        canvas.fill_rounded_rect(84, y + 2, 14, 14, 4, base, 0.18)
-        canvas.fill_rect(108, y + 3, label_width, 3, text, 0.9)
-        canvas.fill_rect(108, y + 10, sub_width, 2, overlay0)
-
-    # Bottom sidebar power dots.
-    for index, color in enumerate((surface2, surface2, tokens["red"])):
-        canvas.fill_circle(26 + index * 16, 230, 5, color)
-
-    # Panel.
-    canvas.fill_rect(0, 0, 256, 26, crust)
-    canvas.fill_rect(0, 26, 256, 1, surface0)
-    canvas.fill_circle(20, 13, 8, accent)
-    canvas.draw_text(17, 9, "C", 1, on_accent)
-    canvas.draw_text(34, 9, "CATPPUCCIN", 1, text)
-    name = flavor["name"].upper()
-    name = name.replace("É", "E")
-    canvas.draw_text(104, 9, name, 1, accent)
-    canvas.draw_text(214, 9, "12:30", 1, subtext0)
+            canvas.fill_rounded_rect(68, y - 1, 168, 9, 3, surface0)
+        canvas.fill_rounded_rect(72, y, 7, 7, 2, color)
+        canvas.fill_rect(84, y + 1, label_width, 2, text, 0.9)
+        canvas.fill_rect(84, y + 5, sub_width, 1.5, overlay0)
 
     canvas.write_png(path)
 
@@ -595,7 +742,18 @@ def make_overview(palette: dict, preview_dir: Path, output: Path, accent_name: s
       </div>
     </section>'''
         )
-    output.write_text(template.replace("{{CARDS}}", "\n".join(cards)), encoding="utf-8")
+    output.write_text(
+        template.replace("{{ACCENT}}", accent_name).replace("{{CARDS}}", "\n".join(cards)),
+        encoding="utf-8",
+    )
+
+
+def remove_stale_previews(preview_dir: Path, expected: set[str]) -> None:
+    """Delete generated previews that no flavor produces any more."""
+    for path in sorted(preview_dir.glob("Catppuccin-*.svg")):
+        if path.name not in expected:
+            path.unlink()
+            print(f"  removed stale preview {path.name}")
 
 
 def make_preview(path: Path, tokens: dict[str, str], flavor: dict) -> None:
@@ -762,40 +920,69 @@ def validate_css(css: str, label: str) -> None:
     leftover = TOKEN_RE.search(css)
     if leftover:
         raise ValueError(f"{label}: unresolved token {leftover.group(0)}")
-    if "@" in css:
-        raise ValueError(f"{label}: unexpected '@' character outside a comment")
+    # Catch token-shaped leftovers the strict pattern above cannot see, such as
+    # @Text@ or @accent-hover@, without rejecting legitimate at-rules.
+    malformed = STRAY_TOKEN_RE.search(css)
+    if malformed:
+        raise ValueError(f"{label}: unexpected token-like text {malformed.group(0)}")
 
 
 def validate_svg(path: Path) -> None:
     ElementTree.parse(path)
 
 
-def package_theme(theme_dir: Path, output: Path) -> None:
-    import zipfile
+def zip_date_time() -> tuple[int, int, int, int, int, int]:
+    """Return a deterministic timestamp for archive entries."""
+    epoch = os.environ.get("SOURCE_DATE_EPOCH")
+    if not epoch:
+        return DEFAULT_ZIP_DATE_TIME
+    try:
+        seconds = max(int(epoch), 315532800)  # 1980-01-01, lower bound for zip
+    except ValueError:
+        raise ValueError(f"SOURCE_DATE_EPOCH is not an integer: {epoch!r}") from None
+    return tuple(time.gmtime(seconds)[:6])  # type: ignore[return-value]
 
+
+def write_archive(paths: list[tuple[Path, Path]], output: Path) -> None:
+    """Write (file, archive name) pairs with fixed metadata for reproducibility."""
+    date_time = zip_date_time()
     with zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED) as archive:
-        for path in sorted(theme_dir.rglob("*")):
-            if path.is_file():
-                archive.write(path, path.relative_to(theme_dir.parent))
+        for source, name in paths:
+            info = zipfile.ZipInfo(str(name).replace(os.sep, "/"), date_time=date_time)
+            info.compress_type = zipfile.ZIP_DEFLATED
+            info.create_system = 3  # Unix, so the permission bits below apply
+            info.external_attr = 0o100644 << 16
+            archive.writestr(info, source.read_bytes())
+
+
+def package_theme(theme_dir: Path, output: Path) -> None:
+    write_archive(
+        [
+            (path, path.relative_to(theme_dir.parent))
+            for path in sorted(theme_dir.rglob("*"))
+            if path.is_file()
+        ],
+        output,
+    )
 
 
 def package_all(theme_dirs: list[Path], output: Path) -> None:
-    import zipfile
+    write_archive(
+        [
+            (path, path.relative_to(DIST_DIR))
+            for theme_dir in theme_dirs
+            for path in sorted(theme_dir.rglob("*"))
+            if path.is_file()
+        ],
+        output,
+    )
 
-    with zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED) as archive:
-        for theme_dir in theme_dirs:
-            for path in sorted(theme_dir.rglob("*")):
-                if path.is_file():
-                    archive.write(path, path.relative_to(DIST_DIR))
 
-
-def build(accent_name: str, make_zips: bool) -> None:
+def build(accent_name: str, make_zips: bool, strict_contrast: bool = False) -> None:
     if accent_name not in ACCENT_NAMES:
         raise ValueError(
             f"Unknown accent '{accent_name}'. Choose from: {', '.join(ACCENT_NAMES)}"
         )
-
-    import json
 
     palette = json.loads(PALETTE_PATH.read_text(encoding="utf-8"))
     css_template = CSS_TEMPLATE_PATH.read_text(encoding="utf-8")
@@ -807,8 +994,10 @@ def build(accent_name: str, make_zips: bool) -> None:
     PREVIEW_DIR.mkdir(parents=True, exist_ok=True)
 
     theme_dirs: list[Path] = []
+    issues: list[str] = []
     for slug, flavor in palette["flavors"].items():
         tokens = flavor_tokens(flavor, accent_name)
+        issues.extend(contrast_issues(flavor, tokens))
         theme_dir = DIST_DIR / flavor["folder"]
         cinnamon_dir = theme_dir / "cinnamon"
         cinnamon_dir.mkdir(parents=True)
@@ -834,8 +1023,11 @@ def build(accent_name: str, make_zips: bool) -> None:
         if not png_header.startswith(b"\x89PNG\r\n\x1a\n"):
             raise ValueError(f"{flavor['name']}: thumbnail is not a valid PNG")
         width, height = struct.unpack(">II", png_header[16:24])
-        if (width, height) != (256, 256):
-            raise ValueError(f"{flavor['name']}: thumbnail is {width}x{height}, expected 256x256")
+        if (width, height) != THUMBNAIL_SIZE:
+            raise ValueError(
+                f"{flavor['name']}: thumbnail is {width}x{height}, "
+                f"expected {THUMBNAIL_SIZE[0]}x{THUMBNAIL_SIZE[1]}"
+            )
 
         theme_dirs.append(theme_dir)
         print(
@@ -844,6 +1036,10 @@ def build(accent_name: str, make_zips: bool) -> None:
         )
 
     make_overview(palette, PREVIEW_DIR, PREVIEW_DIR / "overview.html", accent_name)
+    remove_stale_previews(
+        PREVIEW_DIR,
+        {flavor["folder"] + ".svg" for flavor in palette["flavors"].values()},
+    )
 
     if make_zips:
         package_all(theme_dirs, DIST_DIR / "Catppuccin-Cinnamon-all-flavors.zip")
@@ -853,6 +1049,17 @@ def build(accent_name: str, make_zips: bool) -> None:
 
     print(f"\nBuilt {len(theme_dirs)} themes in {DIST_DIR}")
     print(f"Previews: {PREVIEW_DIR}")
+
+    if issues:
+        print(f"\nContrastes sous {WCAG_TEXT:g}:1 :")
+        for issue in issues:
+            print(f"  {issue}")
+        if strict_contrast:
+            raise ValueError(
+                f"{len(issues)} couple(s) de couleurs sous le seuil de contraste WCAG"
+            )
+    else:
+        print(f"\nContrastes : tous les couples contrôlés atteignent {WCAG_TEXT:g}:1.")
 
 
 def main() -> int:
@@ -864,12 +1071,17 @@ def main() -> int:
         help="Catppuccin accent color used for highlights (default: blue)",
     )
     parser.add_argument("--no-zip", action="store_true", help="do not create zip archives")
+    parser.add_argument(
+        "--strict-contrast",
+        action="store_true",
+        help="fail when a checked color pair is below the WCAG 4.5:1 ratio",
+    )
     args = parser.parse_args()
 
     print("Catppuccin for Cinnamon — build")
     print(f"Palette: {PALETTE_PATH}")
     try:
-        build(args.accent, not args.no_zip)
+        build(args.accent, not args.no_zip, args.strict_contrast)
     except Exception as error:
         print(f"error: {error}", file=sys.stderr)
         return 1

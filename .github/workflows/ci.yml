@@ -23,3 +23,8 @@ jobs:
 
       - name: Vérifications
         run: bash scripts/check.sh
+
+      - name: Compilation avec un autre accent
+        # Un accent différent du défaut doit produire un CSS sans jeton non
+        # résolu ; c'est le cas le plus probable d'oubli dans le gabarit.
+        run: python3 scripts/build.py --accent mauve --no-zip

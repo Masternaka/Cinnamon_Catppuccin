@@ -1,0 +1,7 @@
+# Normalise les fins de ligne : le thème cible Linux, le développement peut se
+# faire sur macOS ou Windows.
+* text=auto eol=lf
+
+# Artefacts binaires : pas de diff textuel ni de conversion de fin de ligne.
+*.png binary
+*.zip binary

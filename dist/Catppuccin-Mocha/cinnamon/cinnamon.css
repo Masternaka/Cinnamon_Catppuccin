@@ -977,6 +977,16 @@ StEntry StIcon.peek-password {
   spacing: 0;
 }
 
+/* Indicator dot set by PopupBaseMenuItem.setShowDot() (active sound player or
+   output device). Without an explicit size the St.DrawingArea stays invisible. */
+
+.popup-menu-item-dot {
+  width: 6px;
+  height: 6px;
+  margin: 0 6px;
+  color: #89b4fa;
+}
+
 .popup-menu-arrow,
 .popup-menu-icon {
   icon-size: 1.1em;
@@ -1095,20 +1105,6 @@ StEntry StIcon.peek-password {
 
 .wireless-active:insensitive {
   color: #f38ba8;
-}
-
-/* Popup menu sliders */
-
-.popup-slider-menu-item {
-  height: 1em;
-  min-width: 15em;
-  -slider-height: 0.3em;
-  -slider-background-color: #45475a;
-  -slider-active-background-color: #89b4fa;
-  -slider-border-color: transparent;
-  -slider-active-border-color: transparent;
-  -slider-border-width: 1px;
-  -slider-handle-radius: 0.5em;
 }
 
 /* ---------------------------------------------------------------------------

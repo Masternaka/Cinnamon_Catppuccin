@@ -31,7 +31,7 @@
 <body>
   <div class="intro">
     <h1>Catppuccin pour Cinnamon</h1>
-    <p>Quatre thèmes complets pour l'interface Cinnamon de Linux Mint — panneau, menu, applets, listes de fenêtres, notifications, dialogues et écran de verrouillage. Palette officielle Catppuccin, accent bleu par défaut.</p>
+    <p>Quatre thèmes complets pour l'interface Cinnamon de Linux Mint — panneau, menu, applets, listes de fenêtres, notifications, dialogues et écran de verrouillage. Palette officielle Catppuccin, accent <code>{{ACCENT}}</code> (modifiable avec <code>--accent</code>).</p>
   </div>
   <div class="grid">
 {{CARDS}}

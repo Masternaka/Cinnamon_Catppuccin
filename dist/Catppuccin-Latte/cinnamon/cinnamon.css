@@ -22,15 +22,15 @@ stage {
   padding-bottom: 8px;
   font-weight: 700;
   font-size: 9pt;
-  color: #df8e1d;
+  color: #8a5812;
 }
 
 .cinnamon-link {
-  color: #1e66f5;
+  color: #0a55ea;
 }
 
 .cinnamon-link:hover {
-  color: #04a5e5;
+  color: #036a93;
 }
 
 .lightbox {
@@ -248,7 +248,7 @@ StEntry {
   color: #4c4f69;
   caret-color: #4c4f69;
   caret-size: 1px;
-  selected-color: #eff1f5;
+  selected-color: #f4f5f8;
   selection-background-color: #1e66f5;
   -st-progress-color: #1e66f5;
 }
@@ -269,7 +269,7 @@ StEntry StLabel.hint-text {
 
 StEntry .capslock-warning {
   icon-size: 1.1em;
-  color: #df8e1d;
+  color: #8a5812;
 }
 
 StEntry StIcon.peek-password {
@@ -290,7 +290,7 @@ StEntry StIcon.peek-password {
   color: #4c4f69;
   caret-color: #4c4f69;
   caret-size: 1px;
-  selected-color: #eff1f5;
+  selected-color: #f4f5f8;
   selection-background-color: #1e66f5;
   -st-progress-color: #1e66f5;
 }
@@ -446,7 +446,7 @@ StEntry StIcon.peek-password {
 }
 
 .dialog-button:default {
-  color: #eff1f5;
+  color: #f4f5f8;
   background-color: #1e66f5;
   border-color: #1e66f5;
 }
@@ -469,7 +469,7 @@ StEntry StIcon.peek-password {
 }
 
 .dialog-button:destructive-action {
-  color: #eff1f5;
+  color: #f4f5f8;
   background-color: #d20f39;
   border-color: #d20f39;
 }
@@ -924,11 +924,11 @@ StEntry StIcon.peek-password {
 }
 
 .system-status-icon.warning {
-  color: #df8e1d;
+  color: #8a5812;
 }
 
 .system-status-icon.error {
-  color: #d20f39;
+  color: #c50e36;
 }
 
 /* ---------------------------------------------------------------------------
@@ -975,6 +975,16 @@ StEntry StIcon.peek-password {
 .popup-menu-item .check-box StBoxLayout,
 .popup-menu-item .radiobutton StBoxLayout {
   spacing: 0;
+}
+
+/* Indicator dot set by PopupBaseMenuItem.setShowDot() (active sound player or
+   output device). Without an explicit size the St.DrawingArea stays invisible. */
+
+.popup-menu-item-dot {
+  width: 6px;
+  height: 6px;
+  margin: 0 6px;
+  color: #1e66f5;
 }
 
 .popup-menu-arrow,
@@ -1094,21 +1104,7 @@ StEntry StIcon.peek-password {
 }
 
 .wireless-active:insensitive {
-  color: #d20f39;
-}
-
-/* Popup menu sliders */
-
-.popup-slider-menu-item {
-  height: 1em;
-  min-width: 15em;
-  -slider-height: 0.3em;
-  -slider-background-color: #bcc0cc;
-  -slider-active-background-color: #1e66f5;
-  -slider-border-color: transparent;
-  -slider-active-border-color: transparent;
-  -slider-border-width: 1px;
-  -slider-handle-radius: 0.5em;
+  color: #c50e36;
 }
 
 /* ---------------------------------------------------------------------------
@@ -1168,7 +1164,7 @@ StEntry StIcon.peek-password {
 }
 
 .appmenu-sidebar .appmenu-system-button-shutdown {
-  color: #eff1f5;
+  color: #f4f5f8;
   background-color: #d20f39;
   border-color: #d20f39;
 }
@@ -1211,7 +1207,7 @@ StEntry StIcon.peek-password {
 }
 
 .appmenu-system-button-shutdown {
-  color: #eff1f5;
+  color: #f4f5f8;
   background-color: #d20f39;
   border-color: #d20f39;
 }
@@ -1573,7 +1569,7 @@ StEntry StIcon.peek-password {
 .grouped-window-list-notifications-badge {
   border-radius: 99px;
   background-color: #d20f39;
-  color: #eff1f5;
+  color: #f4f5f8;
 }
 
 .grouped-window-list-notifications-badge-label {
@@ -2191,15 +2187,15 @@ StEntry StIcon.peek-password {
 }
 
 .calendar-event-countdown:soon {
-  color: #df8e1d;
+  color: #8a5812;
 }
 
 .calendar-event-countdown:imminent {
-  color: #d20f39;
+  color: #c50e36;
 }
 
 .calendar-event-countdown:current {
-  color: #40a02b;
+  color: #2d701e;
 }
 
 .calendar-event-time-future {
@@ -2279,7 +2275,7 @@ StEntry StIcon.peek-password {
 
 .dialog-list .dialog-list-box .dialog-list-item:selected {
   background-color: #1e66f5;
-  color: #eff1f5;
+  color: #f4f5f8;
 }
 
 .dialog-list .dialog-list-box .dialog-list-item .dialog-list-item-title {
@@ -2292,7 +2288,7 @@ StEntry StIcon.peek-password {
 }
 
 .dialog-list .dialog-list-box .dialog-list-item:selected .dialog-list-item-description {
-  color: #eff1f5;
+  color: #f4f5f8;
 }
 
 .end-session-dialog {
@@ -2308,7 +2304,7 @@ StEntry StIcon.peek-password {
 }
 
 .end-session-dialog .dialog-list .dialog-list-title {
-  color: #df8e1d;
+  color: #8a5812;
   background-color: rgba(223, 142, 29, 0.1);
   padding: 9px;
   border-radius: 8px;
@@ -2353,7 +2349,7 @@ StEntry StIcon.peek-password {
 }
 
 .run-dialog-description.error {
-  color: #d20f39;
+  color: #c50e36;
 }
 
 .run-dialog-completion-box {
@@ -2382,7 +2378,7 @@ StEntry StIcon.peek-password {
 }
 
 .prompt-dialog-error-label {
-  color: #d20f39;
+  color: #c50e36;
 }
 
 .prompt-dialog-info-label,
@@ -2512,7 +2508,7 @@ StEntry StIcon.peek-password {
 
 .hover-click-button:checked {
   background-color: #1e66f5;
-  color: #eff1f5;
+  color: #f4f5f8;
   border-color: #1e66f5;
 }
 
@@ -2669,7 +2665,7 @@ StEntry StIcon.peek-password {
 }
 
 .vkeyboard-key.enter-key {
-  color: #eff1f5;
+  color: #f4f5f8;
   background-color: #1e66f5;
   border-color: #1e66f5;
 }
@@ -3022,7 +3018,7 @@ StEntry StIcon.peek-password {
 }
 
 .screen-shield .info-panel .power-widget-icon-critical {
-  color: #d20f39;
+  color: #c50e36;
 }
 
 /* ---------------------------------------------------------------------------

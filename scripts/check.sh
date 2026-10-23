@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # Vérifications statiques dans une copie temporaire, sans modifier les livrables.
+# Compare aussi dist/ et previews/ suivis à une compilation fraîche : une
+# modification des gabarits sans reconstruction fait échouer le script.
 set -euo pipefail
 
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -9,11 +11,63 @@ trap 'rm -rf -- "$WORK_DIR"' EXIT
 cd "$ROOT"
 bash -n scripts/check.sh scripts/install.sh
 mkdir -p "$WORK_DIR/scripts"
-cp scripts/build.py "$WORK_DIR/scripts/"
+cp scripts/build.py scripts/test_build.py scripts/install.sh "$WORK_DIR/scripts/"
 cp palette.json LICENSE "$WORK_DIR/"
 cp -R src "$WORK_DIR/src"
-PYTHONPYCACHEPREFIX="$WORK_DIR/pycache" python3 -m py_compile "$WORK_DIR/scripts/build.py"
+PYTHONPYCACHEPREFIX="$WORK_DIR/pycache" python3 -m py_compile \
+  "$WORK_DIR/scripts/build.py" "$WORK_DIR/scripts/test_build.py"
+
+echo "Tests unitaires de build.py :"
+PYTHONPYCACHEPREFIX="$WORK_DIR/pycache" python3 "$WORK_DIR/scripts/test_build.py"
+
 python3 "$WORK_DIR/scripts/build.py"
+
+compare_tree() {
+  local name="$1"
+  local expected="$ROOT/$name"
+  if [[ ! -d "$expected" ]]; then
+    echo "  $name/ absent du dépôt : comparaison ignorée (lancer python3 scripts/build.py)." >&2
+    return 0
+  fi
+  if ! diff -rq "$expected" "$WORK_DIR/$name"; then
+    echo "error: $name/ ne correspond pas à une compilation fraîche." >&2
+    echo "       relancer python3 scripts/build.py (accent par défaut) puis valider les fichiers modifiés." >&2
+    return 1
+  fi
+  echo "  $name/ identique à la compilation fraîche."
+}
+
+check_installer() {
+  local install_dir="$WORK_DIR/installed"
+  local folder
+  echo "Vérification de scripts/install.sh :"
+
+  bash "$WORK_DIR/scripts/install.sh" --dry-run --dest "$install_dir" >"$WORK_DIR/install-dry-run.log"
+  if [[ -e "$install_dir" ]]; then
+    echo "error: --dry-run a écrit dans la destination." >&2
+    return 1
+  fi
+
+  bash "$WORK_DIR/scripts/install.sh" --dest "$install_dir" >"$WORK_DIR/install.log"
+  for folder in Catppuccin-Latte Catppuccin-Frappe Catppuccin-Macchiato Catppuccin-Mocha; do
+    if [[ ! -f "$install_dir/$folder/cinnamon/cinnamon.css" ]]; then
+      echo "error: $folder n'a pas été installé." >&2
+      return 1
+    fi
+  done
+
+  bash "$WORK_DIR/scripts/install.sh" --dest "$install_dir" --backup >"$WORK_DIR/install-backup.log"
+  if [[ -z "$(find "$install_dir" -maxdepth 1 -name 'Catppuccin-Latte.bak-*' -print -quit)" ]]; then
+    echo "error: --backup n'a conservé aucune sauvegarde." >&2
+    return 1
+  fi
+  echo "  dry-run, installation et sauvegarde fonctionnent."
+}
+
+echo "Comparaison des livrables suivis :"
+compare_tree previews
+compare_tree dist
+check_installer
 
 python3 - "$WORK_DIR" <<'PY'
 from pathlib import Path

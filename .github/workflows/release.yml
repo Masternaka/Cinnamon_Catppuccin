@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Tag correspondant à metadata.json (exemple : v1)'
+        description: 'Tag à publier (exemple : v0.1.0) ; il doit exister sur le commit courant'
         required: true
         type: string
   push:
@@ -33,40 +33,59 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - name: Installer Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: '24'
-
       - name: Installer Python
         uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
       - name: Vérifications statiques
+        # Reconstruit les thèmes dans un répertoire temporaire et vérifie que
+        # dist/ et previews/ suivis correspondent bien aux gabarits.
         run: bash scripts/check.sh
 
-      - name: Valider la version et créer le ZIP
-        run: python3 scripts/package-release.py "$RELEASE_TAG" --output-dir dist
-
-      - name: Vérifier le commit d'un tag existant
+      - name: Vérifier le tag et le commit
         run: |
-          if git show-ref --verify --quiet "refs/tags/$RELEASE_TAG"; then
-            test "$(git rev-parse "refs/tags/$RELEASE_TAG^{commit}")" = "$GITHUB_SHA" || {
-              echo "Le tag existe sur un autre commit. Il ne sera pas déplacé."
-              exit 1
-            }
+          set -euo pipefail
+          tag_commit="$(git rev-parse "${RELEASE_TAG}^{commit}")" || {
+            echo "Le tag ${RELEASE_TAG} n'existe pas sur ce commit ; le créer d'abord." >&2
+            exit 1
+          }
+          if [ "$tag_commit" != "${GITHUB_SHA}" ]; then
+            echo "Le tag ${RELEASE_TAG} pointe sur ${tag_commit}, pas sur ${GITHUB_SHA}. Il ne sera pas déplacé." >&2
+            exit 1
           fi
+
+      - name: Vérifier les archives à publier
+        run: |
+          set -euo pipefail
+          expected=(
+            dist/Catppuccin-Latte.zip
+            dist/Catppuccin-Frappe.zip
+            dist/Catppuccin-Macchiato.zip
+            dist/Catppuccin-Mocha.zip
+            dist/Catppuccin-Cinnamon-all-flavors.zip
+          )
+          for archive in "${expected[@]}"; do
+            test -f "$archive" || { echo "Archive manquante : $archive" >&2; exit 1; }
+            unzip -tq "$archive" > /dev/null
+          done
 
       - name: Créer la release en brouillon
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
+          set -euo pipefail
           options=()
           if [ "$GITHUB_EVENT_NAME" = "push" ]; then
             options+=(--verify-tag)
           fi
-          gh release create "$RELEASE_TAG" "dist/CinnaFlow-${RELEASE_TAG}.zip" \
+          gh release create "$RELEASE_TAG" \
+            dist/Catppuccin-Latte.zip \
+            dist/Catppuccin-Frappe.zip \
+            dist/Catppuccin-Macchiato.zip \
+            dist/Catppuccin-Mocha.zip \
+            dist/Catppuccin-Cinnamon-all-flavors.zip \
             --target "$GITHUB_SHA" "${options[@]}" \
-            --draft --generate-notes --title "CinnaFlow ${RELEASE_TAG}"
+            --draft --generate-notes \
+            --title "Catppuccin pour Cinnamon ${RELEASE_TAG}"

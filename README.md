@@ -39,7 +39,7 @@ séparément dans **Paramètres → Thèmes**.
 Sur la machine Linux Mint :
 
 ```bash
-git clone <url-du-depot> Cinnamon_Catppuccin
+git clone https://github.com/Masternaka/Cinnamon_Catppuccin.git Cinnamon_Catppuccin
 cd Cinnamon_Catppuccin
 ./scripts/install.sh
 ```
@@ -48,6 +48,14 @@ Les thèmes sont copiés dans `~/.themes/`. Pour choisir un autre répertoire :
 
 ```bash
 ./scripts/install.sh --dest ~/.local/share/themes
+```
+
+Un dossier `Catppuccin-*` déjà présent à la destination est remplacé. Pour
+vérifier les actions sans rien écrire, ou conserver l'ancienne version :
+
+```bash
+./scripts/install.sh --dry-run
+./scripts/install.sh --backup   # renomme l'ancien thème en <nom>.bak-<date>
 ```
 
 ### Copie manuelle
@@ -107,17 +115,38 @@ Accents disponibles : `rosewater`, `flamingo`, `pink`, `mauve`, `red`,
 ## Vérifications locales et CI
 
 ```bash
+make check
+# ou
 bash scripts/check.sh
 ```
 
 La CI GitHub exécute cette commande sur les push vers `main` et les pull
-requests, avec Python 3.12. Elle vérifie la syntaxe Bash et Python, reconstruit
+requests, avec Python 3.12. Elle lance les tests unitaires de `build.py`,
+vérifie la syntaxe Bash et Python, reconstruit
 les quatre thèmes dans un répertoire temporaire, puis contrôle les assets CSS
-et le contenu et l'intégrité des cinq archives. Les livrables locaux restent
-inchangés. Ces contrôles ne valident pas le rendu dans Cinnamon/X11.
+et le contenu et l'intégrité des cinq archives. Elle teste aussi l'installateur
+(`--dry-run`, installation, `--backup`) dans un répertoire temporaire. Elle
+vérifie enfin que les artefacts suivis (`dist/` et `previews/`) correspondent à
+une compilation fraîche : modifier un gabarit sans relancer
+`python3 scripts/build.py` fait donc échouer le contrôle. Les livrables locaux
+restent inchangés. Ces contrôles ne valident pas le rendu dans Cinnamon/X11.
 
-Le workflow de Release est encore hérité de CinnaFlow et doit être adapté avant
-toute création de tag ou de Release.
+Les archives zip sont reproductibles : leurs entrées portent une date fixe, si
+bien que deux compilations produisent des fichiers identiques octet pour octet
+(la variable `SOURCE_DATE_EPOCH` est respectée si elle est définie).
+
+Un second passage compile le thème avec un autre accent (`--accent mauve`) pour
+détecter un jeton spécifique à l'accent par défaut.
+
+### Publication
+
+Le workflow `Release` prépare une release **en brouillon** contenant les cinq
+archives (`Catppuccin-Latte.zip`, `Catppuccin-Frappe.zip`,
+`Catppuccin-Macchiato.zip`, `Catppuccin-Mocha.zip` et
+`Catppuccin-Cinnamon-all-flavors.zip`). Il se déclenche sur un tag `v*` ou
+manuellement, exige que le tag pointe sur le commit courant, ne déplace jamais
+un tag existant et ne publie pas la release à votre place : la vérification
+finale reste manuelle dans GitHub.
 
 ## Structure du dépôt
 
@@ -127,7 +156,8 @@ src/cinnamon.css.in       feuille de style Cinnamon (gabarit)
 src/index.theme.in        métadonnées du thème
 src/overview.html.in      gabarit de la galerie HTML
 scripts/build.py          génération des thèmes, assets, PNG et archives
-scripts/check.sh          contrôles statiques et compilation temporaire pour la CI
+scripts/test_build.py     tests unitaires des helpers de build (contrastes, jetons)
+scripts/check.sh          contrôles statiques, compilation temporaire et comparaison de dist/ et previews/
 scripts/install.sh        installation dans ~/.themes
 dist/                     thèmes prêts à installer et archives zip
 previews/                 aperçus SVG et galerie HTML des quatre variantes
@@ -141,7 +171,7 @@ Catppuccin-Mocha/
 ├── index.theme
 └── cinnamon/
     ├── cinnamon.css
-    ├── thumbnail.png
+    ├── thumbnail.png          # bandeau 247 × 60 affiché par le sélecteur
     ├── checkbox-off.svg
     ├── checkbox.svg
     ├── radio-off.svg
@@ -174,6 +204,39 @@ Le thème suit le guide de style Catppuccin :
 
 Le rendu est volontairement plat, sans dégradés, pour rester proche de
 l'esthétique Catppuccin.
+
+## Accessibilité et contrastes
+
+Les accents Catppuccin sont pastel : utilisés tels quels comme couleur de texte
+sur les flavors clairs, ils descendent sous le ratio WCAG de 4,5:1. Le build
+dérive donc des jetons de premier plan dédiés, en ne modifiant que la
+luminosité (teinte et saturation officielles conservées) :
+
+- `@text_success@`, `@text_warning@`, `@text_error@`, `@text_info@` pour le
+  texte sémantique ;
+- `@link@` et `@link_hover@` pour les liens.
+
+Les remplissages, bordures et indicateurs continuent d'utiliser les couleurs
+exactes de la palette (`@green@`, `@yellow@`, `@red@`, `@blue@`…). Sur Latte,
+`Yellow` devient ainsi un ambre foncé (`#8a5812`) au lieu d'un jaune illisible
+sur fond clair ; les flavors sombres gardent leurs couleurs d'origine, déjà au
+dessus du seuil.
+
+La couleur du texte posé sur l'accent suit la même règle : `@on_accent@`
+reste `Base` (recommandation Catppuccin) tant que le couple atteint 4,5:1, ce
+qui couvre les quatre flavors avec l'accent bleu par défaut et tous les flavors
+sombres. Si l'accent choisi est trop clair ou trop moyen — `yellow`, `peach`,
+`rosewater` sur Latte — le build retient la meilleure des deux couleurs
+`Base`/`Text` et n'en ajuste que la luminosité, donc un texte foncé sur un fond
+ambré.
+
+Le build affiche en fin d'exécution les couples encore sous 4,5:1. Un seul
+subsiste sur Latte et vient directement de la palette officielle : `Subtext 0`
+sur `Base` (4,37:1). Pour rendre cet écart bloquant :
+
+```bash
+python3 scripts/build.py --strict-contrast
+```
 
 ## Compatibilité et limites
 
