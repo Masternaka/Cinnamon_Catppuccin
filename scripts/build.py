@@ -8,6 +8,11 @@ Only the Python standard library is required. The script produces:
       cinnamon/cinnamon.css
       cinnamon/thumbnail.png
       cinnamon/<svg assets + corner-ripple.png>
+      gtk-2.0/gtkrc
+      gtk-3.0/gtk.css, gtk-3.0/gtk-dark.css
+      gtk-3.0/assets/*.svg
+      gtk-4.0/gtk.css, gtk-4.0/gtk-dark.css
+      gtk-4.0/assets/*.svg
       LICENSE
   dist/Catppuccin-<Flavor>.zip
   dist/Catppuccin-Cinnamon-all-flavors.zip
@@ -35,6 +40,11 @@ PALETTE_PATH = ROOT / "palette.json"
 CSS_TEMPLATE_PATH = ROOT / "src" / "cinnamon.css.in"
 INDEX_TEMPLATE_PATH = ROOT / "src" / "index.theme.in"
 OVERVIEW_TEMPLATE_PATH = ROOT / "src" / "overview.html.in"
+GTK2_TEMPLATE_PATH = ROOT / "src" / "gtk2.gtkrc.in"
+GTK3_TEMPLATE_PATH = ROOT / "src" / "gtk3.css.in"
+GTK4_TEMPLATE_PATH = ROOT / "src" / "gtk4.css.in"
+COMPANION_ICON_DIR = ROOT / "icons" / "Catppuccin-Kora-Mocha"
+COMPANION_CURSOR_DIR = ROOT / "cursors" / "Catppuccin-Vimix-Mocha"
 DIST_DIR = ROOT / "dist"
 PREVIEW_DIR = ROOT / "previews"
 
@@ -55,6 +65,10 @@ WCAG_TEXT = 4.5
 # Cinnamon displays cinnamon/thumbnail.png at 125 px wide; the Mint themes use a
 # 247x60 strip, so the generated vignette follows the same format.
 THUMBNAIL_SIZE = (247, 60)
+
+# The applications category of the Cinnamon theme chooser reads the GTK preview
+# from gtk-3.0/thumbnail.png; 120x36 is the size used by the Catppuccin GTK port.
+GTK_THUMBNAIL_SIZE = (120, 36)
 
 ACCENT_NAMES = [
     "rosewater",
@@ -249,6 +263,22 @@ def on_accent_color(accent: str, base: str, text: str, target: float = WCAG_TEXT
     return max(("#ffffff", "#000000"), key=lambda candidate: contrast_ratio(candidate, accent))
 
 
+def accent_state(
+    accent: str, on_accent: str, tint: str, shade: str, amount: float
+) -> str:
+    """Return a hover/active accent that stays readable with `on_accent` text.
+
+    The regular `accent_hover`/`accent_active` tokens mix toward the foreground,
+    which can reduce contrast for a light text on a light flavor. GTK buttons
+    use these variants instead: try the darker shift first, then the lighter
+    one, and fall back to the base accent if neither reaches the ratio.
+    """
+    for candidate in (mix(accent, shade, amount), mix(accent, tint, amount)):
+        if contrast_ratio(candidate, on_accent) >= WCAG_TEXT:
+            return candidate
+    return accent
+
+
 def flavor_tokens(flavor: dict, accent_name: str) -> dict[str, str]:
     colors = flavor["colors"]
     dark = bool(flavor["dark"])
@@ -261,6 +291,24 @@ def flavor_tokens(flavor: dict, accent_name: str) -> dict[str, str]:
     tokens["accent_hover"] = mix(accent, colors["text"] if dark else colors["base"], 0.15)
     tokens["accent_active"] = mix(accent, colors["crust"] if dark else colors["text"], 0.15)
     tokens["on_accent"] = on_accent_color(accent, colors["base"], colors["text"])
+    tokens["on_success"] = on_accent_color(colors["green"], colors["base"], colors["text"])
+    tokens["on_warning"] = on_accent_color(colors["yellow"], colors["base"], colors["text"])
+    tokens["on_error"] = on_accent_color(colors["red"], colors["base"], colors["text"])
+    tokens["on_info"] = on_accent_color(colors["teal"], colors["base"], colors["text"])
+    tint = colors["text"] if dark else colors["base"]
+    shade = colors["crust"] if dark else colors["text"]
+    tokens["gtk_accent_hover"] = accent_state(
+        accent, tokens["on_accent"], tint, shade, 0.15
+    )
+    tokens["gtk_accent_active"] = accent_state(
+        accent, tokens["on_accent"], tint, shade, 0.25
+    )
+    tokens["gtk_error_hover"] = accent_state(
+        colors["red"], tokens["on_error"], tint, shade, 0.15
+    )
+    tokens["gtk_error_active"] = accent_state(
+        colors["red"], tokens["on_error"], tint, shade, 0.25
+    )
 
     # Structural colors.
     tokens["panel"] = colors["crust"]
@@ -350,6 +398,10 @@ def contrast_issues(flavor: dict, tokens: dict[str, str]) -> list[str]:
         ("Lien survolé", "link_hover", "base"),
         ("Lien sur panneau", "link", "crust"),
         ("Texte sur accent", "on_accent", "accent"),
+        ("Texte sur accent survolé", "on_accent", "gtk_accent_hover"),
+        ("Texte sur accent actif", "on_accent", "gtk_accent_active"),
+        ("Texte sur erreur survolée", "on_error", "gtk_error_hover"),
+        ("Texte sur erreur active", "on_error", "gtk_error_active"),
     ]
     issues: list[str] = []
     for label, foreground, background in pairs:
@@ -627,6 +679,56 @@ def write_assets(asset_dir: Path, tokens: dict[str, str]) -> None:
     ripple.write_png(asset_dir / "corner-ripple.png")
 
 
+def write_gtk_assets(asset_dir: Path, tokens: dict[str, str]) -> None:
+    """Write the check/radio glyphs used by GTK 3 and GTK 4."""
+    on_accent = tokens["on_accent"]
+    overlay1 = tokens["overlay1"]
+
+    check_path = "M3.5 8.2 L6.6 11.3 L12.5 4.6"
+    mixed_path = "M4 8 L12 8"
+
+    write_svg(
+        asset_dir / "check.svg",
+        16,
+        16,
+        f'<path d="{check_path}" fill="none" stroke="{on_accent}" stroke-width="2.2" '
+        f'stroke-linecap="round" stroke-linejoin="round"/>',
+    )
+    write_svg(
+        asset_dir / "check-mixed.svg",
+        16,
+        16,
+        f'<path d="{mixed_path}" fill="none" stroke="{on_accent}" stroke-width="2.2" '
+        f'stroke-linecap="round"/>',
+    )
+    write_svg(
+        asset_dir / "radio.svg",
+        16,
+        16,
+        f'<circle cx="8" cy="8" r="3.4" fill="{on_accent}"/>',
+    )
+    write_svg(
+        asset_dir / "check-disabled.svg",
+        16,
+        16,
+        f'<path d="{check_path}" fill="none" stroke="{overlay1}" stroke-width="2.2" '
+        f'stroke-linecap="round" stroke-linejoin="round"/>',
+    )
+    write_svg(
+        asset_dir / "check-mixed-disabled.svg",
+        16,
+        16,
+        f'<path d="{mixed_path}" fill="none" stroke="{overlay1}" stroke-width="2.2" '
+        f'stroke-linecap="round"/>',
+    )
+    write_svg(
+        asset_dir / "radio-disabled.svg",
+        16,
+        16,
+        f'<circle cx="8" cy="8" r="3.4" fill="{overlay1}"/>',
+    )
+
+
 def make_thumbnail(path: Path, tokens: dict[str, str], flavor: dict) -> None:
     """Draw the 247x60 strip shown by the Cinnamon theme chooser.
 
@@ -692,6 +794,45 @@ def make_thumbnail(path: Path, tokens: dict[str, str], flavor: dict) -> None:
         canvas.fill_rounded_rect(72, y, 7, 7, 2, color)
         canvas.fill_rect(84, y + 1, label_width, 2, text, 0.9)
         canvas.fill_rect(84, y + 5, sub_width, 1.5, overlay0)
+
+    canvas.write_png(path)
+
+
+def make_gtk_thumbnail(path: Path, tokens: dict[str, str]) -> None:
+    """Draw the small preview shown in the Applications category."""
+    width, height = GTK_THUMBNAIL_SIZE
+    base = tokens["base"]
+    crust = tokens["crust"]
+    surface0 = tokens["surface0"]
+    surface1 = tokens["surface1"]
+    text = tokens["text"]
+    overlay1 = tokens["overlay1"]
+    accent = tokens["accent"]
+    on_accent = tokens["on_accent"]
+
+    canvas = Canvas(width, height, base)
+    canvas.fill_rect(0, 0, width, 11, crust)
+    canvas.fill_circle(7, 5.5, 3, accent)
+    canvas.fill_rect(14, 4.5, 34, 2, text, 0.9)
+    canvas.fill_rect(0, 11, width, 1, surface0)
+
+    canvas.fill_rounded_rect(8, 16, 44, 13, 4, surface1)
+    canvas.fill_rounded_rect(9, 17, 42, 11, 3, surface0)
+    canvas.draw_text(15, 20, "BOUTON", 1, text)
+
+    canvas.fill_rounded_rect(60, 17, 10, 10, 3, accent)
+    canvas.fill_rect(62, 22, 1, 2, on_accent)
+    canvas.fill_rect(63, 23, 1, 2, on_accent)
+    canvas.fill_rect(64, 21, 1, 2, on_accent)
+    canvas.fill_rect(65, 20, 1, 2, on_accent)
+    canvas.fill_rect(66, 18, 1, 2, on_accent)
+
+    canvas.fill_rounded_rect(74, 17, 10, 10, 3, overlay1)
+    canvas.fill_rounded_rect(75, 18, 8, 8, 2, base)
+
+    canvas.fill_rounded_rect(90, 17, 22, 10, 5, surface1)
+    canvas.fill_circle(96, 22, 4, overlay1)
+    canvas.fill_circle(106, 22, 4, accent)
 
     canvas.write_png(path)
 
@@ -932,6 +1073,18 @@ def validate_svg(path: Path) -> None:
     ElementTree.parse(path)
 
 
+def validate_png(path: Path, expected_size: tuple[int, int], label: str) -> None:
+    header = path.read_bytes()[:24]
+    if not header.startswith(b"\x89PNG\r\n\x1a\n"):
+        raise ValueError(f"{label}: {path.name} is not a valid PNG")
+    width, height = struct.unpack(">II", header[16:24])
+    if (width, height) != expected_size:
+        raise ValueError(
+            f"{label}: {path.name} is {width}x{height}, "
+            f"expected {expected_size[0]}x{expected_size[1]}"
+        )
+
+
 def zip_date_time() -> tuple[int, int, int, int, int, int]:
     """Return a deterministic timestamp for archive entries."""
     epoch = os.environ.get("SOURCE_DATE_EPOCH")
@@ -954,6 +1107,36 @@ def write_archive(paths: list[tuple[Path, Path]], output: Path) -> None:
             info.create_system = 3  # Unix, so the permission bits below apply
             info.external_attr = 0o100644 << 16
             archive.writestr(info, source.read_bytes())
+
+
+def iter_tree_entries(root: Path):
+    """Yield files and symlinks without following directory symlinks."""
+    for entry in sorted(root.iterdir(), key=lambda path: path.name):
+        if entry.name == ".DS_Store":
+            continue
+        if entry.is_symlink():
+            yield entry
+        elif entry.is_dir():
+            yield from iter_tree_entries(entry)
+        elif entry.is_file():
+            yield entry
+
+
+def write_tree_archive(source_dir: Path, output: Path, archive_root: str) -> None:
+    """Archive a tree while preserving symlinks and using fixed metadata."""
+    date_time = zip_date_time()
+    with zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED) as archive:
+        for source in iter_tree_entries(source_dir):
+            relative = Path(archive_root) / source.relative_to(source_dir)
+            info = zipfile.ZipInfo(relative.as_posix(), date_time=date_time)
+            info.compress_type = zipfile.ZIP_DEFLATED
+            info.create_system = 3
+            if source.is_symlink():
+                info.external_attr = 0o120777 << 16
+                archive.writestr(info, os.readlink(source))
+            else:
+                info.external_attr = 0o100644 << 16
+                archive.writestr(info, source.read_bytes())
 
 
 def package_theme(theme_dir: Path, output: Path) -> None:
@@ -988,6 +1171,9 @@ def build(accent_name: str, make_zips: bool, strict_contrast: bool = False) -> N
     palette = json.loads(PALETTE_PATH.read_text(encoding="utf-8"))
     css_template = CSS_TEMPLATE_PATH.read_text(encoding="utf-8")
     index_template = INDEX_TEMPLATE_PATH.read_text(encoding="utf-8")
+    gtk2_template = GTK2_TEMPLATE_PATH.read_text(encoding="utf-8")
+    gtk3_template = GTK3_TEMPLATE_PATH.read_text(encoding="utf-8")
+    gtk4_template = GTK4_TEMPLATE_PATH.read_text(encoding="utf-8")
 
     if DIST_DIR.exists():
         shutil.rmtree(DIST_DIR)
@@ -1012,28 +1198,60 @@ def build(accent_name: str, make_zips: bool, strict_contrast: bool = False) -> N
 
         write_assets(cinnamon_dir, tokens)
         make_thumbnail(cinnamon_dir / "thumbnail.png", tokens, flavor)
+        validate_png(
+            cinnamon_dir / "thumbnail.png", THUMBNAIL_SIZE, f"{flavor['name']} Cinnamon"
+        )
+
+        gtk_tokens = dict(tokens)
+        gtk_tokens["gtk3_sheet"] = (
+            "gtk-contained-dark.css" if flavor["dark"] else "gtk-contained.css"
+        )
+        gtk_tokens["gtk4_sheet"] = "gtk-dark.css" if flavor["dark"] else "gtk.css"
+
+        gtk2_dir = theme_dir / "gtk-2.0"
+        gtk2_dir.mkdir()
+        gtk2 = substitute(gtk2_template, tokens, f"{flavor['name']} GTK 2")
+        validate_css(gtk2, f"{flavor['name']} GTK 2")
+        (gtk2_dir / "gtkrc").write_text(gtk2, encoding="utf-8")
+
+        gtk3_dir = theme_dir / "gtk-3.0"
+        (gtk3_dir / "assets").mkdir(parents=True)
+        gtk3_css = substitute(gtk3_template, gtk_tokens, f"{flavor['name']} GTK 3 CSS")
+        validate_css(gtk3_css, f"{flavor['name']} GTK 3 CSS")
+        (gtk3_dir / "gtk.css").write_text(gtk3_css, encoding="utf-8")
+        (gtk3_dir / "gtk-dark.css").write_text(gtk3_css, encoding="utf-8")
+        write_gtk_assets(gtk3_dir / "assets", tokens)
+        make_gtk_thumbnail(gtk3_dir / "thumbnail.png", tokens)
+        validate_png(
+            gtk3_dir / "thumbnail.png", GTK_THUMBNAIL_SIZE, f"{flavor['name']} GTK 3"
+        )
+
+        gtk4_dir = theme_dir / "gtk-4.0"
+        (gtk4_dir / "assets").mkdir(parents=True)
+        gtk4_css = substitute(gtk4_template, gtk_tokens, f"{flavor['name']} GTK 4 CSS")
+        validate_css(gtk4_css, f"{flavor['name']} GTK 4 CSS")
+        (gtk4_dir / "gtk.css").write_text(gtk4_css, encoding="utf-8")
+        (gtk4_dir / "gtk-dark.css").write_text(gtk4_css, encoding="utf-8")
+        write_gtk_assets(gtk4_dir / "assets", tokens)
+        make_gtk_thumbnail(gtk4_dir / "thumbnail.png", tokens)
+        validate_png(
+            gtk4_dir / "thumbnail.png", GTK_THUMBNAIL_SIZE, f"{flavor['name']} GTK 4"
+        )
+
         preview_path = PREVIEW_DIR / f"{flavor['folder']}.svg"
         make_preview(preview_path, tokens, flavor)
         validate_svg(preview_path)
         shutil.copy2(ROOT / "LICENSE", theme_dir / "LICENSE")
 
-        for svg in cinnamon_dir.glob("*.svg"):
+        for svg in theme_dir.rglob("*.svg"):
             validate_svg(svg)
 
-        png_header = (cinnamon_dir / "thumbnail.png").read_bytes()[:24]
-        if not png_header.startswith(b"\x89PNG\r\n\x1a\n"):
-            raise ValueError(f"{flavor['name']}: thumbnail is not a valid PNG")
-        width, height = struct.unpack(">II", png_header[16:24])
-        if (width, height) != THUMBNAIL_SIZE:
-            raise ValueError(
-                f"{flavor['name']}: thumbnail is {width}x{height}, "
-                f"expected {THUMBNAIL_SIZE[0]}x{THUMBNAIL_SIZE[1]}"
-            )
-
         theme_dirs.append(theme_dir)
+        file_count = sum(1 for path in theme_dir.rglob("*") if path.is_file())
         print(
-            f"  {flavor['folder']:<24} {len(css.splitlines()):>4} lines CSS, "
-            f"accent {accent_name}, {len(list(cinnamon_dir.iterdir()))} files"
+            f"  {flavor['folder']:<24} {len(css.splitlines()):>4} Cinnamon + "
+            f"{len(gtk3_css.splitlines()):>4} GTK 3 CSS lines, "
+            f"accent {accent_name}, {file_count} files"
         )
 
     make_overview(palette, PREVIEW_DIR, PREVIEW_DIR / "overview.html", accent_name)
@@ -1046,7 +1264,22 @@ def build(accent_name: str, make_zips: bool, strict_contrast: bool = False) -> N
         package_all(theme_dirs, DIST_DIR / "Catppuccin-Cinnamon-all-flavors.zip")
         for theme_dir in theme_dirs:
             package_theme(theme_dir, DIST_DIR / f"{theme_dir.name}.zip")
-        print("  archives: 5 zip files")
+        for source, name, root in (
+            (
+                COMPANION_ICON_DIR,
+                "Catppuccin-Kora-Mocha-Icons.zip",
+                "Catppuccin-Kora-Mocha",
+            ),
+            (
+                COMPANION_CURSOR_DIR,
+                "Catppuccin-Vimix-Mocha-Cursors.zip",
+                "Catppuccin-Vimix-Mocha",
+            ),
+        ):
+            if not source.is_dir():
+                raise ValueError(f"Companion theme directory is missing: {source}")
+            write_tree_archive(source, DIST_DIR / name, root)
+        print("  archives: 7 zip files (5 themes + 2 companion themes)")
 
     print(f"\nBuilt {len(theme_dirs)} themes in {DIST_DIR}")
     print(f"Previews: {PREVIEW_DIR}")

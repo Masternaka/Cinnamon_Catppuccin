@@ -1,8 +1,9 @@
 [Desktop Entry]
 Type=X-GNOME-Metatheme
 Name=Catppuccin Mocha
-Comment=Thème Catppuccin Mocha pour l'interface Cinnamon
+Comment=Thème Catppuccin Mocha pour Cinnamon et GTK
 Encoding=UTF-8
 
 [X-GNOME-Metatheme]
 Name=Catppuccin Mocha
+GtkTheme=Catppuccin-Mocha

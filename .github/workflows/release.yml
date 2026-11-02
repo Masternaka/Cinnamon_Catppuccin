@@ -68,6 +68,8 @@ jobs:
             dist/Catppuccin-Macchiato.zip
             dist/Catppuccin-Mocha.zip
             dist/Catppuccin-Cinnamon-all-flavors.zip
+            dist/Catppuccin-Kora-Mocha-Icons.zip
+            dist/Catppuccin-Vimix-Mocha-Cursors.zip
           )
           for archive in "${expected[@]}"; do
             test -f "$archive" || { echo "Archive manquante : $archive" >&2; exit 1; }
@@ -88,5 +90,7 @@ jobs:
             dist/Catppuccin-Macchiato.zip \
             dist/Catppuccin-Mocha.zip \
             dist/Catppuccin-Cinnamon-all-flavors.zip \
+            dist/Catppuccin-Kora-Mocha-Icons.zip \
+            dist/Catppuccin-Vimix-Mocha-Cursors.zip \
             --verify-tag --draft --generate-notes \
-            --title "Catppuccin pour Cinnamon ${RELEASE_TAG}"
+            --title "Catppuccin pour Cinnamon et GTK ${RELEASE_TAG}"

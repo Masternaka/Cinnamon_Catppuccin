@@ -1,8 +1,9 @@
 [Desktop Entry]
 Type=X-GNOME-Metatheme
 Name=Catppuccin Latte
-Comment=Thème Catppuccin Latte pour l'interface Cinnamon
+Comment=Thème Catppuccin Latte pour Cinnamon et GTK
 Encoding=UTF-8
 
 [X-GNOME-Metatheme]
 Name=Catppuccin Latte
+GtkTheme=Catppuccin-Latte

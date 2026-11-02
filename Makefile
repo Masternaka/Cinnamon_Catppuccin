@@ -1,7 +1,7 @@
 PYTHON ?= python3
 ACCENT ?= blue
 
-.PHONY: all build check install clean preview
+.PHONY: all build check install clean preview companions
 
 all: build
 
@@ -16,6 +16,9 @@ install: build
 
 preview: build
 	@echo "Previews generated in previews/"
+
+companions:
+	$(PYTHON) scripts/recolor_companions.py
 
 clean:
 	rm -rf dist previews

@@ -112,6 +112,43 @@ class TokenTests(unittest.TestCase):
                     f"{slug}/{accent}",
                 )
 
+    def test_gtk_accent_states_are_readable(self) -> None:
+        for accent in build.ACCENT_NAMES:
+            for slug, flavor in palette()["flavors"].items():
+                tokens = build.flavor_tokens(flavor, accent)
+                for state in ("gtk_accent_hover", "gtk_accent_active"):
+                    self.assertGreaterEqual(
+                        build.contrast_ratio(tokens["on_accent"], tokens[state]),
+                        WCAG - 1e-9,
+                        f"{slug}/{accent}/{state}",
+                    )
+
+    def test_gtk_error_states_are_readable(self) -> None:
+        for slug, flavor in palette()["flavors"].items():
+            tokens = build.flavor_tokens(flavor, "blue")
+            for state in ("gtk_error_hover", "gtk_error_active"):
+                self.assertGreaterEqual(
+                    build.contrast_ratio(tokens["on_error"], tokens[state]),
+                    WCAG - 1e-9,
+                    f"{slug}/{state}",
+                )
+
+    def test_on_semantic_colors_are_readable(self) -> None:
+        pairs = {
+            "on_success": "green",
+            "on_warning": "yellow",
+            "on_error": "red",
+            "on_info": "teal",
+        }
+        for slug, flavor in palette()["flavors"].items():
+            tokens = build.flavor_tokens(flavor, "blue")
+            for foreground, background in pairs.items():
+                self.assertGreaterEqual(
+                    build.contrast_ratio(tokens[foreground], tokens[background]),
+                    WCAG - 1e-9,
+                    f"{slug}/{foreground} sur {background}",
+                )
+
     def test_unresolved_token_raises(self) -> None:
         with self.assertRaises(ValueError):
             build.substitute("a { color: @nope@; }", {}, "test")
@@ -134,9 +171,47 @@ class CssValidationTests(unittest.TestCase):
             build.validate_css("a { color: #ffffff;", "braces")
 
 
+class GtkTemplateTests(unittest.TestCase):
+    def test_gtk_templates_substitute_for_every_flavor(self) -> None:
+        templates = (
+            (build.GTK2_TEMPLATE_PATH, "GTK 2"),
+            (build.GTK3_TEMPLATE_PATH, "GTK 3"),
+            (build.GTK4_TEMPLATE_PATH, "GTK 4"),
+        )
+        for slug, flavor in palette()["flavors"].items():
+            tokens = build.flavor_tokens(flavor, "blue")
+            tokens["gtk3_sheet"] = (
+                "gtk-contained-dark.css" if flavor["dark"] else "gtk-contained.css"
+            )
+            tokens["gtk4_sheet"] = "gtk-dark.css" if flavor["dark"] else "gtk.css"
+            for path, label in templates:
+                result = build.substitute(
+                    path.read_text(encoding="utf-8"), tokens, f"{slug} {label}"
+                )
+                build.validate_css(result, f"{slug} {label}")
+
+    def test_dark_flavors_import_dark_adwaita(self) -> None:
+        for slug in ("frappe", "macchiato", "mocha"):
+            flavor = palette()["flavors"][slug]
+            tokens = build.flavor_tokens(flavor, "blue")
+            tokens["gtk3_sheet"] = "gtk-contained-dark.css"
+            tokens["gtk4_sheet"] = "gtk-dark.css"
+            gtk3 = build.substitute(
+                build.GTK3_TEMPLATE_PATH.read_text(encoding="utf-8"), tokens, "gtk3"
+            )
+            gtk4 = build.substitute(
+                build.GTK4_TEMPLATE_PATH.read_text(encoding="utf-8"), tokens, "gtk4"
+            )
+            self.assertIn("gtk-contained-dark.css", gtk3)
+            self.assertIn("theme/Adwaita/gtk-dark.css", gtk4)
+
+
 class ThumbnailTests(unittest.TestCase):
     def test_format_matches_cinnamon_chooser(self) -> None:
         self.assertEqual(build.THUMBNAIL_SIZE, (247, 60))
+
+    def test_format_matches_gtk_chooser(self) -> None:
+        self.assertEqual(build.GTK_THUMBNAIL_SIZE, (120, 36))
 
 
 if __name__ == "__main__":

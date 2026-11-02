@@ -6,26 +6,31 @@ sous-dossier.
 
 ## Comprendre le projet
 
-**Cinnamon_Catppuccin** est un thème pour l’interface Cinnamon de Linux Mint,
-décliné dans les quatre flavors officiels de
+**Cinnamon_Catppuccin** est un thème pour l’interface Cinnamon de Linux Mint et
+pour les applications GTK, décliné dans les quatre flavors officiels de
 [Catppuccin](https://catppuccin.com/palette/) : **Latte**, **Frappé**,
 **Macchiato** et **Mocha**.
 
 Le dépôt ne contient **pas** d’extension Cinnamon, de code GJS, de
 `metadata.json` ni de `settings-schema.json`. Il ne faut pas les introduire par
-analogie avec une extension : le livrable est un ensemble de thèmes Cinnamon
-installables.
+analogie avec une extension : le livrable est un ensemble de thèmes
+installables (Cinnamon + GTK) et de thèmes complémentaires (icônes + curseurs).
 
 Le thème couvre le shell Cinnamon : panneau (quatre orientations), menus
 classique et nouveau menu 6.6+, applets, listes de fenêtres, Alt-Tab,
 notifications, OSD, calendrier, dialogues, écran de verrouillage, Expo,
-desklets, IBus et clavier virtuel. Il ne couvre pas les applications GTK, les
-icônes, les curseurs ni les décorations de fenêtres ; ces éléments relèvent
-d’autres thèmes.
+desklets, IBus et clavier virtuel. Il fournit aussi un thème GTK 2, GTK 3 et
+GTK 4 généré depuis la même palette ; la partie GTK importe Adwaita et le
+recolore. Des thèmes complémentaires recolorés fournissent les icônes (Kora) et
+les curseurs (Vimix) en Mocha avec l’accent bleu ; les icônes d’applications
+gardent leurs couleurs de marque. Les décorations de fenêtres (Metacity/Muffin)
+restent hors périmètre.
 
 La cible documentée est Cinnamon 5.x/6.x sous X11. Le menu classique et le
 nouveau menu sont tous les deux stylés, mais le rendu réel n’est validé que
-dans une session Cinnamon/X11. Wayland n’est pas validé. Une compilation
+dans une session Cinnamon/X11. Le rendu GTK 3/GTK 4, des icônes et des
+curseurs n’est pas validé sur macOS et les applications libadwaita ignorent en
+grande partie les thèmes GTK tiers. Wayland n’est pas validé. Une compilation
 réussie ne prouve pas un essai graphique réel.
 
 ## Documentation de référence : Markdown dans le dépôt
@@ -53,22 +58,28 @@ suite de tests ou une validation Cinnamon qui n’existe pas.
 | --- | --- |
 | `palette.json` | Palette officielle des quatre flavors ; source de vérité des couleurs. |
 | `src/cinnamon.css.in` | Gabarit CSS Cinnamon avec jetons `@nom@`. |
+| `src/gtk3.css.in` | Gabarit CSS GTK 3 (importe Adwaita puis recolore les widgets). |
+| `src/gtk4.css.in` | Gabarit CSS GTK 4 (importe Adwaita puis recolore les widgets). |
+| `src/gtk2.gtkrc.in` | Gabarit GTK 2 limité aux couleurs et aux marges de base. |
 | `src/index.theme.in` | Métadonnées générées dans chaque thème. |
 | `src/overview.html.in` | Gabarit de la galerie HTML autonome. |
-| `scripts/build.py` | Génération du CSS, des assets, des vignettes PNG, des aperçus et des archives. |
-| `scripts/install.sh` | Copie des thèmes générés vers `~/.themes` ou un répertoire `--dest`. |
-| `Makefile` | Raccourcis `build`, `check`, `install`, `clean`, `preview`. |
-| `dist/` | Thèmes prêts à installer et archives zip ; **artefacts générés mais suivis**. |
+| `scripts/build.py` | Génération des CSS Cinnamon et GTK, des assets, des vignettes PNG, des aperçus et des archives. |
+| `scripts/recolor_companions.py` | Recoloration idempotente de Kora et Vimix (Mocha, accent bleu). |
+| `scripts/install.sh` | Copie des thèmes vers `~/.themes`/`--dest` et des complémentaires vers `~/.icons`/`--companions-dest`. |
+| `icons/Catppuccin-Kora-Mocha/` | Thème d’icônes dérivé de Kora (GPL-3.0), recoloré pour Mocha. |
+| `cursors/Catppuccin-Vimix-Mocha/` | Thème de curseurs dérivé de Vimix (GPL-3.0), recoloré pour Mocha. |
+| `Makefile` | Raccourcis `build`, `check`, `install`, `clean`, `preview`, `companions`. |
+| `dist/` | Thèmes prêts à installer et sept archives zip ; **artefacts générés mais suivis**. |
 | `previews/` | Aperçus SVG et galerie HTML ; **artefacts générés mais suivis**. |
 | `README.md` | Documentation utilisateur en français. |
 | `AGENTS.md` | Consignes opérationnelles. |
-| `LICENSE` | Licence MIT du code du thème. |
-| `scripts/check.sh` | Contrôles statiques, tests unitaires, compilation temporaire, comparaison de `dist/`/`previews/` et test de l’installateur ; utilisé par la CI. |
+| `LICENSE` | Licence MIT du code Cinnamon/GTK ; les dossiers `icons/` et `cursors/` restent sous GPL-3.0. |
+| `scripts/check.sh` | Contrôles statiques, tests unitaires, compilation temporaire, comparaison de `dist/`/`previews/`, contrôle de la recoloration et test de l’installateur ; utilisé par la CI. |
 | `scripts/test_build.py` | Tests unitaires des helpers de `build.py` (contrastes, couleurs, jetons, validation CSS). |
-| `scripts/verify-cinnamon.sh` | Vérification en lecture seule d’une installation dans une session Cinnamon. |
+| `scripts/verify-cinnamon.sh` | Vérification en lecture seule d’une installation Cinnamon + GTK + icônes/curseurs dans une session Cinnamon. |
 | `.github/workflows/` | `ci.yml` (contrôles + compilation avec un second accent) et `release.yml` (release en brouillon, voir ci-dessous). |
 | `.github/dependabot.yml` | Mises à jour mensuelles des actions GitHub. |
-| `.gitattributes` | Fins de ligne LF, archives ZIP et PNG traités comme binaires. |
+| `.gitattributes` | Fins de ligne LF, archives ZIP, PNG et fichiers Xcursor traités comme binaires. |
 
 Chaque thème généré a cette forme :
 
@@ -76,31 +87,73 @@ Chaque thème généré a cette forme :
 Catppuccin-Mocha/
 ├── LICENSE
 ├── index.theme
-└── cinnamon/
-    ├── cinnamon.css
+├── cinnamon/
+│   ├── cinnamon.css
+│   ├── thumbnail.png
+│   ├── checkbox-off.svg
+│   ├── checkbox.svg
+│   ├── radio-off.svg
+│   ├── radio.svg
+│   ├── toggle-off.svg
+│   ├── toggle-on.svg
+│   ├── calendar-arrow-*.svg
+│   ├── add-workspace*.svg
+│   ├── close.svg
+│   ├── trash-icon.svg
+│   └── corner-ripple.png
+├── gtk-2.0/
+│   └── gtkrc
+├── gtk-3.0/
+│   ├── gtk.css
+│   ├── gtk-dark.css
+│   ├── thumbnail.png
+│   └── assets/
+│       ├── check.svg
+│       ├── check-mixed.svg
+│       ├── radio.svg
+│       ├── check-disabled.svg
+│       ├── check-mixed-disabled.svg
+│       └── radio-disabled.svg
+└── gtk-4.0/
+    ├── gtk.css
+    ├── gtk-dark.css
     ├── thumbnail.png
-    ├── checkbox-off.svg
-    ├── checkbox.svg
-    ├── radio-off.svg
-    ├── radio.svg
-    ├── toggle-off.svg
-    ├── toggle-on.svg
-    ├── calendar-arrow-*.svg
-    ├── add-workspace*.svg
-    ├── close.svg
-    ├── trash-icon.svg
-    └── corner-ripple.png
+    └── assets/ (mêmes fichiers que gtk-3.0/assets)
+```
+
+Les thèmes complémentaires sont des dossiers séparés, installés dans
+`~/.icons` :
+
+```text
+icons/Catppuccin-Kora-Mocha/
+├── LICENSE                       # GPL-3.0 (Kora)
+├── NOTICE.md
+├── index.theme
+├── actions/ … status/            # SVG recoloriés ; apps/ préservé
+└── create-new-icon-theme.cache.sh
+
+cursors/Catppuccin-Vimix-Mocha/
+├── LICENSE                       # GPL-3.0 (Vimix-cursors)
+├── NOTICE.md
+├── index.theme
+└── cursors/
 ```
 
 Le nom du dossier reste ASCII (`Catppuccin-Frappe`) ; le nom affiché peut être
-accentué (`Frappé`). Cinnamon détecte un thème par la présence de
+accentué (`Frappé`). Cinnamon détecte le thème de bureau par la présence de
 `cinnamon/cinnamon.css` et utilise `cinnamon/thumbnail.png` dans le sélecteur.
-`index.theme` fournit les métadonnées. Ne pas ajouter de `theme.json` sans
-vérification de la version de Cinnamon.
+La section Applications détecte le thème GTK par `gtk-3.0/gtk.css` (et
+`gtk-2.0/gtkrc` pour les applications GTK 2) ; `gtk-3.0/thumbnail.png` fournit
+l’aperçu. `index.theme` fournit les métadonnées et déclare `GtkTheme` avec le
+nom du dossier. Ne pas ajouter de `theme.json` sans vérification de la version
+de Cinnamon.
 
 Ne pas éditer à la main les fichiers de `dist/` ni les aperçus de `previews/` :
 modifier les gabarits, `palette.json` ou `scripts/build.py`, puis reconstruire.
 `make clean` supprime `dist/` et `previews/` ; `make build` les régénère.
+Ne pas éditer à la main les SVG de Kora ni les fichiers Xcursor de Vimix :
+modifier les sources puis relancer `python3 scripts/recolor_companions.py`
+(`make companions`). Le script est idempotent et préserve les logos `apps/`.
 
 ## Construire et vérifier
 
@@ -129,17 +182,33 @@ Reconstruire depuis zéro :
 make clean && make build
 ```
 
+Régénérer les icônes Kora et les curseurs Vimix recolorés :
+
+```sh
+python3 scripts/recolor_companions.py
+# ou
+make companions
+```
+
+Le script est idempotent et ne touche qu’aux catégories d’interface de Kora ;
+les icônes `apps/` gardent leurs couleurs de marque.
+
 Le build doit produire :
 
-- quatre dossiers `dist/Catppuccin-{Latte,Frappe,Macchiato,Mocha}/` ;
+- quatre dossiers `dist/Catppuccin-{Latte,Frappe,Macchiato,Mocha}/`, chacun avec
+  Cinnamon et GTK 2/3/4 ;
 - quatre archives individuelles et `dist/Catppuccin-Cinnamon-all-flavors.zip` ;
+- `dist/Catppuccin-Kora-Mocha-Icons.zip` et
+  `dist/Catppuccin-Vimix-Mocha-Cursors.zip`, avec leurs liens symboliques ;
 - `previews/Catppuccin-*.svg` et `previews/overview.html`.
 
-Le script vérifie les accolades et les jetons CSS, l’absence de jetons non
-résolus, la validité XML des SVG, la taille 247 × 60 des vignettes et la
-présence des fichiers générés. Les aperçus obsolètes de `previews/` sont
-supprimés au passage. Vérifier aussi les références `url(...)` du CSS,
-l’intégrité des archives et les liens du README après toute modification.
+Le script vérifie les accolades et les jetons CSS Cinnamon et GTK, l’absence de
+jetons non résolus, la validité XML des SVG, la taille 247 × 60 des vignettes
+Cinnamon et 120 × 36 des vignettes GTK, et la présence des fichiers générés. Les
+aperçus obsolètes de `previews/` sont supprimés au passage. Vérifier aussi les
+références `url(...)` des CSS, l’intégrité des sept archives, les liens
+symboliques des thèmes complémentaires et les liens du README après toute
+modification.
 
 Contrôle commun à la CI et au développement local :
 
@@ -151,13 +220,15 @@ bash scripts/check.sh
 
 Ce script compile dans une copie temporaire sans modifier `dist/` ni
 `previews/`, exécute `scripts/test_build.py`, vérifie les syntaxes Bash/Python,
-les assets référencés par le CSS
-et le contenu et l’intégrité des cinq archives. Il compare aussi les artefacts
-suivis (`dist/` et `previews/`) à cette compilation fraîche : un gabarit modifié
-sans reconstruction le fait échouer, avec la consigne de relancer
-`python3 scripts/build.py`. Il teste enfin `scripts/install.sh` dans un
-répertoire temporaire (`--dry-run`, installation des quatre thèmes, `--backup`).
-Il ne valide pas Cinnamon.
+les assets référencés par les CSS Cinnamon et GTK, les fichiers GTK obligatoires,
+la recoloration idempotente de Kora/Vimix, la présence de leurs licences GPL-3.0
+et notices, et le contenu et l’intégrité des sept archives (liens symboliques
+compris). Il compare aussi les artefacts suivis (`dist/` et `previews/`) à cette
+compilation fraîche : un gabarit modifié sans reconstruction le fait échouer,
+avec la consigne de relancer `python3 scripts/build.py`. Il teste enfin
+`scripts/install.sh` dans un répertoire temporaire (`--dry-run`, installation
+des quatre thèmes et des deux complémentaires, `--backup`). Il ne valide pas
+Cinnamon ni le rendu GTK/icônes/curseurs.
 
 `scripts/check.sh` compile avec `--strict-contrast` : un couple de couleurs
 sous 4,5:1 fait échouer le contrôle. Pour un diagnostic local,
@@ -172,8 +243,9 @@ définie ; l’archive dépend ensuite de la version de Python et de zlib utilis
 Contrôles statiques complémentaires :
 
 ```sh
-bash -n scripts/install.sh
-python3 -m py_compile scripts/build.py
+bash -n scripts/install.sh scripts/verify-cinnamon.sh
+python3 -m py_compile scripts/build.py scripts/recolor_companions.py
+python3 scripts/recolor_companions.py --check
 git diff --check
 ```
 
@@ -186,18 +258,28 @@ ni le rendu Cinnamon, ni le multi-écran.
 Pour une livraison, tester sur Cinnamon/X11 :
 
 1. Installer dans un répertoire temporaire avec
-   `./scripts/install.sh --dest "$(mktemp -d)"`, puis copier les thèmes dans un
-   environnement Cinnamon de test. Une fois installés, lancer
-   `./scripts/verify-cinnamon.sh --dest <répertoire>` : le script vérifie la
-   session, la présence des fichiers et des assets, et les erreurs de thème dans
-   `~/.cinnamon/glass.log` et `~/.xsession-errors`.
-2. Choisir chaque flavor dans **Paramètres → Thèmes** et redémarrer Cinnamon si
-   nécessaire avec **Ctrl+Alt+Échap**.
-3. Vérifier le panneau sur les quatre orientations, les menus classique et 6.6+
+   `./scripts/install.sh --dest "$(mktemp -d)" --companions-dest "$(mktemp -d)"`,
+   puis copier les thèmes dans un environnement Cinnamon de test. Une fois
+   installés, lancer `./scripts/verify-cinnamon.sh --dest <répertoire>
+   --companions-dest <répertoire-icônes>` : le script vérifie la session, la
+   présence des fichiers et des assets Cinnamon et GTK, celle de Kora/Vimix, les
+   thèmes actifs et les erreurs de thème dans `~/.cinnamon/glass.log` et
+   `~/.xsession-errors`.
+2. Choisir chaque flavor dans **Paramètres → Thèmes**, dans **Bureau** puis dans
+   **Applications**, et redémarrer Cinnamon si nécessaire avec
+   **Ctrl+Alt+Échap**.
+3. Choisir **Catppuccin Kora Mocha** dans **Icônes** et
+   **Catppuccin Vimix Mocha** dans **Pointeur de la souris**.
+4. Vérifier le panneau sur les quatre orientations, les menus classique et 6.6+
    si disponibles, les applets, les listes de fenêtres, les notifications, les
    dialogues, le calendrier, l’écran de verrouillage, Expo et le clavier.
-4. Consulter `~/.cinnamon/glass.log` et `~/.xsession-errors` en cas d’erreur.
-5. Consigner la version de Cinnamon, la distribution et les résultats. Si
+5. Ouvrir des applications GTK 3 (Nemo, Xed, Terminal, Paramètres) et une
+   application GTK 4 si disponible : boutons, entrées, menus, listes,
+   sélections, cases à cocher et infobulles doivent suivre la palette. Vérifier
+   aussi les dossiers dans Nemo et les curseurs (défaut, texte, redimensionnement,
+   attente, copie et interdiction).
+6. Consulter `~/.cinnamon/glass.log` et `~/.xsession-errors` en cas d’erreur.
+7. Consigner la version de Cinnamon, la distribution et les résultats. Si
    l’environnement Cinnamon est indisponible, indiquer explicitement la
    validation restante.
 
@@ -220,12 +302,18 @@ ne sont pas nécessaires au fonctionnement du thème.
 - `palette.json` reprend les valeurs officielles Catppuccin. Ne pas modifier
   une valeur isolée pour un ajustement visuel sans mettre à jour la source,
   signaler l’écart et régénérer les quatre flavors.
-- Le gabarit CSS utilise des jetons `@palette@`, `@accent@`, `@panel@`, etc.
-  Le build les remplace et génère aussi les variantes alpha (`@text_a80@`).
-  Aucun jeton ne doit subsister dans le CSS final.
+- Les gabarits CSS utilisent des jetons `@palette@`, `@accent@`, `@panel@`,
+  etc. Le build les remplace et génère aussi les variantes alpha (`@text_a80@`).
+  Aucun jeton ne doit subsister dans le CSS final, y compris dans les gabarits
+  GTK et le fichier GTK 2.
 - Le CSS Cinnamon est interprété par StTheme/libcroco, pas par GTK, Chromium ou
   Sass. Éviter les variables CSS, les fonctions Sass et les propriétés modernes
   non prises en charge ; les propriétés inconnues peuvent être ignorées.
+- Le CSS GTK est interprété par GTK 3 et GTK 4, séparément. Les gabarits
+  importent Adwaita par `resource://` puis surchargent les couleurs et les
+  widgets courants ; conserver cette base pour couvrir les widgets non stylés.
+  Les applications libadwaita ignorent en grande partie les thèmes GTK tiers :
+  ne pas promettre qu’elles suivront la palette.
 - Conserver les sélecteurs du menu classique et ceux du nouveau menu Cinnamon
   6.6+ ; ne pas en supprimer un parce que la version locale ne l’utilise pas.
 - Toute couleur dépendant du flavor doit passer par un jeton. Ne pas copier une
@@ -244,9 +332,17 @@ ne sont pas nécessaires au fonctionnement du thème.
 - `@on_accent@` vaut `Base` tant que le couple atteint 4,5:1 (cas des flavors
   sombres). Sinon le build retient la meilleure des deux couleurs `Base`/`Text`
   et n’en ajuste que la luminosité : un accent clair (jaune, pêche) reçoit donc
-  un texte foncé, jamais un texte clair illisible.
-- Les assets SVG/PNG sont générés pour chaque flavor. Le texte des vignettes est
-  volontairement simple ; ne pas dépendre d’une police externe.
+  un texte foncé, jamais un texte clair illisible. `@on_success@`,
+  `@on_warning@`, `@on_error@` et `@on_info@` suivent la même règle pour les
+  remplissages sémantiques GTK.
+- Les assets SVG/PNG sont générés pour chaque flavor, y compris les glyphes
+  check/radio GTK et les vignettes. Le texte des vignettes est volontairement
+  simple ; ne pas dépendre d’une police externe.
+- Les thèmes Kora et Vimix sont recolorés une seule fois pour **Mocha avec
+  l’accent bleu** par `scripts/recolor_companions.py`. Ne pas éditer leurs SVG
+  ou fichiers Xcursor à la main : modifier les sources puis relancer le script.
+  Les icônes `apps/` de Kora sont volontairement préservées. Ces deux dossiers
+  sont sous GPL-3.0 : conserver `LICENSE`, `NOTICE.md` et l’attribution.
 - Conserver les quatre flavors, les accents configurables et les aperçus. La
   documentation et les commentaires destinés à l’utilisateur restent en
   français.
@@ -254,18 +350,22 @@ ne sont pas nécessaires au fonctionnement du thème.
 ## Données et configuration à préserver
 
 - Ne pas supprimer ni remplacer la configuration personnelle de l’utilisateur :
-  `~/.themes`, `~/.local/share/themes`, les préférences Cinnamon et les fichiers
-  de `~/.config` ne doivent être modifiés qu’avec un accord explicite.
+  `~/.themes`, `~/.local/share/themes`, `~/.icons`, `~/.local/share/icons`, les
+  préférences Cinnamon et les fichiers de `~/.config` ne doivent être modifiés
+  qu’avec un accord explicite.
 - L’installateur copie les thèmes générés et remplace les dossiers
   `Catppuccin-*` présents dans la destination ; prévenir l’utilisateur avant
-  toute installation réelle. Utiliser `--dest` vers un répertoire temporaire,
-  `--dry-run` pour simuler ou `--backup` pour conserver l’ancienne version.
+  toute installation réelle. Utiliser `--dest` et `--companions-dest` vers des
+  répertoires temporaires, `--dry-run` pour simuler, `--backup` pour conserver
+  l’ancienne version ou `--no-companions` pour ne pas installer Kora/Vimix.
 - `dist/` et `previews/` sont des artefacts générés, mais ils font partie du
   livrable et sont suivis par Git. Ne pas y ajouter de captures temporaires, de
   caches, de secrets ou de données personnelles. Les fichiers ignorés
   (`__pycache__`, `.DS_Store`) ne doivent pas être versionnés.
-- La licence du code est MIT ; la palette et le guide de style Catppuccin sont
-  crédités dans le README et sous licence MIT. Conserver ces attributions.
+- La licence du code Cinnamon/GTK est MIT ; la palette et le guide de style
+  Catppuccin sont crédités dans le README et sous licence MIT. Les dossiers
+  `icons/Catppuccin-Kora-Mocha/` et `cursors/Catppuccin-Vimix-Mocha/` restent
+  sous GPL-3.0 : conserver leurs `LICENSE`, `NOTICE.md` et attributions.
 
 ## CI, releases, commits et publication
 
@@ -290,10 +390,12 @@ Le workflow `release.yml` est adapté au thème :
   à jour ;
 - il exige que le tag existe et pointe sur le commit courant, sans jamais
   déplacer un tag ;
-- il vérifie les cinq archives puis crée une release **en brouillon** intitulée
-  « Catppuccin pour Cinnamon <tag> » avec
-  `Catppuccin-{Latte,Frappe,Macchiato,Mocha}.zip` et
-  `Catppuccin-Cinnamon-all-flavors.zip`.
+- il vérifie les sept archives puis crée une release **en brouillon** intitulée
+  « Catppuccin pour Cinnamon et GTK <tag> » avec
+  `Catppuccin-{Latte,Frappe,Macchiato,Mocha}.zip`,
+  `Catppuccin-Cinnamon-all-flavors.zip`,
+  `Catppuccin-Kora-Mocha-Icons.zip` et
+  `Catppuccin-Vimix-Mocha-Cursors.zip`.
 
 Il n’y a ni `metadata.json` ni numéro de version dans le dépôt : le tag fait
 foi. Ne jamais déplacer un tag existant ni remplacer une Release existante, et

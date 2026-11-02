@@ -1,8 +1,9 @@
 [Desktop Entry]
 Type=X-GNOME-Metatheme
 Name=Catppuccin Frappé
-Comment=Thème Catppuccin Frappé pour l'interface Cinnamon
+Comment=Thème Catppuccin Frappé pour Cinnamon et GTK
 Encoding=UTF-8
 
 [X-GNOME-Metatheme]
 Name=Catppuccin Frappé
+GtkTheme=Catppuccin-Frappe
