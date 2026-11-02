@@ -1,6 +1,6 @@
 <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
- <circle cx="23" cy="24" r="20.116" fill="#89dceb"/>
- <g fill="#1e1e2e">
+ <circle cx="23" cy="24" r="20.116" fill="#0091cf"/>
+ <g fill="#fff">
   <path transform="translate(.500479 -5.02502)" d="m18 39-1.076 1.064-1.424.436.348 1.5-.348 1.5 1.424.436 1.076 1.064 1.076-1.064 1.424-.436-.348-1.5.348-1.5-1.424-.436z" fill-rule="nonzero"/>
   <path transform="translate(.500479 -5.02502)" d="m32 33-1.076 1.064-1.424.436.348 1.5-.348 1.5 1.424.436 1.076 1.064 1.076-1.064 1.424-.436-.348-1.5.348-1.5-1.424-.436z" fill-rule="nonzero"/>
   <path transform="translate(.500479 -5.02502)" d="m13 33-1.076 1.064-1.424.436.348 1.5-.348 1.5 1.424.436 1.076 1.064 1.076-1.064 1.424-.436-.348-1.5.348-1.5-1.424-.436z" fill-rule="nonzero"/>

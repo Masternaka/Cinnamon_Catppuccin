@@ -41,20 +41,20 @@
 @define-color catppuccin_base #1e1e2e;
 @define-color catppuccin_mantle #181825;
 @define-color catppuccin_crust #11111b;
-@define-color catppuccin_accent #89b4fa;
+@define-color catppuccin_accent #cba6f7;
 
 /* Adwaita and libadwaita named colors. */
 @define-color theme_bg_color #1e1e2e;
 @define-color theme_fg_color #cdd6f4;
 @define-color theme_base_color #1e1e2e;
 @define-color theme_text_color #cdd6f4;
-@define-color theme_selected_bg_color #89b4fa;
+@define-color theme_selected_bg_color #cba6f7;
 @define-color theme_selected_fg_color #1e1e2e;
 @define-color theme_unfocused_bg_color #181825;
 @define-color theme_unfocused_fg_color #a6adc8;
 @define-color theme_unfocused_base_color #1e1e2e;
 @define-color theme_unfocused_text_color #cdd6f4;
-@define-color theme_unfocused_selected_bg_color #89b4fa;
+@define-color theme_unfocused_selected_bg_color #cba6f7;
 @define-color theme_unfocused_selected_fg_color #1e1e2e;
 @define-color insensitive_bg_color #181825;
 @define-color insensitive_fg_color #7f849c;
@@ -85,9 +85,9 @@
 @define-color sidebar_fg_color #cdd6f4;
 @define-color secondary_sidebar_bg_color #11111b;
 @define-color secondary_sidebar_fg_color #cdd6f4;
-@define-color accent_bg_color #89b4fa;
+@define-color accent_bg_color #cba6f7;
 @define-color accent_fg_color #1e1e2e;
-@define-color accent_color #89b4fa;
+@define-color accent_color #cba6f7;
 @define-color destructive_bg_color #f38ba8;
 @define-color destructive_fg_color #1e1e2e;
 @define-color destructive_color #f38ba8;
@@ -108,7 +108,7 @@
 *:focus {
   outline-style: solid;
   outline-width: 2px;
-  outline-color: #89b4fa;
+  outline-color: #cba6f7;
   outline-offset: -2px;
 }
 
@@ -315,7 +315,7 @@ button:hover {
 button:active,
 button:checked {
   background-color: #585b70;
-  border-color: #89b4fa;
+  border-color: #cba6f7;
 }
 
 button:disabled {
@@ -351,19 +351,19 @@ button.circular {
 }
 
 button.suggested-action {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
   color: #1e1e2e;
-  border-color: #89b4fa;
+  border-color: #cba6f7;
 }
 
 button.suggested-action:hover {
-  background-color: #779cd9;
-  border-color: #779cd9;
+  background-color: #af90d6;
+  border-color: #af90d6;
 }
 
 button.suggested-action:active {
-  background-color: #6b8bc2;
-  border-color: #6b8bc2;
+  background-color: #9c81c0;
+  border-color: #9c81c0;
 }
 
 button.destructive-action {
@@ -409,7 +409,7 @@ entry {
   box-shadow: none;
   min-height: 22px;
   padding: 4px 8px;
-  caret-color: #89b4fa;
+  caret-color: #cba6f7;
   transition: border-color 120ms ease, box-shadow 120ms ease;
 }
 
@@ -418,8 +418,8 @@ entry:hover {
 }
 
 entry:focus-within {
-  border-color: #89b4fa;
-  box-shadow: 0 0 0 2px rgba(137, 180, 250, 0.25);
+  border-color: #cba6f7;
+  box-shadow: 0 0 0 2px rgba(203, 166, 247, 0.25);
 }
 
 entry:disabled {
@@ -429,12 +429,12 @@ entry:disabled {
 }
 
 entry > text > selection {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
   color: #1e1e2e;
 }
 
 entry > text > cursor {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
 }
 
 entry > image {
@@ -543,7 +543,7 @@ notebook > header > tabs > tab:hover {
 notebook > header > tabs > tab:checked {
   background-color: #1e1e2e;
   color: #cdd6f4;
-  border-bottom: 2px solid #89b4fa;
+  border-bottom: 2px solid #cba6f7;
 }
 
 /* ---------------------------------------------------------------------------
@@ -574,7 +574,7 @@ gridview > child:hover {
 listview > row:selected,
 columnview > row:selected,
 gridview > child:selected {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
   color: #1e1e2e;
 }
 
@@ -602,7 +602,7 @@ placessidebar > row:hover,
 .navigation-sidebar > row:selected,
 placessidebar > row:selected,
 .sidebar > row:selected {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
   color: #1e1e2e;
 }
 
@@ -636,7 +636,7 @@ scrollbar slider:hover {
 }
 
 scrollbar slider:active {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
 }
 
 /* ---------------------------------------------------------------------------
@@ -665,15 +665,15 @@ radio {
 
 check:hover,
 radio:hover {
-  border-color: #89b4fa;
+  border-color: #cba6f7;
 }
 
 check:checked,
 check:indeterminate,
 radio:checked,
 radio:indeterminate {
-  background-color: #89b4fa;
-  border-color: #89b4fa;
+  background-color: #cba6f7;
+  border-color: #cba6f7;
 }
 
 check:checked {
@@ -716,8 +716,8 @@ switch {
 }
 
 switch:checked {
-  background-color: #89b4fa;
-  border-color: #89b4fa;
+  background-color: #cba6f7;
+  border-color: #cba6f7;
 }
 
 switch:disabled {
@@ -760,13 +760,13 @@ scale trough {
 }
 
 scale highlight {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
   border-radius: 999px;
 }
 
 scale slider {
   background-color: #cdd6f4;
-  border: 2px solid #89b4fa;
+  border: 2px solid #cba6f7;
   border-radius: 999px;
   box-shadow: none;
   min-width: 12px;
@@ -775,11 +775,11 @@ scale slider {
 }
 
 scale slider:hover {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
 }
 
 scale slider:active {
-  background-color: #6b8bc2;
+  background-color: #9c81c0;
 }
 
 progressbar trough {
@@ -789,7 +789,7 @@ progressbar trough {
 }
 
 progressbar progress {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
   border-radius: 999px;
 }
 
@@ -799,7 +799,7 @@ levelbar block {
 }
 
 levelbar block.filled {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
 }
 
 levelbar block.low {
@@ -875,7 +875,7 @@ calendar {
 }
 
 calendar:selected {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
   color: #1e1e2e;
 }
 
@@ -888,7 +888,7 @@ calendar.button {
 }
 
 calendar.highlight {
-  color: #89b4fa;
+  color: #cba6f7;
 }
 
 calendar:indeterminate {
@@ -900,7 +900,7 @@ calendar:indeterminate {
    ------------------------------------------------------------------------- */
 
 selection {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
   color: #1e1e2e;
 }
 

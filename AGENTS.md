@@ -22,7 +22,7 @@ notifications, OSD, calendrier, dialogues, écran de verrouillage, Expo,
 desklets, IBus et clavier virtuel. Il fournit aussi un thème GTK 2, GTK 3 et
 GTK 4 généré depuis la même palette ; la partie GTK importe Adwaita et le
 recolore. Des thèmes complémentaires recolorés fournissent les icônes (Kora) et
-les curseurs (Vimix) en Mocha avec l’accent bleu ; les icônes d’applications
+les curseurs (Vimix) en Mocha avec l’accent mauve ; les icônes d’applications
 gardent leurs couleurs de marque. Les décorations de fenêtres (Metacity/Muffin)
 restent hors périmètre.
 
@@ -64,7 +64,7 @@ suite de tests ou une validation Cinnamon qui n’existe pas.
 | `src/index.theme.in` | Métadonnées générées dans chaque thème. |
 | `src/overview.html.in` | Gabarit de la galerie HTML autonome. |
 | `scripts/build.py` | Génération des CSS Cinnamon et GTK, des assets, des vignettes PNG, des aperçus et des archives. |
-| `scripts/recolor_companions.py` | Recoloration idempotente de Kora et Vimix (Mocha, accent bleu). |
+| `scripts/recolor_companions.py` | Recoloration idempotente de Kora et Vimix (Mocha, accent mauve). |
 | `scripts/install.sh` | Copie des thèmes vers `~/.themes`/`--dest` et des complémentaires vers `~/.icons`/`--companions-dest`. |
 | `icons/Catppuccin-Kora-Mocha/` | Thème d’icônes dérivé de Kora (GPL-3.0), recoloré pour Mocha. |
 | `cursors/Catppuccin-Vimix-Mocha/` | Thème de curseurs dérivé de Vimix (GPL-3.0), recoloré pour Mocha. |
@@ -171,9 +171,9 @@ python3 scripts/build.py
 Changer la couleur d’accentuation sans modifier les flavors :
 
 ```sh
-make ACCENT=mauve
+make ACCENT=blue
 # ou
-python3 scripts/build.py --accent mauve
+python3 scripts/build.py --accent blue
 ```
 
 Reconstruire depuis zéro :
@@ -319,7 +319,7 @@ ne sont pas nécessaires au fonctionnement du thème.
 - Toute couleur dépendant du flavor doit passer par un jeton. Ne pas copier une
   couleur de Mocha dans un autre thème ni coder une couleur en dur dans un
   asset propre à une flavor.
-- Le bleu est l’accent par défaut, conformément au guide de style Catppuccin ;
+- Le mauve est l’accent par défaut du dépôt ; `ACCENT=blue` restaure le bleu.
   `Base` sert de texte sur accent. Le panneau utilise `Crust`, les menus
   `Base`, les barres latérales et sous-menus `Mantle`.
 - Le texte coloré doit passer par les jetons de contraste dérivés
@@ -339,9 +339,12 @@ ne sont pas nécessaires au fonctionnement du thème.
   check/radio GTK et les vignettes. Le texte des vignettes est volontairement
   simple ; ne pas dépendre d’une police externe.
 - Les thèmes Kora et Vimix sont recolorés une seule fois pour **Mocha avec
-  l’accent bleu** par `scripts/recolor_companions.py`. Ne pas éditer leurs SVG
-  ou fichiers Xcursor à la main : modifier les sources puis relancer le script.
-  Les icônes `apps/` de Kora sont volontairement préservées. Ces deux dossiers
+  l’accent mauve** par `scripts/recolor_companions.py`. La recoloration reste
+  proche de Kora : seuls les cinq couleurs du schéma, les bleus des dossiers
+  et les accents des curseurs sont ajustés ; les autres couleurs, blancs et
+  gris sont conservés pour la lisibilité. Ne pas éditer leurs SVG ou fichiers
+  Xcursor à la main : modifier les sources puis relancer le script. Les icônes
+  `apps/` de Kora sont volontairement préservées. Ces deux dossiers
   sont sous GPL-3.0 : conserver `LICENSE`, `NOTICE.md` et l’attribution.
 - Conserver les quatre flavors, les accents configurables et les aperçus. La
   documentation et les commentaires destinés à l’utilisateur restent en
@@ -381,7 +384,7 @@ changement. Demander confirmation avant toute autre écriture GitHub.
 
 Le workflow `ci.yml` exécute `bash scripts/check.sh` avec Python 3.12 sous
 Ubuntu 24.04 pour les push sur `main` et les pull requests, puis compile une
-seconde fois avec `--accent mauve --strict-contrast` pour détecter un jeton
+seconde fois avec `--accent blue --strict-contrast` pour détecter un jeton
 propre à l’accent par défaut et tout écart de contraste.
 
 Le workflow `release.yml` est adapté au thème :

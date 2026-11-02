@@ -42,21 +42,21 @@
 @define-color catppuccin_base #eff1f5;
 @define-color catppuccin_mantle #e6e9ef;
 @define-color catppuccin_crust #dce0e8;
-@define-color catppuccin_accent #1e66f5;
+@define-color catppuccin_accent #8839ef;
 
 /* Adwaita named colors, redefined after the import. */
 @define-color theme_bg_color #eff1f5;
 @define-color theme_fg_color #4c4f69;
 @define-color theme_base_color #eff1f5;
 @define-color theme_text_color #4c4f69;
-@define-color theme_selected_bg_color #1e66f5;
-@define-color theme_selected_fg_color #f4f5f8;
+@define-color theme_selected_bg_color #8839ef;
+@define-color theme_selected_fg_color #eff1f5;
 @define-color theme_unfocused_bg_color #e6e9ef;
 @define-color theme_unfocused_fg_color #6c6f85;
 @define-color theme_unfocused_base_color #eff1f5;
 @define-color theme_unfocused_text_color #4c4f69;
-@define-color theme_unfocused_selected_bg_color #1e66f5;
-@define-color theme_unfocused_selected_fg_color #f4f5f8;
+@define-color theme_unfocused_selected_bg_color #8839ef;
+@define-color theme_unfocused_selected_fg_color #eff1f5;
 @define-color insensitive_bg_color #e6e9ef;
 @define-color insensitive_fg_color #8c8fa1;
 @define-color insensitive_base_color #ccd0da;
@@ -95,9 +95,9 @@
 @define-color sidebar_fg_color #4c4f69;
 @define-color secondary_sidebar_bg_color #dce0e8;
 @define-color secondary_sidebar_fg_color #4c4f69;
-@define-color accent_bg_color #1e66f5;
-@define-color accent_fg_color #f4f5f8;
-@define-color accent_color #1e66f5;
+@define-color accent_bg_color #8839ef;
+@define-color accent_fg_color #eff1f5;
+@define-color accent_color #8839ef;
 @define-color destructive_bg_color #d20f39;
 @define-color destructive_fg_color #eff1f5;
 @define-color destructive_color #c50e36;
@@ -116,7 +116,7 @@
    ------------------------------------------------------------------------- */
 
 * {
-  outline-color: #1e66f5;
+  outline-color: #8839ef;
   outline-offset: -2px;
   -gtk-outline-radius: 6px;
   -GtkTextView-error-underline-color: #c50e36;
@@ -126,7 +126,7 @@
 *:focus {
   outline-style: solid;
   outline-width: 2px;
-  outline-color: #1e66f5;
+  outline-color: #8839ef;
 }
 
 /* Adwaita draws several controls with literal gradients. The overrides below
@@ -350,7 +350,7 @@ button:hover {
 button:active,
 button:checked {
   background-color: #acb0be;
-  border-color: #1e66f5;
+  border-color: #8839ef;
 }
 
 button:disabled {
@@ -394,20 +394,20 @@ button.circular {
 }
 
 button.suggested-action {
-  background-color: #1e66f5;
-  color: #f4f5f8;
-  border-color: #1e66f5;
+  background-color: #8839ef;
+  color: #eff1f5;
+  border-color: #8839ef;
 }
 
 button.suggested-action:hover {
-  background-color: #2563e0;
-  border-color: #2563e0;
+  background-color: #7f3cdb;
+  border-color: #7f3cdb;
 }
 
 button.suggested-action:active,
 button.suggested-action:checked {
-  background-color: #2a60d2;
-  border-color: #2a60d2;
+  background-color: #793ece;
+  border-color: #793ece;
 }
 
 button.suggested-action:disabled {
@@ -467,7 +467,7 @@ spinbutton:not(.vertical) {
   box-shadow: none;
   min-height: 22px;
   padding: 4px 8px;
-  caret-color: #1e66f5;
+  caret-color: #8839ef;
   transition: border-color 120ms ease, box-shadow 120ms ease;
 }
 
@@ -478,8 +478,8 @@ spinbutton:not(.vertical):hover {
 
 entry:focus,
 spinbutton:not(.vertical):focus {
-  border-color: #1e66f5;
-  box-shadow: 0 0 0 2px rgba(30, 102, 245, 0.25);
+  border-color: #8839ef;
+  box-shadow: 0 0 0 2px rgba(136, 57, 239, 0.25);
 }
 
 entry:disabled,
@@ -497,8 +497,8 @@ spinbutton:not(.vertical):backdrop {
 }
 
 entry selection {
-  background-color: #1e66f5;
-  color: #f4f5f8;
+  background-color: #8839ef;
+  color: #eff1f5;
 }
 
 entry image {
@@ -511,7 +511,7 @@ entry image:active {
 }
 
 entry progress {
-  background-color: rgba(30, 102, 245, 0.25);
+  background-color: rgba(136, 57, 239, 0.25);
   border-radius: 6px;
 }
 
@@ -665,7 +665,7 @@ notebook > header > tabs > tab:hover {
 notebook > header > tabs > tab:checked {
   background-color: #eff1f5;
   color: #4c4f69;
-  border-bottom: 2px solid #1e66f5;
+  border-bottom: 2px solid #8839ef;
 }
 
 notebook > stack {
@@ -698,13 +698,13 @@ list row:selected,
 list row:selected:hover,
 treeview.view:selected,
 treeview.view:selected:hover {
-  background-color: #1e66f5;
-  color: #f4f5f8;
+  background-color: #8839ef;
+  color: #eff1f5;
 }
 
 treeview.view:selected:backdrop {
-  background-color: #1e66f5;
-  color: #f4f5f8;
+  background-color: #8839ef;
+  color: #eff1f5;
 }
 
 treeview.view header button {
@@ -741,13 +741,13 @@ placessidebar row:hover {
 
 .sidebar row:selected,
 placessidebar row:selected {
-  background-color: #1e66f5;
-  color: #f4f5f8;
+  background-color: #8839ef;
+  color: #eff1f5;
 }
 
 .sidebar row:selected image,
 placessidebar row:selected image {
-  color: #f4f5f8;
+  color: #eff1f5;
 }
 
 /* ---------------------------------------------------------------------------
@@ -780,7 +780,7 @@ scrollbar slider:hover {
 }
 
 scrollbar slider:active {
-  background-color: #1e66f5;
+  background-color: #8839ef;
 }
 
 scrollbar button {
@@ -796,7 +796,7 @@ check,
 radio {
   background-color: #ccd0da;
   border: 2px solid #8c8fa1;
-  color: #f4f5f8;
+  color: #eff1f5;
   min-width: 14px;
   min-height: 14px;
   padding: 0;
@@ -813,15 +813,15 @@ radio {
 
 check:hover,
 radio:hover {
-  border-color: #1e66f5;
+  border-color: #8839ef;
 }
 
 check:checked,
 check:indeterminate,
 radio:checked,
 radio:indeterminate {
-  background-color: #1e66f5;
-  border-color: #1e66f5;
+  background-color: #8839ef;
+  border-color: #8839ef;
 }
 
 check:checked {
@@ -869,8 +869,8 @@ switch {
 }
 
 switch:checked {
-  background-color: #1e66f5;
-  border-color: #1e66f5;
+  background-color: #8839ef;
+  border-color: #8839ef;
 }
 
 switch:disabled {
@@ -888,7 +888,7 @@ switch slider {
 }
 
 switch:checked slider {
-  background-color: #f4f5f8;
+  background-color: #eff1f5;
 }
 
 switch:disabled slider {
@@ -913,13 +913,13 @@ scale trough {
 }
 
 scale highlight {
-  background-color: #1e66f5;
+  background-color: #8839ef;
   border-radius: 999px;
 }
 
 scale slider {
   background-color: #4c4f69;
-  border: 2px solid #1e66f5;
+  border: 2px solid #8839ef;
   border-radius: 999px;
   box-shadow: none;
   min-width: 12px;
@@ -928,11 +928,11 @@ scale slider {
 }
 
 scale slider:hover {
-  background-color: #1e66f5;
+  background-color: #8839ef;
 }
 
 scale slider:active {
-  background-color: #2a60d2;
+  background-color: #793ece;
 }
 
 scale value {
@@ -950,12 +950,12 @@ progressbar trough {
 }
 
 progressbar progress {
-  background-color: #1e66f5;
+  background-color: #8839ef;
   border-radius: 999px;
 }
 
 progressbar text {
-  color: #f4f5f8;
+  color: #eff1f5;
 }
 
 levelbar block {
@@ -964,7 +964,7 @@ levelbar block {
 }
 
 levelbar block.filled {
-  background-color: #1e66f5;
+  background-color: #8839ef;
 }
 
 levelbar block.low {
@@ -1070,8 +1070,8 @@ calendar {
 }
 
 calendar:selected {
-  background-color: #1e66f5;
-  color: #f4f5f8;
+  background-color: #8839ef;
+  color: #eff1f5;
 }
 
 calendar.header {
@@ -1083,7 +1083,7 @@ calendar.button {
 }
 
 calendar.highlight {
-  color: #1e66f5;
+  color: #8839ef;
 }
 
 calendar:indeterminate {
@@ -1107,8 +1107,8 @@ filechooser .path-bar button {
    ------------------------------------------------------------------------- */
 
 selection {
-  background-color: #1e66f5;
-  color: #f4f5f8;
+  background-color: #8839ef;
+  color: #eff1f5;
 }
 
 *:link,

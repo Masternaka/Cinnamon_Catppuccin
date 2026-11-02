@@ -10,16 +10,16 @@
  </g>
  <defs>
   <linearGradient id="_Linear1" x2="1" gradientTransform="matrix(3.76966e-14,-615.633,615.633,3.76966e-14,534.968,867.778)" gradientUnits="userSpaceOnUse">
-   <stop style="stop-color:#89b4fa" offset="0"/>
-   <stop style="stop-color:#89dceb" offset="1"/>
+   <stop style="stop-color:#7f76a8" offset="0"/>
+   <stop style="stop-color:#8881b6" offset="1"/>
   </linearGradient>
   <linearGradient id="_Linear2" x2="1" gradientTransform="matrix(3.76966e-14,-615.633,615.633,3.76966e-14,534.968,867.778)" gradientUnits="userSpaceOnUse">
-   <stop style="stop-color:#89b4fa" offset="0"/>
-   <stop style="stop-color:#89dceb" offset="1"/>
+   <stop style="stop-color:#8076a8" offset="0"/>
+   <stop style="stop-color:#a5a9e5" offset="1"/>
   </linearGradient>
   <linearGradient id="_Linear3" x2="1" gradientTransform="matrix(2.10377e-15,34.3572,-34.3572,2.10377e-15,64.0825,86.7914)" gradientUnits="userSpaceOnUse">
-   <stop style="stop-color:#89b4fa" offset="0"/>
-   <stop style="stop-color:#89b4fa" offset="1"/>
+   <stop style="stop-color:#b4befe" offset="0"/>
+   <stop style="stop-color:#8178ab" offset="1"/>
   </linearGradient>
  </defs>
 </svg>

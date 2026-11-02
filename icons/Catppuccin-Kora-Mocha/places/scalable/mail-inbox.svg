@@ -14,33 +14,33 @@
  </g>
  <defs>
   <linearGradient id="_Linear1" x2="1" gradientTransform="matrix(3.76966e-14,-615.633,615.633,3.76966e-14,534.968,867.778)" gradientUnits="userSpaceOnUse">
-   <stop style="stop-color:#89b4fa" offset="0"/>
-   <stop style="stop-color:#89dceb" offset="1"/>
+   <stop style="stop-color:#7f76a8" offset="0"/>
+   <stop style="stop-color:#8881b6" offset="1"/>
   </linearGradient>
   <linearGradient id="_Linear2" x2="1" gradientTransform="matrix(3.76966e-14,-615.633,615.633,3.76966e-14,534.968,867.778)" gradientUnits="userSpaceOnUse">
-   <stop style="stop-color:#89b4fa" offset="0"/>
-   <stop style="stop-color:#89dceb" offset="1"/>
+   <stop style="stop-color:#8076a8" offset="0"/>
+   <stop style="stop-color:#a5a9e5" offset="1"/>
   </linearGradient>
   <radialGradient id="_Radial3" cx="0" cy="0" r="1" gradientTransform="matrix(0,112.647,-97.5239,0,63.9644,-58.9208)" gradientUnits="userSpaceOnUse">
-   <stop style="stop-color:#f9e2af" offset="0"/>
-   <stop style="stop-color:#f9e2af" offset=".26"/>
-   <stop style="stop-color:#f9e2af" offset=".66"/>
-   <stop style="stop-color:#a6e3a1" offset="1"/>
+   <stop style="stop-color:rgb(238,248,126)" offset="0"/>
+   <stop style="stop-color:rgb(205,227,79)" offset=".26"/>
+   <stop style="stop-color:rgb(147,183,35)" offset=".66"/>
+   <stop style="stop-color:rgb(90,126,13)" offset="1"/>
   </radialGradient>
   <linearGradient id="_Linear4" x2="1" gradientTransform="matrix(4.45015e-15,-72.6764,72.6764,4.45015e-15,51.8429,14.3217)" gradientUnits="userSpaceOnUse">
-   <stop style="stop-color:#a6e3a1" offset="0"/>
-   <stop style="stop-color:#f9e2af" offset="1"/>
+   <stop style="stop-color:rgb(63,112,16)" offset="0"/>
+   <stop style="stop-color:rgb(132,167,24)" offset="1"/>
   </linearGradient>
   <linearGradient id="_Linear5" x2="1" gradientTransform="matrix(4.06738e-15,66.4253,-66.4253,4.06738e-15,65.7156,-50.9692)" gradientUnits="userSpaceOnUse">
-   <stop style="stop-color:#1e1e2e;stop-opacity:.5" offset="0"/>
-   <stop style="stop-color:#1e1e2e;stop-opacity:.11" offset=".01"/>
-   <stop style="stop-color:#1e1e2e;stop-opacity:.11" offset=".47"/>
-   <stop style="stop-color:#1e1e2e;stop-opacity:.5" offset=".47"/>
-   <stop style="stop-color:#1e1e2e;stop-opacity:0" offset="1"/>
+   <stop style="stop-color:white;stop-opacity:.5" offset="0"/>
+   <stop style="stop-color:white;stop-opacity:.11" offset=".01"/>
+   <stop style="stop-color:white;stop-opacity:.11" offset=".47"/>
+   <stop style="stop-color:white;stop-opacity:.5" offset=".47"/>
+   <stop style="stop-color:white;stop-opacity:0" offset="1"/>
   </linearGradient>
   <linearGradient id="_Linear6" x2="1" gradientTransform="matrix(2.10377e-15,34.3572,-34.3572,2.10377e-15,64.0825,86.7914)" gradientUnits="userSpaceOnUse">
-   <stop style="stop-color:#89b4fa" offset="0"/>
-   <stop style="stop-color:#89b4fa" offset="1"/>
+   <stop style="stop-color:#b4befe" offset="0"/>
+   <stop style="stop-color:#8178ab" offset="1"/>
   </linearGradient>
  </defs>
 </svg>

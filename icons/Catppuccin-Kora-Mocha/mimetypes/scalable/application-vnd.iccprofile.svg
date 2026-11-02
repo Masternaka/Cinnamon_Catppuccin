@@ -3,12 +3,12 @@
  <path d="m32 17.384c-2.493 9.301-9.301 14.794-9.301 19.931s4.164 9.301 9.301 9.301 9.301-4.164 9.301-9.301-6.808-10.63-9.301-19.931" style="fill:url(#_Linear2)"/>
  <defs>
   <linearGradient id="_Linear1" x2="1" gradientTransform="matrix(3.03829e-15,-49.619,49.619,3.03829e-15,177.88,51.088)" gradientUnits="userSpaceOnUse">
-   <stop style="stop-color:#89b4fa" offset="0"/>
-   <stop style="stop-color:#cdd6f4" offset="1"/>
+   <stop style="stop-color:#9ab8ff" offset="0"/>
+   <stop style="stop-color:#e5f3ff" offset="1"/>
   </linearGradient>
   <linearGradient id="_Linear2" x2="1" gradientTransform="matrix(1.78992e-15,-29.2316,29.2316,1.78992e-15,32,46.6158)" gradientUnits="userSpaceOnUse">
-   <stop style="stop-color:#89dceb;stop-opacity:.9" offset="0"/>
-   <stop style="stop-color:#f5c2e7;stop-opacity:.9" offset="1"/>
+   <stop style="stop-color:#0096e9;stop-opacity:.9" offset="0"/>
+   <stop style="stop-color:#ff00c7;stop-opacity:.9" offset="1"/>
   </linearGradient>
  </defs>
 </svg>

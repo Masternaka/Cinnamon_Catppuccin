@@ -1,15 +1,19 @@
 #!/usr/bin/env python3
-"""Recolore les thèmes Kora et Vimix avec la palette Catppuccin Mocha.
+"""Recolore Kora et Vimix avec la palette Catppuccin Mocha, accent mauve.
 
-Le script modifie les fichiers en place, de façon idempotente :
+La recoloration reste volontairement proche du thème d'origine :
 
-  icons/Catppuccin-Kora-Mocha/    (SVG, catégories d'interface uniquement)
-  cursors/Catppuccin-Vimix-Mocha/ (Xcursor)
+  - les cinq couleurs du schéma Kora (texte, surbrillance, neutre, positif,
+    négatif) deviennent les équivalents Catppuccin ;
+  - dans les icônes de dossiers, seuls les bleus/cyans sont ramenés vers la
+    famille mauve/lavande, pour donner l'accent mauve sans toucher aux autres
+    couleurs ;
+  - les icônes d'applications (`apps/`), les blancs, les gris et les autres
+    couleurs sont conservés ;
+  - pour les curseurs, seuls le corps, le contour et les accents connus sont
+    remplacés.
 
-Les icônes d'applications (apps/) sont volontairement laissées intactes pour
-préserver les logos de marque. Les valeurs déjà présentes dans la palette
-Catppuccin ne sont pas retouchées, ce qui permet de relancer le script sans
-dérive.
+Le script modifie les fichiers en place, de façon idempotente.
 """
 
 from __future__ import annotations
@@ -27,7 +31,6 @@ PALETTE_PATH = ROOT / "palette.json"
 ICON_DIR = ROOT / "icons" / "Catppuccin-Kora-Mocha"
 CURSOR_DIR = ROOT / "cursors" / "Catppuccin-Vimix-Mocha"
 
-# Catégories Kora recolorées. Les icônes de marque (apps/) sont exclues.
 ICON_CATEGORIES = (
     "actions",
     "animations",
@@ -46,39 +49,6 @@ RGB_RE = re.compile(r"rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)")
 RGBA_RE = re.compile(
     r"rgba\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*([0-9.]+)\s*\)"
 )
-NAMED_COLOR_RE = re.compile(
-    r'(?P<prefix>(?:fill|stroke|stop-color|color)\s*[:=]\s*["\']?)'
-    r'(?P<name>white|black)'
-    r'(?P<suffix>["\']?)',
-    re.IGNORECASE,
-)
-
-GRAY_RAMP = (
-    "text",
-    "subtext1",
-    "subtext0",
-    "overlay2",
-    "overlay1",
-    "overlay0",
-    "surface2",
-    "surface1",
-    "surface0",
-    "base",
-    "mantle",
-    "crust",
-)
-
-HUE_RAMP = (
-    "red",
-    "peach",
-    "yellow",
-    "green",
-    "teal",
-    "sky",
-    "blue",
-    "mauve",
-    "pink",
-)
 
 
 def hex_to_rgb(value: str) -> tuple[int, int, int]:
@@ -92,6 +62,19 @@ def rgb_to_hex(rgb: tuple[int, int, int]) -> str:
     return "#{:02x}{:02x}{:02x}".format(*rgb)
 
 
+def mix_rgb(
+    first: tuple[int, int, int], second: tuple[int, int, int], amount: float
+) -> tuple[int, int, int]:
+    return tuple(
+        round(start + (end - start) * amount)
+        for start, end in zip(first, second)
+    )
+
+
+def clamp(value: float, minimum: float = 0.0, maximum: float = 1.0) -> float:
+    return max(minimum, min(maximum, value))
+
+
 def srgb_to_linear(component: int) -> float:
     value = component / 255.0
     if value <= 0.04045:
@@ -99,20 +82,14 @@ def srgb_to_linear(component: int) -> float:
     return ((value + 0.055) / 1.055) ** 2.4
 
 
-def rgb_to_lab(rgb: tuple[int, int, int]) -> tuple[float, float, float]:
+def relative_luminance(rgb: tuple[int, int, int]) -> float:
     red, green, blue = (srgb_to_linear(component) for component in rgb)
-    x = red * 0.4124564 + green * 0.3575761 + blue * 0.1804375
-    y = red * 0.2126729 + green * 0.7151522 + blue * 0.0721750
-    z = red * 0.0193339 + green * 0.1191920 + blue * 0.9503041
+    return 0.2126 * red + 0.7152 * green + 0.0722 * blue
 
-    def pivot(value: float) -> float:
-        delta = 6.0 / 29.0
-        if value > delta**3:
-            return value ** (1.0 / 3.0)
-        return value / (3 * delta * delta) + 4.0 / 29.0
 
-    fx, fy, fz = pivot(x / 0.95047), pivot(y / 1.0), pivot(z / 1.08883)
-    return 116 * fy - 16, 500 * (fx - fy), 200 * (fy - fz)
+def saturation(rgb: tuple[int, int, int]) -> float:
+    highest, lowest = max(rgb), min(rgb)
+    return 0.0 if highest == 0 else (highest - lowest) / highest
 
 
 def rgb_to_hue(rgb: tuple[int, int, int]) -> float:
@@ -130,32 +107,8 @@ def rgb_to_hue(rgb: tuple[int, int, int]) -> float:
     return hue * 60.0
 
 
-def hue_distance(first: float, second: float) -> float:
-    difference = abs(first - second) % 360.0
-    return min(difference, 360.0 - difference)
-
-
-def color_distance(first: str, second: str) -> float:
-    first_lab = rgb_to_lab(hex_to_rgb(first))
-    second_lab = rgb_to_lab(hex_to_rgb(second))
-    return math.sqrt(sum((a - b) ** 2 for a, b in zip(first_lab, second_lab)))
-
-
-def saturation(rgb: tuple[int, int, int]) -> float:
-    highest, lowest = max(rgb), min(rgb)
-    return 0.0 if highest == 0 else (highest - lowest) / highest
-
-
-def is_grayish(rgb: tuple[int, int, int]) -> bool:
-    return max(rgb) - min(rgb) <= 45 and saturation(rgb) <= 0.35
-
-
-def is_white(rgb: tuple[int, int, int]) -> bool:
-    return min(rgb) >= 245
-
-
-def is_black(rgb: tuple[int, int, int]) -> bool:
-    return max(rgb) <= 12
+def is_blue_family(rgb: tuple[int, int, int]) -> bool:
+    return saturation(rgb) > 0.25 and 185.0 <= rgb_to_hue(rgb) <= 230.0
 
 
 class Recolored:
@@ -163,18 +116,21 @@ class Recolored:
         palette = json.loads(PALETTE_PATH.read_text(encoding="utf-8"))
         if flavor not in palette["flavors"]:
             raise ValueError(f"Flavor inconnu : {flavor}")
-        if accent not in palette["flavors"][flavor]["colors"]:
-            raise ValueError(f"Accent inconnu : {accent}")
         colors = palette["flavors"][flavor]["colors"]
+        if accent not in colors:
+            raise ValueError(f"Accent inconnu : {accent}")
+
         self.colors = colors
         self.accent = colors[accent]
         self.text = colors["text"]
         self.base = colors["base"]
         self.crust = colors["crust"]
+        self.places_dark = mix_rgb(
+            hex_to_rgb(colors["mauve"]), hex_to_rgb(colors["base"]), 0.55
+        )
+        self.places_light = hex_to_rgb(colors["lavender"])
 
         self.palette_set = {value.lower() for value in colors.values()}
-        self.grays = [colors[name] for name in GRAY_RAMP]
-        self.hues = [colors[name] for name in HUE_RAMP]
         self.scheme = {
             "#dfdfdf": self.text,
             "#4285f4": self.accent,
@@ -182,89 +138,65 @@ class Recolored:
             "#4caf50": colors["green"],
             "#f44336": colors["red"],
         }
-
-    def nearest(self, rgb: tuple[int, int, int], candidates: list[str]) -> str:
-        value = rgb_to_hex(rgb)
-        return min(candidates, key=lambda candidate: color_distance(value, candidate))
+        self.cursor_map = {
+            (51, 51, 51): colors["base"],
+            (255, 255, 255): colors["text"],
+            (26, 26, 26): colors["crust"],
+            (25, 118, 210): self.accent,
+            (76, 175, 80): colors["green"],
+            (237, 21, 21): colors["red"],
+            (255, 193, 7): colors["yellow"],
+            (255, 61, 0): colors["peach"],
+            (246, 116, 0): colors["peach"],
+            (255, 42, 42): colors["red"],
+        }
 
     def map_rgb(
-        self, rgb: tuple[int, int, int], colored_context: bool
+        self, rgb: tuple[int, int, int], in_places: bool
     ) -> tuple[int, int, int]:
         value = rgb_to_hex(rgb)
         if value in self.palette_set:
             return rgb
         if value in self.scheme:
             return hex_to_rgb(self.scheme[value])
-        if is_white(rgb):
-            return hex_to_rgb(self.base if colored_context else self.text)
-        if is_black(rgb):
-            return hex_to_rgb(self.crust)
-        if is_grayish(rgb):
-            return hex_to_rgb(self.nearest(rgb, self.grays))
-        return hex_to_rgb(
-            min(
-                self.hues,
-                key=lambda color: hue_distance(rgb_to_hue(rgb), rgb_to_hue(hex_to_rgb(color))),
-            )
-        )
+        if in_places and is_blue_family(rgb):
+            position = clamp((relative_luminance(rgb) - 0.06) / 0.49)
+            return mix_rgb(self.places_dark, self.places_light, position)
+        return rgb
 
-    def map_text(self, text: str) -> tuple[str, int]:
-        colors = [
-            hex_to_rgb(match.group(1))
-            for match in HEX_RE.finditer(text)
-        ]
-        colors.extend(
-            (int(match.group(1)), int(match.group(2)), int(match.group(3)))
-            for match in RGB_RE.finditer(text)
-        )
-        colors.extend(
-            (int(match.group(1)), int(match.group(2)), int(match.group(3)))
-            for match in RGBA_RE.finditer(text)
-        )
-        colored_context = any(
-            not is_grayish(rgb) and not is_white(rgb) and not is_black(rgb)
-            for rgb in colors
-        )
+    def map_text(self, text: str, in_places: bool) -> tuple[str, int]:
         changes = 0
 
         def replace_rgba(match: re.Match[str]) -> str:
             nonlocal changes
             rgb = (int(match.group(1)), int(match.group(2)), int(match.group(3)))
-            mapped = self.map_rgb(rgb, colored_context)
-            if mapped != rgb:
-                changes += 1
+            mapped = self.map_rgb(rgb, in_places)
+            if mapped == rgb:
+                return match.group(0)
+            changes += 1
             return "rgba({}, {}, {}, {})".format(*mapped, match.group(4))
 
         def replace_rgb(match: re.Match[str]) -> str:
             nonlocal changes
             rgb = (int(match.group(1)), int(match.group(2)), int(match.group(3)))
-            mapped = self.map_rgb(rgb, colored_context)
-            if mapped != rgb:
-                changes += 1
+            mapped = self.map_rgb(rgb, in_places)
+            if mapped == rgb:
+                return match.group(0)
+            changes += 1
             return rgb_to_hex(mapped)
 
         def replace_hex(match: re.Match[str]) -> str:
             nonlocal changes
-            original = match.group(1)
-            rgb = hex_to_rgb(original)
-            mapped = self.map_rgb(rgb, colored_context)
-            if mapped != rgb:
-                changes += 1
-            return rgb_to_hex(mapped)
-
-        def replace_named(match: re.Match[str]) -> str:
-            nonlocal changes
-            given = match.group("name").lower()
-            mapped = self.base if (given == "white" and colored_context) else (
-                self.text if given == "white" else self.crust
-            )
+            rgb = hex_to_rgb(match.group(1))
+            mapped = self.map_rgb(rgb, in_places)
+            if mapped == rgb:
+                return match.group(0)
             changes += 1
-            return match.group("prefix") + mapped + match.group("suffix")
+            return rgb_to_hex(mapped)
 
         text = RGBA_RE.sub(replace_rgba, text)
         text = RGB_RE.sub(replace_rgb, text)
         text = HEX_RE.sub(replace_hex, text)
-        text = NAMED_COLOR_RE.sub(replace_named, text)
         return text, changes
 
 
@@ -289,11 +221,12 @@ def recolor_icons(recolor: Recolored, dry_run: bool) -> tuple[int, int]:
         category_dir = ICON_DIR / category
         if not category_dir.is_dir():
             continue
+        in_places = category == "places"
         for path in iter_regular_files(category_dir):
             if path.suffix.lower() != ".svg":
                 continue
             text = path.read_text(encoding="utf-8")
-            updated, count = recolor.map_text(text)
+            updated, count = recolor.map_text(text, in_places)
             if count:
                 changed_files += 1
                 changed_values += count
@@ -322,8 +255,17 @@ def recolor_xcursor(data: bytes, recolor: Recolored) -> tuple[bytes, int]:
         changes = 0
         for offset in range(0, len(pixels), 4):
             blue, green, red, alpha = pixels[offset : offset + 4]
-            mapped = recolor.map_rgb((red, green, blue), colored_context=False)
-            if mapped != (red, green, blue):
+            rgb = (red, green, blue)
+            value = rgb_to_hex(rgb)
+            if value in recolor.palette_set:
+                mapped = rgb
+            elif rgb in recolor.cursor_map:
+                mapped = hex_to_rgb(recolor.cursor_map[rgb])
+            elif is_blue_family(rgb):
+                mapped = hex_to_rgb(recolor.accent)
+            else:
+                mapped = rgb
+            if mapped != rgb:
                 changes += 1
                 pixels[offset : offset + 4] = bytes(
                     (mapped[2], mapped[1], mapped[0], alpha)
@@ -422,7 +364,11 @@ def update_index_files() -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--flavor", default="mocha", help="flavor Catppuccin (mocha)")
-    parser.add_argument("--accent", default="blue", help="accent Catppuccin (blue)")
+    parser.add_argument(
+        "--accent",
+        default="mauve",
+        help="accent Catppuccin utilisé pour la surbrillance (mauve)",
+    )
     parser.add_argument(
         "--dry-run", action="store_true", help="affiche les changements sans écrire"
     )

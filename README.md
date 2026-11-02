@@ -10,7 +10,7 @@ Alt-Tab, les notifications, l'OSD, le calendrier, les dialogues, l'écran de
 verrouillage, Expo, les desklets, IBus et le clavier virtuel. Il fournit aussi
 un thème GTK 2, GTK 3 et GTK 4 pour les applications, généré depuis la même
 palette et basé sur Adwaita. Des thèmes complémentaires recolorés fournissent
-aussi les icônes (Kora) et les curseurs (Vimix) en Mocha avec l’accent bleu.
+aussi les icônes (Kora) et les curseurs (Vimix) en Mocha avec l’accent mauve.
 
 ## Aperçus
 
@@ -27,10 +27,10 @@ Une galerie HTML autonome des quatre variantes est également générée dans
 
 | Variante | Type | Fond | Panneau | Texte | Accent |
 | --- | --- | --- | --- | --- | --- |
-| Catppuccin Latte | clair | `#eff1f5` | `#dce0e8` | `#4c4f69` | `#1e66f5` |
-| Catppuccin Frappé | sombre | `#303446` | `#232634` | `#c6d0f5` | `#8caaee` |
-| Catppuccin Macchiato | sombre | `#24273a` | `#181926` | `#cad3f5` | `#8aadf4` |
-| Catppuccin Mocha | sombre | `#1e1e2e` | `#11111b` | `#cdd6f4` | `#89b4fa` |
+| Catppuccin Latte | clair | `#eff1f5` | `#dce0e8` | `#4c4f69` | `#8839ef` |
+| Catppuccin Frappé | sombre | `#303446` | `#232634` | `#c6d0f5` | `#ca9ee6` |
+| Catppuccin Macchiato | sombre | `#24273a` | `#181926` | `#cad3f5` | `#c6a0f6` |
+| Catppuccin Mocha | sombre | `#1e1e2e` | `#11111b` | `#cdd6f4` | `#cba6f7` |
 
 Chaque flavor est un thème distinct : les quatre apparaissent séparément dans
 **Paramètres → Thèmes**, à la fois dans **Bureau** (interface Cinnamon) et dans
@@ -81,7 +81,7 @@ Les archives `dist/Catppuccin-<Flavor>.zip` contiennent le dossier complet du
 thème. L'archive `dist/Catppuccin-Cinnamon-all-flavors.zip` regroupe les quatre
 variantes. `dist/Catppuccin-Kora-Mocha-Icons.zip` et
 `dist/Catppuccin-Vimix-Mocha-Cursors.zip` contiennent les thèmes
-complémentaires recolorés (Mocha, accent bleu).
+complémentaires recolorés (Mocha, accent mauve).
 
 ### Activation
 
@@ -119,19 +119,18 @@ make build
 ```
 
 Les fichiers générés sont écrits dans `dist/` et les aperçus SVG dans
-`previews/`. Pour changer la couleur d'accentuation (bleu par défaut) :
+`previews/`. Pour changer la couleur d'accentuation (mauve par défaut) :
 
 ```bash
-python3 scripts/build.py --accent mauve
+python3 scripts/build.py --accent blue
 # ou
-make ACCENT=mauve
+make ACCENT=blue
 ```
 
 Accents disponibles : `rosewater`, `flamingo`, `pink`, `mauve`, `red`,
 `maroon`, `peach`, `yellow`, `green`, `teal`, `sky`, `sapphire`, `blue`,
 `lavender`. L'accent ne s'applique qu'aux thèmes Cinnamon/GTK ; les icônes et
-curseurs complémentaires sont recolorés une fois pour **Mocha** avec l'accent
-bleu.
+curseurs complémentaires restent en **Mocha/mauve** quel que soit l'accent.
 
 Pour régénérer les icônes Kora et les curseurs Vimix après une modification :
 
@@ -174,7 +173,7 @@ Les sept archives zip sont reproductibles : leurs entrées portent une date fixe
 bien que deux compilations produisent des fichiers identiques octet pour octet
 (la variable `SOURCE_DATE_EPOCH` est respectée si elle est définie).
 
-Un second passage compile le thème avec un autre accent (`--accent mauve`) pour
+Un second passage compile le thème avec un autre accent (`--accent blue`) pour
 détecter un jeton spécifique à l'accent par défaut.
 
 ### Publication
@@ -199,7 +198,7 @@ src/gtk2.gtkrc.in         couleurs GTK 2 (gabarit)
 src/index.theme.in        métadonnées du thème
 src/overview.html.in      gabarit de la galerie HTML
 scripts/build.py          génération des thèmes, assets, PNG et archives
-scripts/recolor_companions.py  recoloration de Kora et Vimix (Mocha, accent bleu)
+scripts/recolor_companions.py  recoloration de Kora et Vimix (Mocha, accent mauve)
 scripts/test_build.py     tests unitaires des helpers de build (contrastes, jetons)
 scripts/check.sh          contrôles statiques, compilation temporaire et comparaison de dist/ et previews/
 scripts/verify-cinnamon.sh vérification d'une installation dans une session Cinnamon (lecture seule)
@@ -277,10 +276,10 @@ Le thème suit le guide de style Catppuccin :
 - **Survol et sélection** : `Surface 0`, `Surface 1` et `Surface 2`.
 - **Texte principal** : `Text` ; texte secondaire : `Subtext 0/1` ;
   désactivé : `Overlay 1`.
-- **Accent** : `Blue` par défaut, avec `Base` comme texte sur accent.
+- **Accent** : `Mauve` par défaut, avec `Base` comme texte sur accent.
 - **Liens** : `Blue` ; survol : `Sky`.
 - **Succès / avertissement / erreur** : `Green` / `Yellow` / `Red`.
-- **Sélection de texte** : `Blue` avec texte `Base` ; sélection générique :
+- **Sélection de texte** : `Mauve` avec texte `Base` ; sélection générique :
   `Overlay 2` à 30 %.
 - **Coins arrondis** : 8 px pour les éléments, 12 à 18 px pour les surfaces.
 
@@ -291,11 +290,14 @@ l'esthétique Catppuccin. La partie GTK réutilise exactement ces jetons :
 les boutons suggérés et les interrupteurs.
 
 Les thèmes complémentaires suivent la même palette, en **Mocha avec l'accent
-bleu** : les icônes d'interface Kora (dossiers, actions, panneau, statut,
+mauve** : les icônes d'interface Kora (dossiers, actions, panneau, statut,
 catégories) et les curseurs Vimix sont recolorés, tandis que les icônes
-d'applications (`apps/`) conservent leurs couleurs de marque. Les curseurs
-utilisent `Base` pour le corps, `Text` pour le contour et les accents
-Catppuccin pour les badges (copie, aide, interdiction, attente).
+d'applications (`apps/`) conservent leurs couleurs de marque. La recoloration
+reste volontairement proche de Kora : les autres couleurs, blancs et gris sont
+conservés pour préserver la lisibilité ; seuls le schéma de couleurs Kora et
+les bleus des dossiers sont ajustés. Les curseurs utilisent `Base` pour le
+corps, `Text` pour le contour et les accents Catppuccin pour les badges
+(copie, aide, interdiction, attente).
 
 ## Accessibilité et contrastes
 
@@ -317,7 +319,7 @@ dessus du seuil.
 
 La couleur du texte posé sur l'accent suit la même règle : `@on_accent@`
 reste `Base` (recommandation Catppuccin) tant que le couple atteint 4,5:1, ce
-qui couvre les quatre flavors avec l'accent bleu par défaut et tous les flavors
+qui couvre les quatre flavors avec l'accent mauve par défaut et tous les flavors
 sombres. Si l'accent choisi est trop clair ou trop moyen — `yellow`, `peach`,
 `rosewater` sur Latte — le build retient la meilleure des deux couleurs
 `Base`/`Text` et n'en ajuste que la luminosité, donc un texte foncé sur un fond
@@ -325,7 +327,7 @@ ambré. La partie GTK applique la même règle aux remplissages sémantiques ave
 `@on_success@`, `@on_warning@`, `@on_error@` et `@on_info@`.
 
 Tous les couples contrôlés atteignent désormais 4,5:1 sur les quatre flavors,
-avec l'accent bleu comme avec les treize autres accents. `make check` et la CI
+avec l'accent mauve comme avec les treize autres accents. `make check` et la CI
 compilent en mode `--strict-contrast` : un écart introduit dans le gabarit fait
 échouer le contrôle au lieu de passer inaperçu. Pour un diagnostic local :
 
@@ -340,7 +342,7 @@ python3 scripts/build.py                     # affiche seulement les écarts
   d'applications (Cinnamon 6.6+) et de l'ancien menu sont tous les deux inclus.
 - Le thème couvre l'interface Cinnamon (shell) et les applications GTK 2/3/4.
   Les thèmes complémentaires Kora (icônes) et Vimix (curseurs) sont fournis en
-  Mocha avec l'accent bleu ; ils ne suivent pas les autres flavors ni les
+  Mocha avec l'accent mauve ; ils ne suivent pas les autres flavors ni les
   autres accents. Les icônes d'applications gardent leurs couleurs d'origine.
 - Les décorations de fenêtres (Metacity/Muffin) restent hors périmètre : elles
   demanderaient un thème `metacity-1` distinct.

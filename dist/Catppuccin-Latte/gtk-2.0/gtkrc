@@ -9,7 +9,7 @@
 # stock GTK 2 engine.
 # ============================================================================
 
-gtk-color-scheme = "fg_color:#4c4f69\nbg_color:#eff1f5\nbase_color:#eff1f5\ntext_color:#4c4f69\nselected_bg_color:#1e66f5\nselected_fg_color:#f4f5f8\ntooltip_bg_color:#e6e9ef\ntooltip_fg_color:#4c4f69\nlink_color:#0a55ea"
+gtk-color-scheme = "fg_color:#4c4f69\nbg_color:#eff1f5\nbase_color:#eff1f5\ntext_color:#4c4f69\nselected_bg_color:#8839ef\nselected_fg_color:#eff1f5\ntooltip_bg_color:#e6e9ef\ntooltip_fg_color:#4c4f69\nlink_color:#0a55ea"
 
 style "catppuccin-default" {
   xthickness = 1
@@ -18,25 +18,25 @@ style "catppuccin-default" {
   fg[NORMAL]        = "#4c4f69"
   fg[PRELIGHT]      = "#4c4f69"
   fg[ACTIVE]        = "#4c4f69"
-  fg[SELECTED]      = "#f4f5f8"
+  fg[SELECTED]      = "#eff1f5"
   fg[INSENSITIVE]   = "#8c8fa1"
 
   bg[NORMAL]        = "#eff1f5"
   bg[PRELIGHT]      = "#ccd0da"
   bg[ACTIVE]        = "#bcc0cc"
-  bg[SELECTED]      = "#1e66f5"
+  bg[SELECTED]      = "#8839ef"
   bg[INSENSITIVE]   = "#e6e9ef"
 
   base[NORMAL]      = "#eff1f5"
   base[PRELIGHT]    = "#ccd0da"
   base[ACTIVE]      = "#bcc0cc"
-  base[SELECTED]    = "#1e66f5"
+  base[SELECTED]    = "#8839ef"
   base[INSENSITIVE] = "#e6e9ef"
 
   text[NORMAL]      = "#4c4f69"
   text[PRELIGHT]    = "#4c4f69"
   text[ACTIVE]      = "#4c4f69"
-  text[SELECTED]    = "#f4f5f8"
+  text[SELECTED]    = "#eff1f5"
   text[INSENSITIVE] = "#8c8fa1"
 }
 
@@ -71,25 +71,25 @@ style "catppuccin-entry" {
   fg[NORMAL]        = "#4c4f69"
   fg[PRELIGHT]      = "#4c4f69"
   fg[ACTIVE]        = "#4c4f69"
-  fg[SELECTED]      = "#f4f5f8"
+  fg[SELECTED]      = "#eff1f5"
   fg[INSENSITIVE]   = "#8c8fa1"
 
   bg[NORMAL]        = "#ccd0da"
   bg[PRELIGHT]      = "#ccd0da"
   bg[ACTIVE]        = "#ccd0da"
-  bg[SELECTED]      = "#1e66f5"
+  bg[SELECTED]      = "#8839ef"
   bg[INSENSITIVE]   = "#e6e9ef"
 
   base[NORMAL]      = "#ccd0da"
   base[PRELIGHT]    = "#ccd0da"
   base[ACTIVE]      = "#ccd0da"
-  base[SELECTED]    = "#1e66f5"
+  base[SELECTED]    = "#8839ef"
   base[INSENSITIVE] = "#e6e9ef"
 
   text[NORMAL]      = "#4c4f69"
   text[PRELIGHT]    = "#4c4f69"
   text[ACTIVE]      = "#4c4f69"
-  text[SELECTED]    = "#f4f5f8"
+  text[SELECTED]    = "#eff1f5"
   text[INSENSITIVE] = "#8c8fa1"
 }
 
@@ -102,13 +102,13 @@ style "catppuccin-menu" {
   fg[NORMAL]        = "#4c4f69"
   fg[PRELIGHT]      = "#4c4f69"
   fg[ACTIVE]        = "#4c4f69"
-  fg[SELECTED]      = "#f4f5f8"
+  fg[SELECTED]      = "#eff1f5"
   fg[INSENSITIVE]   = "#8c8fa1"
 
   bg[NORMAL]        = "#e6e9ef"
   bg[PRELIGHT]      = "#ccd0da"
   bg[ACTIVE]        = "#bcc0cc"
-  bg[SELECTED]      = "#1e66f5"
+  bg[SELECTED]      = "#8839ef"
   bg[INSENSITIVE]   = "#e6e9ef"
 }
 

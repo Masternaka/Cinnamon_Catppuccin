@@ -9,7 +9,7 @@
 # stock GTK 2 engine.
 # ============================================================================
 
-gtk-color-scheme = "fg_color:#cdd6f4\nbg_color:#1e1e2e\nbase_color:#1e1e2e\ntext_color:#cdd6f4\nselected_bg_color:#89b4fa\nselected_fg_color:#1e1e2e\ntooltip_bg_color:#181825\ntooltip_fg_color:#cdd6f4\nlink_color:#89b4fa"
+gtk-color-scheme = "fg_color:#cdd6f4\nbg_color:#1e1e2e\nbase_color:#1e1e2e\ntext_color:#cdd6f4\nselected_bg_color:#cba6f7\nselected_fg_color:#1e1e2e\ntooltip_bg_color:#181825\ntooltip_fg_color:#cdd6f4\nlink_color:#89b4fa"
 
 style "catppuccin-default" {
   xthickness = 1
@@ -24,13 +24,13 @@ style "catppuccin-default" {
   bg[NORMAL]        = "#1e1e2e"
   bg[PRELIGHT]      = "#313244"
   bg[ACTIVE]        = "#45475a"
-  bg[SELECTED]      = "#89b4fa"
+  bg[SELECTED]      = "#cba6f7"
   bg[INSENSITIVE]   = "#181825"
 
   base[NORMAL]      = "#1e1e2e"
   base[PRELIGHT]    = "#313244"
   base[ACTIVE]      = "#45475a"
-  base[SELECTED]    = "#89b4fa"
+  base[SELECTED]    = "#cba6f7"
   base[INSENSITIVE] = "#181825"
 
   text[NORMAL]      = "#cdd6f4"
@@ -77,13 +77,13 @@ style "catppuccin-entry" {
   bg[NORMAL]        = "#313244"
   bg[PRELIGHT]      = "#313244"
   bg[ACTIVE]        = "#313244"
-  bg[SELECTED]      = "#89b4fa"
+  bg[SELECTED]      = "#cba6f7"
   bg[INSENSITIVE]   = "#181825"
 
   base[NORMAL]      = "#313244"
   base[PRELIGHT]    = "#313244"
   base[ACTIVE]      = "#313244"
-  base[SELECTED]    = "#89b4fa"
+  base[SELECTED]    = "#cba6f7"
   base[INSENSITIVE] = "#181825"
 
   text[NORMAL]      = "#cdd6f4"
@@ -108,7 +108,7 @@ style "catppuccin-menu" {
   bg[NORMAL]        = "#181825"
   bg[PRELIGHT]      = "#313244"
   bg[ACTIVE]        = "#45475a"
-  bg[SELECTED]      = "#89b4fa"
+  bg[SELECTED]      = "#cba6f7"
   bg[INSENSITIVE]   = "#181825"
 }
 

@@ -19,11 +19,11 @@
        inkscape:collect="always"
        id="linearGradient4197">
       <stop
-         style="stop-color:#fab387;stop-opacity:1"
+         style="stop-color:#ff7900;stop-opacity:1"
          offset="0"
          id="stop4199" />
       <stop
-         style="stop-color:#f9e2af;stop-opacity:1"
+         style="stop-color:#ffb500;stop-opacity:1"
          offset="1"
          id="stop4201" />
     </linearGradient>
@@ -55,7 +55,7 @@
          sodipodi:cx="23.953136"
          sodipodi:sides="3"
          id="path4248"
-         style="opacity:1;fill:url(#linearGradient4250);fill-opacity:1;stroke:#1e1e2e;stroke-width:0.97951287;stroke-opacity:1"
+         style="opacity:1;fill:url(#linearGradient4250);fill-opacity:1;stroke:#ffffff;stroke-width:0.97951287;stroke-opacity:1"
          sodipodi:type="star" />
     </clipPath>
     <linearGradient
@@ -102,8 +102,8 @@
   </defs>
   <sodipodi:namedview
      id="base"
-     pagecolor="#313244"
-     bordercolor="#585b70"
+     pagecolor="#3c3c3c"
+     bordercolor="#666666"
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
@@ -140,7 +140,7 @@
         <path
            id="rect4217"
            d="m 23.993885,1018.264 0.01225,0 c 1.081533,0 1.952225,0.8707 1.952225,1.9522 l 0,13.7207 c 0,1.0816 -0.870692,1.9523 -1.952225,1.9523 l -0.01225,0 c -1.081532,0 -1.952225,-0.8707 -1.952225,-1.9523 l 0,-13.7207 c 0,-1.0815 0.870693,-1.9522 1.952225,-1.9522 z"
-           style="opacity:1;fill:#1e1e2e;fill-opacity:1"
+           style="opacity:1;fill:#ffffff;fill-opacity:1"
            inkscape:connector-curvature="0" />
         <rect
            rx="17.232611"
@@ -150,7 +150,7 @@
            height="3.916702"
            width="3.916702"
            id="rect4681"
-           style="opacity:1;fill:#1e1e2e;fill-opacity:1" />
+           style="opacity:1;fill:#ffffff;fill-opacity:1" />
       </g>
     </g>
   </g>

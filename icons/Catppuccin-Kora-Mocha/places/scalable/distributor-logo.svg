@@ -9,12 +9,12 @@
  </g>
  <defs>
   <linearGradient id="_Linear1" x2="1" gradientTransform="matrix(-5.64544,502.068,-502.068,-5.64544,261.645,4.99729)" gradientUnits="userSpaceOnUse">
-   <stop style="stop-color:#a6adc8" offset="0"/>
-   <stop style="stop-color:#6c7086" offset="1"/>
+   <stop style="stop-color:#b7b7b7" offset="0"/>
+   <stop style="stop-color:#6f6f6f" offset="1"/>
   </linearGradient>
   <linearGradient id="_Linear2" x2="1" gradientTransform="matrix(-20.5954,391.094,-391.094,-20.5954,262.491,61.8622)" gradientUnits="userSpaceOnUse">
-   <stop style="stop-color:#cdd6f4" offset="0"/>
-   <stop style="stop-color:#bac2de" offset="1"/>
+   <stop style="stop-color:#fdfdfd" offset="0"/>
+   <stop style="stop-color:#bfbfbf" offset="1"/>
   </linearGradient>
  </defs>
 </svg>

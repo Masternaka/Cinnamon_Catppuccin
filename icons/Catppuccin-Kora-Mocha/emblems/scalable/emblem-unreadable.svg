@@ -4,12 +4,12 @@
  <path d="m63.077 20l-15.077 15.077-15.077-15.077-12.923 12.923 15.077 15.077-15.077 15.077 12.923 12.923 15.077-15.077 15.077 15.077 12.923-12.923-15.077-15.077 15.077-15.077-12.923-12.923z" style="fill-rule:nonzero;fill:url(#_Linear2)" serif:id="Symbol"/>
  <defs>
   <linearGradient id="_Linear1" x2="1" gradientTransform="matrix(-1.7253,58.4193,-58.4193,-1.7253,49.7253,20)" gradientUnits="userSpaceOnUse">
-   <stop style="stop-color:#cdd6f4;stop-opacity:.239216" offset="0"/>
-   <stop style="stop-color:#a6adc8" offset="1"/>
+   <stop style="stop-color:#fff;stop-opacity:.239216" offset="0"/>
+   <stop style="stop-color:#b3b3b3" offset="1"/>
   </linearGradient>
   <linearGradient id="_Linear2" x2="1" gradientTransform="matrix(-.543836 53.4362 -53.4362 -.543836 48.9068 22.6286)" gradientUnits="userSpaceOnUse">
-   <stop style="stop-color:#181825" offset="0"/>
-   <stop style="stop-color:#313244" offset="1"/>
+   <stop style="stop-color:#292929" offset="0"/>
+   <stop style="stop-color:#353535" offset="1"/>
   </linearGradient>
  </defs>
 </svg>

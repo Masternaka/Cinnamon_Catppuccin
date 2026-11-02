@@ -13,12 +13,12 @@
   </g>
  </g>
  <g transform="matrix(.0778555 0 0 .0563743 13.662 4.67306)">
-  <ellipse cx="132.784" cy="637.424" rx="20.679" ry="29.856" style="fill:#89dceb"/>
+  <ellipse cx="132.784" cy="637.424" rx="20.679" ry="29.856" style="fill:rgb(8,139,171)"/>
  </g>
  <defs>
   <linearGradient id="_Linear1" x2="1" gradientTransform="matrix(1.39319e-14,-408.737,227.524,2.5028e-14,6206.55,550.412)" gradientUnits="userSpaceOnUse">
-   <stop style="stop-color:#89dceb" offset="0"/>
-   <stop style="stop-color:#89dceb" offset="1"/>
+   <stop style="stop-color:rgb(0,103,131)" offset="0"/>
+   <stop style="stop-color:rgb(19,190,227)" offset="1"/>
   </linearGradient>
   <image id="_Image3" width="27px" height="39px" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAnCAYAAAD+bDODAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAaUlEQVRYhe2XwQkAIAwDq7iOuP909Sn9FEUNGuoAOdsTgqnWpgI6GQWCw4oqbIvEkxHDRKCT7UbMB7y9xp27Eb/G+6wBMM5ug6mdRcUEzIF9VjFLsHB2AEZWMQYWzv6DnYzzw3id8f6pO+eQVcJ9wptrAAAAAElFTkSuQmCC"/>
  </defs>

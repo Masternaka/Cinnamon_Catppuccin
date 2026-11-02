@@ -1,5 +1,5 @@
 PYTHON ?= python3
-ACCENT ?= blue
+ACCENT ?= mauve
 
 .PHONY: all build check install clean preview companions
 

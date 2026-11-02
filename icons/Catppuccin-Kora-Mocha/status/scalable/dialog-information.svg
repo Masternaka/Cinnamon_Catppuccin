@@ -15,8 +15,8 @@
    sodipodi:docname="dialog-information.svg">
   <sodipodi:namedview
      id="base"
-     pagecolor="#313244"
-     bordercolor="#585b70"
+     pagecolor="#3c3c3c"
+     bordercolor="#666666"
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
@@ -38,11 +38,11 @@
        inkscape:collect="always"
        id="linearGradient4154">
       <stop
-         style="stop-color:#89b4fa;stop-opacity:1;"
+         style="stop-color:#0066ff;stop-opacity:1;"
          offset="0"
          id="stop4156" />
       <stop
-         style="stop-color:#89b4fa;stop-opacity:1"
+         style="stop-color:#5f8dd3;stop-opacity:1"
          offset="1"
          id="stop4158" />
     </linearGradient>
@@ -94,7 +94,7 @@
        clipPathUnits="userSpaceOnUse"
        id="clipPath5095">
       <ellipse
-         style="opacity:1;fill:none;fill-opacity:0;stroke:#1e1e2e;stroke-width:0.97774303;stroke-opacity:1"
+         style="opacity:1;fill:none;fill-opacity:0;stroke:#ffffff;stroke-width:0.97774303;stroke-opacity:1"
          id="ellipse5097"
          cx="-1027.7761"
          cy="-42.20327"
@@ -109,7 +109,7 @@
      id="layer1"
      transform="translate(0,-1004.3622)">
     <circle
-       style="opacity:1;fill:#89b4fa;fill-opacity:1"
+       style="opacity:1;fill:#0044aa;fill-opacity:1"
        id="path4136-1"
        cx="-1028.7955"
        cy="-42.269115"
@@ -125,7 +125,7 @@
        ry="22.477945" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:35.82603073px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#11111b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;font-size:35.82603073px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="18.580486"
        y="1042.6661"
        id="text4162"
@@ -134,9 +134,9 @@
          id="tspan4164"
          x="18.580486"
          y="1042.6661"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';fill:#1e1e2e" /></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';fill:#ffffff" /></text>
     <circle
-       style="opacity:1;fill:#1e1e2e;fill-opacity:1"
+       style="opacity:1;fill:#ffffff;fill-opacity:1"
        id="path4215"
        cx="24.000118"
        cy="1017.8579"
@@ -144,7 +144,7 @@
     <path
        id="rect4217"
        d="m 23.993726,1024.2752 0.01278,0 c 1.128529,0 2.037057,0.9085 2.037057,2.037 l 0,14.3169 c 0,1.1286 -0.908528,2.0371 -2.037057,2.0371 l -0.01278,0 c -1.12853,0 -2.037057,-0.9085 -2.037057,-2.0371 l 0,-14.3169 c 0,-1.1285 0.908527,-2.037 2.037057,-2.037 z"
-       style="opacity:1;fill:#1e1e2e;fill-opacity:1"
+       style="opacity:1;fill:#ffffff;fill-opacity:1"
        inkscape:connector-curvature="0" />
     <rect
        rx="17.981438"
@@ -154,6 +154,6 @@
        height="4.0868988"
        width="4.0868988"
        id="rect4681"
-       style="opacity:1;fill:#1e1e2e;fill-opacity:1" />
+       style="opacity:1;fill:#ffffff;fill-opacity:1" />
   </g>
 </svg>

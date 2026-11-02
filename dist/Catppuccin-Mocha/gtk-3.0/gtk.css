@@ -42,20 +42,20 @@
 @define-color catppuccin_base #1e1e2e;
 @define-color catppuccin_mantle #181825;
 @define-color catppuccin_crust #11111b;
-@define-color catppuccin_accent #89b4fa;
+@define-color catppuccin_accent #cba6f7;
 
 /* Adwaita named colors, redefined after the import. */
 @define-color theme_bg_color #1e1e2e;
 @define-color theme_fg_color #cdd6f4;
 @define-color theme_base_color #1e1e2e;
 @define-color theme_text_color #cdd6f4;
-@define-color theme_selected_bg_color #89b4fa;
+@define-color theme_selected_bg_color #cba6f7;
 @define-color theme_selected_fg_color #1e1e2e;
 @define-color theme_unfocused_bg_color #181825;
 @define-color theme_unfocused_fg_color #a6adc8;
 @define-color theme_unfocused_base_color #1e1e2e;
 @define-color theme_unfocused_text_color #cdd6f4;
-@define-color theme_unfocused_selected_bg_color #89b4fa;
+@define-color theme_unfocused_selected_bg_color #cba6f7;
 @define-color theme_unfocused_selected_fg_color #1e1e2e;
 @define-color insensitive_bg_color #181825;
 @define-color insensitive_fg_color #7f849c;
@@ -95,9 +95,9 @@
 @define-color sidebar_fg_color #cdd6f4;
 @define-color secondary_sidebar_bg_color #11111b;
 @define-color secondary_sidebar_fg_color #cdd6f4;
-@define-color accent_bg_color #89b4fa;
+@define-color accent_bg_color #cba6f7;
 @define-color accent_fg_color #1e1e2e;
-@define-color accent_color #89b4fa;
+@define-color accent_color #cba6f7;
 @define-color destructive_bg_color #f38ba8;
 @define-color destructive_fg_color #1e1e2e;
 @define-color destructive_color #f38ba8;
@@ -116,7 +116,7 @@
    ------------------------------------------------------------------------- */
 
 * {
-  outline-color: #89b4fa;
+  outline-color: #cba6f7;
   outline-offset: -2px;
   -gtk-outline-radius: 6px;
   -GtkTextView-error-underline-color: #f38ba8;
@@ -126,7 +126,7 @@
 *:focus {
   outline-style: solid;
   outline-width: 2px;
-  outline-color: #89b4fa;
+  outline-color: #cba6f7;
 }
 
 /* Adwaita draws several controls with literal gradients. The overrides below
@@ -350,7 +350,7 @@ button:hover {
 button:active,
 button:checked {
   background-color: #585b70;
-  border-color: #89b4fa;
+  border-color: #cba6f7;
 }
 
 button:disabled {
@@ -394,20 +394,20 @@ button.circular {
 }
 
 button.suggested-action {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
   color: #1e1e2e;
-  border-color: #89b4fa;
+  border-color: #cba6f7;
 }
 
 button.suggested-action:hover {
-  background-color: #779cd9;
-  border-color: #779cd9;
+  background-color: #af90d6;
+  border-color: #af90d6;
 }
 
 button.suggested-action:active,
 button.suggested-action:checked {
-  background-color: #6b8bc2;
-  border-color: #6b8bc2;
+  background-color: #9c81c0;
+  border-color: #9c81c0;
 }
 
 button.suggested-action:disabled {
@@ -467,7 +467,7 @@ spinbutton:not(.vertical) {
   box-shadow: none;
   min-height: 22px;
   padding: 4px 8px;
-  caret-color: #89b4fa;
+  caret-color: #cba6f7;
   transition: border-color 120ms ease, box-shadow 120ms ease;
 }
 
@@ -478,8 +478,8 @@ spinbutton:not(.vertical):hover {
 
 entry:focus,
 spinbutton:not(.vertical):focus {
-  border-color: #89b4fa;
-  box-shadow: 0 0 0 2px rgba(137, 180, 250, 0.25);
+  border-color: #cba6f7;
+  box-shadow: 0 0 0 2px rgba(203, 166, 247, 0.25);
 }
 
 entry:disabled,
@@ -497,7 +497,7 @@ spinbutton:not(.vertical):backdrop {
 }
 
 entry selection {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
   color: #1e1e2e;
 }
 
@@ -511,7 +511,7 @@ entry image:active {
 }
 
 entry progress {
-  background-color: rgba(137, 180, 250, 0.25);
+  background-color: rgba(203, 166, 247, 0.25);
   border-radius: 6px;
 }
 
@@ -665,7 +665,7 @@ notebook > header > tabs > tab:hover {
 notebook > header > tabs > tab:checked {
   background-color: #1e1e2e;
   color: #cdd6f4;
-  border-bottom: 2px solid #89b4fa;
+  border-bottom: 2px solid #cba6f7;
 }
 
 notebook > stack {
@@ -698,12 +698,12 @@ list row:selected,
 list row:selected:hover,
 treeview.view:selected,
 treeview.view:selected:hover {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
   color: #1e1e2e;
 }
 
 treeview.view:selected:backdrop {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
   color: #1e1e2e;
 }
 
@@ -741,7 +741,7 @@ placessidebar row:hover {
 
 .sidebar row:selected,
 placessidebar row:selected {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
   color: #1e1e2e;
 }
 
@@ -780,7 +780,7 @@ scrollbar slider:hover {
 }
 
 scrollbar slider:active {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
 }
 
 scrollbar button {
@@ -813,15 +813,15 @@ radio {
 
 check:hover,
 radio:hover {
-  border-color: #89b4fa;
+  border-color: #cba6f7;
 }
 
 check:checked,
 check:indeterminate,
 radio:checked,
 radio:indeterminate {
-  background-color: #89b4fa;
-  border-color: #89b4fa;
+  background-color: #cba6f7;
+  border-color: #cba6f7;
 }
 
 check:checked {
@@ -869,8 +869,8 @@ switch {
 }
 
 switch:checked {
-  background-color: #89b4fa;
-  border-color: #89b4fa;
+  background-color: #cba6f7;
+  border-color: #cba6f7;
 }
 
 switch:disabled {
@@ -913,13 +913,13 @@ scale trough {
 }
 
 scale highlight {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
   border-radius: 999px;
 }
 
 scale slider {
   background-color: #cdd6f4;
-  border: 2px solid #89b4fa;
+  border: 2px solid #cba6f7;
   border-radius: 999px;
   box-shadow: none;
   min-width: 12px;
@@ -928,11 +928,11 @@ scale slider {
 }
 
 scale slider:hover {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
 }
 
 scale slider:active {
-  background-color: #6b8bc2;
+  background-color: #9c81c0;
 }
 
 scale value {
@@ -950,7 +950,7 @@ progressbar trough {
 }
 
 progressbar progress {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
   border-radius: 999px;
 }
 
@@ -964,7 +964,7 @@ levelbar block {
 }
 
 levelbar block.filled {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
 }
 
 levelbar block.low {
@@ -1070,7 +1070,7 @@ calendar {
 }
 
 calendar:selected {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
   color: #1e1e2e;
 }
 
@@ -1083,7 +1083,7 @@ calendar.button {
 }
 
 calendar.highlight {
-  color: #89b4fa;
+  color: #cba6f7;
 }
 
 calendar:indeterminate {
@@ -1107,7 +1107,7 @@ filechooser .path-bar button {
    ------------------------------------------------------------------------- */
 
 selection {
-  background-color: #89b4fa;
+  background-color: #cba6f7;
   color: #1e1e2e;
 }
 

@@ -1300,9 +1300,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--accent",
-        default="blue",
+        default="mauve",
         choices=ACCENT_NAMES,
-        help="Catppuccin accent color used for highlights (default: blue)",
+        help="Catppuccin accent color used for highlights (default: mauve)",
     )
     parser.add_argument("--no-zip", action="store_true", help="do not create zip archives")
     parser.add_argument(

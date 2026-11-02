@@ -8,16 +8,16 @@
  </g>
  <defs>
   <linearGradient id="_Linear1" x2="1" gradientTransform="matrix(-32.1514,-553.175,553.175,-32.1514,335.264,607.267)" gradientUnits="userSpaceOnUse">
-   <stop style="stop-color:#9399b2" offset="0"/>
-   <stop style="stop-color:#cdd6f4;stop-opacity:0" offset="1"/>
+   <stop style="stop-color:rgb(148,148,148)" offset="0"/>
+   <stop style="stop-color:white;stop-opacity:0" offset="1"/>
   </linearGradient>
   <linearGradient id="_Linear2" x2="1" gradientTransform="matrix(110.113,400.781,-400.781,110.113,324.111,220.337)" gradientUnits="userSpaceOnUse">
-   <stop style="stop-color:#9399b2" offset="0"/>
-   <stop style="stop-color:#bac2de;stop-opacity:.72" offset="1"/>
+   <stop style="stop-color:rgb(153,153,153)" offset="0"/>
+   <stop style="stop-color:rgb(200,200,200);stop-opacity:.72" offset="1"/>
   </linearGradient>
   <linearGradient id="_Linear3" x2="1" gradientTransform="matrix(467.008,0,0,467.008,86.978,120.502)" gradientUnits="userSpaceOnUse">
-   <stop style="stop-color:#313244" offset="0"/>
-   <stop style="stop-color:#bac2de" offset="1"/>
+   <stop style="stop-color:rgb(50,50,50)" offset="0"/>
+   <stop style="stop-color:rgb(195,195,195)" offset="1"/>
   </linearGradient>
  </defs>
 </svg>
